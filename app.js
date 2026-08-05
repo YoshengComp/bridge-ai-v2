@@ -232,7 +232,9 @@ ${data.map(item => `
 </div>
 
 `).join("")}
+</div>
 
+` : ""}
 
    ${button && button.text ? `
 

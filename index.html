@@ -5,13 +5,11 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Bridge AI V2</title>
 
-    <link rel="stylesheet"
-          href="style.css">
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -35,48 +33,63 @@
 
     <!-- Chat -->
 
-    <div id="chat"
-         class="chat">
+    <div id="chat" class="chat">
 
-        <div class="ai-card">
+        <!-- 首頁歡迎畫面 -->
 
-            <div class="welcome">
+        <div id="welcome">
 
-                <h2>
-                    👋 您好，歡迎使用 Bridge AI
-                </h2>
+            <div class="ai-card">
 
-                <p>
-                    我是您的 ERP AI 助理。
-                </p>
+                <div class="welcome">
 
-                <p>
-                    您可以直接詢問：
-                </p>
+                    <h2>👋 您好，歡迎使用 Bridge AI</h2>
 
-            </div>
+                    <p>我是您的 ERP AI 助理。</p>
 
-            <div class="quick-area">
+                    <p>您可以直接詢問：</p>
 
-                <button class="quick-btn">
-                    📦 缺貨怎麼辦？
-                </button>
+                </div>
 
-                <button class="quick-btn">
-                    🛒 如何建立採購單？
-                </button>
+                <div class="quick-area">
 
-                <button class="quick-btn">
-                    👥 如何新增供應商？
-                </button>
+                    <button class="quick-btn"
+                            data-question="缺貨怎麼辦？">
 
-                <button class="quick-btn">
-                    📄 如何建立報價單？
-                </button>
+                        📦 缺貨怎麼辦？
+
+                    </button>
+
+                    <button class="quick-btn"
+                            data-question="如何建立採購單？">
+
+                        🛒 如何建立採購單？
+
+                    </button>
+
+                    <button class="quick-btn"
+                            data-question="如何新增供應商？">
+
+                        👥 如何新增供應商？
+
+                    </button>
+
+                    <button class="quick-btn"
+                            data-question="如何建立報價單？">
+
+                        📄 如何建立報價單？
+
+                    </button>
+
+                </div>
 
             </div>
 
         </div>
+
+        <!-- 真正聊天區 -->
+
+        <div id="messages"></div>
 
     </div>
 

@@ -103,15 +103,19 @@ const category = result.category;
 
         loading.remove();
 
-        if (result.success) {
+if (result.success) {
 
-           addAIMessage(
+    addAIMessage(
 
 `${icon} ${category}
 
-${answer}`
+${answer}`,
 
-);
+button
+
+    );
+
+}
 
         } else {
 

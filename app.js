@@ -105,23 +105,17 @@ const category = result.category;
 
 if (result.success) {
 
-    addAIMessage(
+    const message = `${icon} ${category}
 
-`${icon} ${category}
+${answer}`;
 
-${answer}`,
+    addAIMessage(message, button);
 
-button
+} else {
 
-    );
+    addAIMessage("查詢失敗：" + result.error);
 
 }
-
-        } else {
-
-            addAIMessage("查詢失敗：" + result.error);
-
-        }
 
     } catch (e) {
 

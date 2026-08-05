@@ -325,3 +325,66 @@ body{
     color:#999;
 
 }
+.erp-list{
+    margin-top:18px;
+}
+
+.erp-card{
+
+    background:#fafafa;
+
+    border:1px solid #ececec;
+
+    border-radius:14px;
+
+    padding:14px;
+
+    margin-bottom:12px;
+
+    transition:.2s;
+
+}
+
+.erp-card:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.erp-name{
+
+    font-size:17px;
+
+    font-weight:700;
+
+    color:#333;
+
+    margin-bottom:12px;
+
+}
+
+.erp-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin:6px 0;
+
+    font-size:14px;
+
+}
+
+.erp-row span{
+
+    color:#777;
+
+}
+
+.erp-row strong{
+
+    color:#ff7a00;
+
+}

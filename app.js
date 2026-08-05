@@ -164,27 +164,43 @@ function addAIMessage(text, button = null) {
 
     div.className = "ai-message";
 
-   div.innerHTML = `
+  div.innerHTML = `
 
-<div class="bubble ai-bubble">
+<div class="ai-card">
 
-    ${formatMessage(text)}
+    <div class="card-header">
+
+        <div class="card-title">
+
+            🤖 Bridge AI
+
+        </div>
+
+    </div>
+
+    <div class="card-body">
+
+        ${formatMessage(text)}
+
+    </div>
+
+    ${button ? `
+
+    <div class="card-footer">
+
+        <button
+            class="action-btn"
+            onclick="handleAction('${button.action}','${button.url}')">
+
+            ${button.text}
+
+        </button>
+
+    </div>
+
+    ` : ""}
 
 </div>
-
-${button ? `
-<div class="ai-action">
-
-    <button
-        class="action-btn"
-        onclick="handleAction('${button.action}','${button.url}')">
-
-        ${button.text}
-
-    </button>
-
-</div>
-` : ""}
 
 `;
 

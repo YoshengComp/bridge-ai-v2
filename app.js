@@ -105,7 +105,13 @@ const category = result.category;
 
         if (result.success) {
 
-            addAIMessage(result.answer);
+           addAIMessage(
+
+`${icon} ${category}
+
+${answer}`
+
+);
 
         } else {
 

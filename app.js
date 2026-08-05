@@ -201,7 +201,7 @@ function addAIMessage(text, button = null) {
 
     </div>
 
-    ${button ? `
+   ${button && button.text ? `
 
     <div class="card-footer">
 

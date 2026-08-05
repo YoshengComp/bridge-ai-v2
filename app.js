@@ -105,12 +105,15 @@ const category = result.category;
 
 if (result.success) {
 
-    const message = `${icon} ${category}
+    //const message = `${icon} ${category}
 
-${answer}`;
+addAIMessage(
+    `${icon} ${category}
 
-    addAIMessage(message, button);
-
+${answer}`,
+    button,
+    result.data
+);
 } else {
 
     addAIMessage("查詢失敗：" + result.error);
@@ -175,7 +178,7 @@ function addUserMessage(text) {
 // AI訊息
 // ==========================================
 
-function addAIMessage(text, button = null) {
+function addAIMessage(text, button = null, data = []) {
 
     const div = document.createElement("div");
 
@@ -200,6 +203,34 @@ function addAIMessage(text, button = null) {
         ${formatMessage(text)}
 
     </div>
+    ${data.length ? `
+
+<div class="erp-list">
+
+${data.map(item => `
+
+<div class="erp-item">
+
+${Object.entries(item).map(([key, value]) => `
+
+<div class="erp-row">
+
+    <span class="erp-label">${key}</span>
+
+    <span class="erp-value">${value}</span>
+
+</div>
+
+`).join("")}
+
+</div>
+
+`).join("")}
+
+</div>
+
+` : ""}
+
 
    ${button && button.text ? `
 

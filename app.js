@@ -175,7 +175,9 @@ function addAIMessage(text, button = null) {
 ${button ? `
 <div class="ai-action">
 
-    <button class="action-btn">
+    <button
+        class="action-btn"
+        onclick="handleAction('${button.action}','${button.url}')">
 
         ${button.text}
 
@@ -189,6 +191,35 @@ ${button ? `
     messages.appendChild(div);
 
     scrollBottom();
+
+}
+// ========================================
+// Bridge AI 動作
+// ========================================
+
+function handleAction(action, url) {
+
+    if (!url) {
+
+        alert("尚未設定網址");
+
+        return;
+
+    }
+
+    switch (action) {
+
+        case "open_form":
+
+            window.open(url, "_blank");
+
+            break;
+
+        default:
+
+            window.open(url, "_blank");
+
+    }
 
 }
 

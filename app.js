@@ -160,21 +160,33 @@ function addUserMessage(text) {
 // AI訊息
 // ==========================================
 
-function addAIMessage(text) {
+function addAIMessage(text, button = null) {
 
     const div = document.createElement("div");
 
     div.className = "ai-message";
 
-    div.innerHTML = `
+   div.innerHTML = `
 
-        <div class="bubble ai-bubble">
+<div class="bubble ai-bubble">
 
-            ${formatMessage(text)}
+    ${formatMessage(text)}
 
-        </div>
+</div>
 
-    `;
+${button ? `
+<div class="ai-action">
+
+    <button class="action-btn">
+
+        ${button.text}
+
+    </button>
+
+</div>
+` : ""}
+
+`;
 
     messages.appendChild(div);
 

@@ -132,19 +132,36 @@ ${answer}`;
 
 function addUserMessage(text) {
 
+    const now = new Date();
+
+    const time =
+        now.getHours().toString().padStart(2, "0") +
+        ":" +
+        now.getMinutes().toString().padStart(2, "0");
+
     const div = document.createElement("div");
 
     div.className = "user-message";
 
     div.innerHTML = `
 
-        <div class="bubble user-bubble">
+<div class="user-wrapper">
 
-            ${escapeHtml(text)}
+    <div class="user-bubble">
 
-        </div>
+        ${escapeHtml(text)}
 
-    `;
+    </div>
+
+    <div class="message-time">
+
+        ${time}
+
+    </div>
+
+</div>
+
+`;
 
     messages.appendChild(div);
 

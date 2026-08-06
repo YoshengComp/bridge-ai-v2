@@ -388,3 +388,20 @@ body{
     color:#ff7a00;
 
 }
+.summary-btn{
+    width:100%;
+    margin-top:12px;
+    padding:10px 16px;
+    border:none;
+    border-radius:12px;
+    background:#fff7ec;
+    color:#ff7a00;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+    border:1px solid #ffd3a3;
+}
+
+.summary-btn:hover{
+    background:#fff0db;
+}

@@ -422,7 +422,7 @@ addAIMessage(
     ]
 );
 
-    },1200);
+    },600);
 
     break;    
     

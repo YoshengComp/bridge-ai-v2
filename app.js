@@ -499,17 +499,17 @@ AI 就可以自己長按鈕
 // 建立操作按鈕
 // ==========================================
 
-function createActionButton(text,url){
+function createActionButton(text, url, action){
 
-    const button=document.createElement("button");
+    const button = document.createElement("button");
 
-    button.className="action-btn";
+    button.className = "action-btn";
 
-    button.innerHTML=text;
+    button.innerHTML = text;
 
-    button.onclick=function(){
+    button.onclick = function(){
 
-        window.open(url,"_blank");
+        handleAction(action, url);
 
     };
 

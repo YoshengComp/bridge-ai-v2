@@ -408,3 +408,10 @@ body{
     gap:12px;
     margin-top:18px;
 }
+.ai-message{
+
+    margin:24px 0;
+
+    animation:fadeIn .25s;
+
+}

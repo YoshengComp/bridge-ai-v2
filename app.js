@@ -338,7 +338,19 @@ case "agent":
         });
 
     }
+case "procurement_all":
 
+    addAIMessage(
+        "✅ 已將全部缺貨商品加入採購清單。\n\n下一步，請選擇供應商。",
+        [
+            {
+                text: "🏢 選擇供應商",
+                action: "select_vendor"
+            }
+        ]
+    );
+
+    break;
     addAIMessage(
         message,
         [

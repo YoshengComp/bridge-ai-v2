@@ -113,8 +113,11 @@ ${answer}`;
 
 if (result.data && result.data.length > 0) {
     message += `
+📋 目前共有 ${result.data.length} 項商品庫存不足。
 
-📋 目前共有 ${result.data.length} 項商品庫存不足。`;
+<button class="summary-btn" onclick="showInventoryDetail()">
+檢視不足商品 (${result.data.length})
+</button>`;
 }
 
 addAIMessage(
@@ -471,7 +474,9 @@ function createAnswerCard(answer){
     return card;
 
 }
-
+function showInventoryDetail() {
+    alert("下一步我們會改成顯示商品明細");
+}
 
 
 // ==========================================

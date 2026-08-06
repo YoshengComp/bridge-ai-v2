@@ -323,6 +323,8 @@ function handleAction(action, url) {
             
 case "agent":
 
+    console.log("agent 被點擊了");
+
     let message = "🤖 好的，我將協助您建立採購單。\n\n";
 
     message += "請問是否將目前缺貨商品全部加入採購單？\n\n";

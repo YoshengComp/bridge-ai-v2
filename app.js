@@ -93,14 +93,9 @@ async function sendMessage() {
         });
 
         const result = await response.json();
-      const answer = result.answer;
-
-const button = result.button;
-
-const icon = result.icon;
-
-const category = result.category;
-
+     const icon = result.icon || "";
+const category = result.category || "";
+const answer = result.answer || "";
         loading.remove();
 
 if (result.success) {
@@ -243,27 +238,25 @@ ${data.map(item => `
 
 ` : ""}
 
- ${buttons.length ? `
+${buttons.length ? `
 
-    <div class="card-footer">
+<div class="card-footer">
 
-        <button
-            class="action-btn"
-            onclick="handleAction('${button.action}','${button.url}')">
+    ${buttons.map(button => `
 
-            ${buttons.map(button => `
-<button
-    class="action-btn"
-    onclick="handleAction('${button.action}','${button.url || ""}')">
-    ${button.text}
-</button>
-`).join("")}
+    <button
+        class="action-btn"
+        onclick="handleAction('${button.action}','${button.url || ""}')">
 
-        </button>
+        ${button.text}
 
-    </div>
+    </button>
 
-    ` : ""}
+    `).join("")}
+
+</div>
+
+` : ""}
 
 </div>
 

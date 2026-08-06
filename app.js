@@ -338,16 +338,7 @@ case "agent":
         });
 
     }
-case "procurement_all":
-
-     addAIMessage("🔍 正在分析商品供應商...");
-       setTimeout(async () => {
-
-         console.log(lastResultData);
-
-    },1200);
-
-    break;    
+  
     addAIMessage(
         message,
         [
@@ -363,6 +354,18 @@ case "procurement_all":
     );
 
     break;
+          
+case "procurement_all":
+
+     addAIMessage("🔍 正在分析商品供應商...");
+       setTimeout(async () => {
+
+         console.log(lastResultData);
+
+    },1200);
+
+    break;    
+    
         default:
 
             console.warn("未知 Action：" + action);

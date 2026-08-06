@@ -382,7 +382,45 @@ const res = await fetch(API_URL, {
 
 const result = await res.json();
 
-console.log(result);
+const groups = result.data;
+
+let message = "📊 已分析完成。\n\n";
+
+groups.forEach(group => {
+
+    message += "━━━━━━━━━━━━━━\n\n";
+
+    message += `🏢 ${group.vendorName}\n\n`;
+
+    group.items.forEach(item => {
+
+        message += `📦 ${item.productName}\n`;
+
+    });
+
+    message += "\n";
+
+});
+
+message += "━━━━━━━━━━━━━━\n\n";
+
+message += `共找到 ${groups.length} 家供應商。\n\n`;
+
+message += `預計建立 ${groups.length} 張採購單。`;
+
+addAIMessage(
+    message,
+    [
+        {
+            text: "📄 建立採購單",
+            action: "create_po"
+        },
+        {
+            text: "✏️ 自行調整",
+            action: "adjust_vendor"
+        }
+    ]
+);
 
     },1200);
 

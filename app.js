@@ -96,6 +96,7 @@ async function sendMessage() {
         });
 
         const result = await response.json();
+        console.log("Worker 回傳：", result);
         // 暫存 ERP 查詢結果，供後續按鈕使用
 lastResultData = result.data || [];
      const icon = result.icon || "";

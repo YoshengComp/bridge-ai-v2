@@ -342,45 +342,30 @@ case "procurement_all":
 
      addAIMessage("🔍 正在分析商品供應商...");
             setTimeout(() => {
+const products = lastResultData.map(item => item["產品編號"]);
 
-        addAIMessage(
-`📊 已分析完成。
+const res = await fetch(API_URL, {
 
-━━━━━━━━━━━━━━
+    method: "POST",
 
-🏢 鼎盛科技股份有限公司
+    headers: {
+        "Content-Type": "application/json"
+    },
 
-📦 蘋果
+    body: JSON.stringify({
 
-━━━━━━━━━━━━━━
+        queryType: "vendor_analysis",
 
-🏢 永德包材工業有限公司
+        products: products
 
-📦 橘子
+    })
 
-━━━━━━━━━━━━━━
+});
 
-🏢 創意外包設計工作室
+const result = await res.json();
 
-📦 葡萄
-📦 林晉瑋
-
-━━━━━━━━━━━━━━
-
-共找到 3 家供應商。
-
-預計建立 3 張採購單。`,
-        [
-            {
-                text: "📄 建立 3 張採購單",
-                action: "create_po"
-            },
-            {
-                text: "✏️ 自行調整",
-                action: "adjust_vendor"
-            }
-        ]
-        );
+console.log(result);
+       
 
     },1200);
 

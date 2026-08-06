@@ -382,7 +382,7 @@ case "procurement_all":
         ]
         );
 
-    },800);
+    },1200);
 
     break;    
     addAIMessage(

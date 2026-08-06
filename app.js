@@ -340,10 +340,11 @@ case "agent":
     }
 case "procurement_all":
 
-    addAIMessage(
-`🤖 Bridge AI
+     addAIMessage("🔍 正在分析商品供應商...");
+            setTimeout(() => {
 
-🔍 正在分析商品供應商...
+        addAIMessage(
+`📊 已分析完成。
 
 ━━━━━━━━━━━━━━
 
@@ -366,7 +367,9 @@ case "procurement_all":
 
 ━━━━━━━━━━━━━━
 
-已依主要供應商完成商品分組。`,
+共找到 3 家供應商。
+
+預計建立 3 張採購單。`,
         [
             {
                 text: "📄 建立 3 張採購單",
@@ -377,9 +380,11 @@ case "procurement_all":
                 action: "adjust_vendor"
             }
         ]
-    );
+        );
 
-    break;
+    },800);
+
+    break;    
     addAIMessage(
         message,
         [

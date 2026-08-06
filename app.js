@@ -341,31 +341,9 @@ case "agent":
 case "procurement_all":
 
      addAIMessage("🔍 正在分析商品供應商...");
-            setTimeout(() => {
-const products = lastResultData.map(item => item["產品編號"]);
+       setTimeout(async () => {
 
-const res = await fetch(API_URL, {
-
-    method: "POST",
-
-    headers: {
-        "Content-Type": "application/json"
-    },
-
-    body: JSON.stringify({
-
-        queryType: "vendor_analysis",
-
-        products: products
-
-    })
-
-});
-
-const result = await res.json();
-
-console.log(result);
-       
+         console.log(lastResultData);
 
     },1200);
 

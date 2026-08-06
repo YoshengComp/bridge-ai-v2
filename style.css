@@ -231,30 +231,24 @@ body{
    Bridge AI Action Button
 ========================================== */
 
-.action-btn {
+.action-btn{
+    width:100%;
+    margin-top:12px;
+    padding:14px 18px;
 
-    width: 100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
 
-    height: 48px;
+    border:none;
+    border-radius:12px;
 
-    border: none;
+    font-size:15px;
+    font-weight:600;
 
-    border-radius: 12px;
-
-    background: linear-gradient(90deg,#ff7a00,#ff9a2f);
-
-    color: white;
-
-    font-size: 16px;
-
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition: .25s;
-
-    box-shadow: 0 4px 10px rgba(255,122,0,.25);
-
+    cursor:pointer;
+    transition:.25s;
 }
 
 .action-btn:hover{
@@ -404,4 +398,13 @@ body{
 
 .summary-btn:hover{
     background:#fff0db;
+}
+.btn-icon{
+    font-size:18px;
+}
+.card-footer{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:18px;
 }

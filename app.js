@@ -118,7 +118,7 @@ if (result.data && result.data.length > 0) {
 
 addAIMessage(
     message,
-    button,
+    result.buttons,
     result.data
 );
 } else {
@@ -185,7 +185,7 @@ function addUserMessage(text) {
 // AI訊息
 // ==========================================
 
-function addAIMessage(text, button = null, data = []) {
+function addAIMessage(text,buttons = [], data = []) {
      const showData = false;
     const div = document.createElement("div");
 
@@ -243,7 +243,7 @@ ${data.map(item => `
 
 ` : ""}
 
-   ${button && button.text ? `
+ ${buttons.length ? `
 
     <div class="card-footer">
 
@@ -251,7 +251,13 @@ ${data.map(item => `
             class="action-btn"
             onclick="handleAction('${button.action}','${button.url}')">
 
-            ${button.text}
+            ${buttons.map(button => `
+<button
+    class="action-btn"
+    onclick="handleAction('${button.action}','${button.url || ""}')">
+    ${button.text}
+</button>
+`).join("")}
 
         </button>
 

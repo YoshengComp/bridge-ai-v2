@@ -5,6 +5,9 @@
 // Cloudflare Worker API
 const API_URL = "https://bridge-ai-api.yosheng96750043.workers.dev/";
 
+// 暫存最近一次 AI 查詢回傳的 ERP 資料
+let lastResultData = [];
+
 // DOM
 const chat = document.getElementById("chat");
 const messages = document.getElementById("messages");
@@ -93,6 +96,8 @@ async function sendMessage() {
         });
 
         const result = await response.json();
+        // 暫存 ERP 查詢結果，供後續按鈕使用
+lastResultData = result.data || [];
      const icon = result.icon || "";
 const category = result.category || "";
 const answer = result.answer || "";
@@ -180,8 +185,7 @@ function addUserMessage(text) {
 // AI訊息
 // ==========================================
 
-function addAIMessage(text,buttons = [], data = []) {
-     const showData = false;
+function addAIMessage(text, buttons = [], data = [], showData = false) {
     const div = document.createElement("div");
 
     div.className = "ai-message";
@@ -274,25 +278,32 @@ ${buttons.length ? `
 
 function handleAction(action, url) {
 
-    if (!url) {
-
-        alert("尚未設定網址");
-
-        return;
-
-    }
-
     switch (action) {
+
+        case "show_detail":
+
+            addAIMessage(
+                "📋 以下為目前庫存不足商品：",
+                [],
+                lastResultData,
+                true
+            );
+
+            break;
 
         case "open_form":
 
-            window.open(url, "_blank");
+            if (!url) {
+                alert("尚未設定網址");
+                return;
+            }
 
+            window.open(url, "_blank");
             break;
 
         default:
 
-            window.open(url, "_blank");
+            console.warn("未知 Action：" + action);
 
     }
 

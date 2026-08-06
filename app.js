@@ -323,7 +323,33 @@ function handleAction(action, url) {
             
 case "agent":
 
-    addAIMessage("🚧 AI Workflow 開發中...");
+    let message = "🤖 好的，我將協助您建立採購單。\n\n";
+
+    message += "請問是否將目前缺貨商品全部加入採購單？\n\n";
+
+    if (lastResultData.length > 0) {
+
+        lastResultData.forEach(item => {
+
+            message += `📦 ${item["商品"]}\n`;
+
+        });
+
+    }
+
+    addAIMessage(
+        message,
+        [
+            {
+                text: "✅ 全部加入",
+                action: "procurement_all"
+            },
+            {
+                text: "✏️ 自行挑選",
+                action: "procurement_select"
+            }
+        ]
+    );
 
     break;
         default:

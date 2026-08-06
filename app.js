@@ -179,7 +179,7 @@ function addUserMessage(text) {
 // ==========================================
 
 function addAIMessage(text, button = null, data = []) {
-
+     const showData = false;
     const div = document.createElement("div");
 
     div.className = "ai-message";
@@ -203,7 +203,7 @@ function addAIMessage(text, button = null, data = []) {
         ${formatMessage(text)}
 
     </div>
-    ${data.length ? `
+    ${showData && data.length ? `
 
 <div class="erp-list">
 

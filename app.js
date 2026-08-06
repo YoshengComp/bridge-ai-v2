@@ -245,12 +245,13 @@ ${buttons.length ? `
     ${buttons.map(button => `
 
     <button
-        class="action-btn"
-        onclick="handleAction('${button.action}','${button.url || ""}')">
+    class="action-btn ${button.color || "primary"}"
+    onclick="handleAction('${button.action}','${button.url || ""}')">
 
-        ${button.text}
+    <span class="btn-icon">${button.icon || ""}</span>
+    <span>${button.text}</span>
 
-    </button>
+</button>
 
     `).join("")}
 

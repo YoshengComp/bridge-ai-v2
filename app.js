@@ -107,10 +107,18 @@ if (result.success) {
 
     //const message = `${icon} ${category}
 
-addAIMessage(
-    `${icon} ${category}
+let message = `${icon} ${category}
 
-${answer}`,
+${answer}`;
+
+if (result.data && result.data.length > 0) {
+    message += `
+
+📋 目前共有 ${result.data.length} 項商品庫存不足。`;
+}
+
+addAIMessage(
+    message,
     button,
     result.data
 );

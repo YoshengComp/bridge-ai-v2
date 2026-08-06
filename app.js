@@ -293,15 +293,39 @@ function handleAction(action, url) {
             break;
 
         case "open_form":
-
-            if (!url) {
-                alert("尚未設定網址");
-                return;
+            addAIMessage(
+        "您希望使用哪種方式建立採購單？",
+        [
+            {
+                text: "🤖 AI 協助建立採購單",
+                action: "agent"
+            },
+            {
+                text: "📝 自行建立採購單",
+                action: "open_form_direct",
+                url: url
             }
+        ]
+    );
 
-            window.open(url, "_blank");
-            break;
+    break;
 
+         case "open_form_direct":
+
+    if (!url) {
+        alert("尚未設定網址");
+        return;
+    }
+
+    window.open(url, "_blank");
+
+    break;
+            
+case "agent":
+
+    addAIMessage("🚧 AI Workflow 開發中...");
+
+    break;
         default:
 
             console.warn("未知 Action：" + action);

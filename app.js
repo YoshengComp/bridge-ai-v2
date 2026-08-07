@@ -491,7 +491,7 @@ groups.forEach(group => {
     message += "━━━━━━━━━━━━━━\n\n";
 
     message += `🏢 ${group.vendorName}\n\n`;
-
+    message += `📦 共 ${group.items.length} 項商品\n\n`;
     group.items.forEach(item => {
 
         message += `📦 ${item.productName}\n`;
@@ -831,7 +831,8 @@ function showPurchaseDraft() {
 
     purchaseDraft.forEach(group => {
 
-        message += `🏢 ${group.vendorName}\n\n`;
+       message += `🏢 ${group.vendorName}\n\n`;
+    message += `📦 共 ${group.items.length} 項商品\n\n`;
 
         group.items.forEach(item => {
 
@@ -839,8 +840,13 @@ function showPurchaseDraft() {
             message += `📦 採購數量：${item.minQty}\n`;
             message += `✏️ 修改數量\n`;
             message += `🏢 更換供應商\n\n`;
+            
 
         });
+        // ← 一張 PO 共用資訊
+    message += `📍 交貨地址：未設定\n`;
+    message += `📅 到貨日期：未設定\n`;
+    message += `📝 備註：未設定\n\n`;
 
         message += "────────────\n\n";
 

@@ -151,32 +151,7 @@ if (conversation.step === "ask_remark") {
     return;
 }
 
-    addAIMessage(
-`📋 請確認本次採購資訊
-
-📍交貨地址：
-${conversation.deliveryAddress}
-
-📅 要求到貨日：
-${conversation.requestDate}
-
-📝 備註：
-${conversation.remark}`,
-[
-    {
-        text: "✅ 建立採購單",
-        action: "confirm_create_po"
-    },
-    {
-        text: "✏️ 修改",
-        action: "edit_purchase"
-    }
-]
-);
-
-    return;
-
-}
+    
 const loading = addLoading();
 
 try {

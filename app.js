@@ -680,6 +680,31 @@ async function createPurchaseOrder() {
 
 }
 // ==========================================
+// 詢問交貨地址
+// ==========================================
+
+function askDeliveryAddress() {
+
+    addAIMessage(
+        "📍 請問本次採購商品要送到哪裡？",
+        [
+            {
+                text: "🏢 台北總公司",
+                action: "delivery_taipei"
+            },
+            {
+                text: "🏭 桃園物流中心",
+                action: "delivery_taoyuan"
+            },
+            {
+                text: "✏️ 其他地址",
+                action: "delivery_other"
+            }
+        ]
+    );
+
+}
+// ==========================================
 // 後續AI Agent預留
 // ==========================================
 

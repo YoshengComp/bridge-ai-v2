@@ -94,7 +94,21 @@ async function sendMessage() {
 // ================================
 // AI 對話流程
 // ================================
+// ⭐ 新增這一段
+if (conversation.step === "input_delivery_address") {
 
+    conversation.deliveryAddress = question;
+
+    conversation.step = "ask_request_date";
+
+    console.log(conversation);
+
+    addAIMessage(
+        "📅 請問要求到貨日？\n\n例如：2026/08/15"
+    );
+
+    return;
+}
 if (conversation.step === "ask_request_date") {
 
     conversation.requestDate = question;
@@ -788,6 +802,7 @@ if(result.success){
     );
 
 }
+  }   
 // ==========================================
 // 詢問交貨地址
 // ==========================================

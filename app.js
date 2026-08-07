@@ -150,7 +150,27 @@ if (conversation.step === "ask_remark") {
 
     return;
 }
+if (conversation.step === "edit_request_date") {
 
+    conversation.requestDate = question;
+
+    conversation.step = "confirm_purchase";
+
+    showPurchaseConfirm();
+
+    return;
+}
+
+if (conversation.step === "edit_remark") {
+
+    conversation.remark = question;
+
+    conversation.step = "confirm_purchase";
+
+    showPurchaseConfirm();
+
+    return;
+}
     
 const loading = addLoading();
 
@@ -604,13 +624,20 @@ case "delivery_other":
     addAIMessage("📍 請重新輸入交貨地址");
 
     break;       
-    case "edit_delivery":
+   
 
     case "edit_remark":
 
     conversation.step = "edit_remark";
 
     addAIMessage("📝 請重新輸入備註");
+
+    break;
+            case "back_confirm":
+
+    conversation.step = "confirm_purchase";
+
+    showPurchaseConfirm();
 
     break;
     default:

@@ -480,8 +480,17 @@ const res = await fetch(API_URL, {
 });
 
 const result = await res.json();
-purchaseDraft = result.data;
-console.log("採購草稿：", purchaseDraft);
+purchaseDraft = result.data.map(group => ({
+
+    ...group,
+
+    deliveryAddress: "",
+
+    requestDate: "",
+
+    remark: ""
+
+}));console.log("採購草稿：", purchaseDraft);
 const groups = result.data;
 
 let message = "📊 已分析完成。\n\n";
@@ -853,14 +862,18 @@ function showPurchaseDraft() {
     });
 
     addAIMessage(
-        message,
-        [
-            {
-                text: "📄 建立全部採購單",
-                action: "continue_create_po"
-            }
-        ]
-    );
+    message,
+    [
+        {
+            text:"✏️ 編輯交貨資訊",
+            action:"edit_po_header"
+        },
+        {
+            text:"📄 建立全部採購單",
+            action:"continue_create_po"
+        }
+    ]
+);
 
 }
    function showPurchaseConfirm() {

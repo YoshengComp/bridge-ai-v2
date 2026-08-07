@@ -458,15 +458,10 @@ addAIMessage(
 
     console.log(conversation);
 
+    // ⭐ 開始詢問交貨地址
+    askDeliveryAddress();
+
     break;
-   default:
-
-            console.warn("未知 Action：" + action);
-
-    }
-
-}
-
 
 // ==========================================
 // Loading

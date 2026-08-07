@@ -578,6 +578,33 @@ case "delivery_other":
 }
 
 } 
+case "edit_purchase":
+
+    conversation.step = "edit_menu";
+
+    addAIMessage(
+        "✏️ 請選擇要修改的項目",
+        [
+            {
+                text:"📍 交貨地址",
+                action:"edit_delivery"
+            },
+            {
+                text:"📅 要求到貨日",
+                action:"edit_request_date"
+            },
+            {
+                text:"📝 備註",
+                action:"edit_remark"
+            },
+            {
+                text:"❌ 返回確認",
+                action:"back_confirm"
+            }
+        ]
+    );
+
+    break;
 
 // ==========================================
 // Loading

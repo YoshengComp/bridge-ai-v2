@@ -462,6 +462,13 @@ addAIMessage(
     askDeliveryAddress();
 
     break;
+    default:
+
+        console.warn("未知 Action：" + action);
+
+}
+
+} 
 
 // ==========================================
 // Loading

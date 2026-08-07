@@ -836,7 +836,9 @@ function showPurchaseDraft() {
         group.items.forEach(item => {
 
             message += `☑ ${item.productName}\n`;
-            message += `📦 採購數量：${item.minQty}\n\n`;
+            message += `📦 採購數量：${item.minQty}\n`;
+            message += `✏️ 修改數量\n`;
+            message += `🏢 更換供應商\n\n`;
 
         });
 

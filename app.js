@@ -357,6 +357,7 @@ case "agent":
     break;
           
 case "procurement_all":
+   
 
      addAIMessage("🔍 正在分析商品供應商...");
        setTimeout(async () => {
@@ -427,6 +428,11 @@ addAIMessage(
     },600);
 
     break;    
+    case "create_po":
+
+    console.log("目前採購草稿：", purchaseDraft);
+
+    break;
     
         default:
 

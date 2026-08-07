@@ -462,6 +462,43 @@ addAIMessage(
     askDeliveryAddress();
 
     break;
+            case "delivery_taipei":
+
+    conversation.deliveryAddress = "台北總公司";
+
+    conversation.step = "ask_request_date";
+
+    console.log(conversation);
+
+    addAIMessage("📅 請問要求到貨日？\n\n例如：2026/08/15");
+
+    break;
+
+
+case "delivery_taoyuan":
+
+    conversation.deliveryAddress = "桃園物流中心";
+
+    conversation.step = "ask_request_date";
+
+    console.log(conversation);
+
+    addAIMessage("📅 請問要求到貨日？\n\n例如：2026/08/15");
+
+    break;
+
+
+case "delivery_other":
+
+    conversation.deliveryAddress = "";
+
+    conversation.step = "input_delivery_address";
+
+    console.log(conversation);
+
+    addAIMessage("✏️ 請直接輸入交貨地址。");
+
+    break;
     default:
 
         console.warn("未知 Action：" + action);

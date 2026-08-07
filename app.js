@@ -106,9 +106,46 @@ if (conversation.step === "ask_request_date") {
     addAIMessage("📝 請問有沒有備註？\n\n沒有請輸入：沒有");
 
     return;
+   } 
+
+// ==========================================
+// AI 對話流程：備註
+// ==========================================
+
+if (conversation.step === "ask_remark") {
+
+    conversation.remark = question;
+
+    conversation.step = "confirm_purchase";
+
+    console.log(conversation);
+
+    addAIMessage(
+`📋 請確認本次採購資訊
+
+📍交貨地址：
+${conversation.deliveryAddress}
+
+📅 要求到貨日：
+${conversation.requestDate}
+
+📝 備註：
+${conversation.remark}`,
+[
+    {
+        text: "✅ 建立採購單",
+        action: "confirm_create_po"
+    },
+    {
+        text: "✏️ 修改",
+        action: "edit_purchase"
+    }
+]
+);
+
+    return;
 
 }
-
 const loading = addLoading();
 
 try {

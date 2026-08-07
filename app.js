@@ -459,7 +459,13 @@ addAIMessage(
     console.log(conversation);
 
     break;
-   
+   default:
+
+            console.warn("未知 Action：" + action);
+
+    }
+
+}
 
 
 // ==========================================

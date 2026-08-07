@@ -278,7 +278,7 @@ ${buttons.length ? `
 // Bridge AI 動作
 // ========================================
 
-function handleAction(action, url) {
+async function handleAction(action, url) {
 
     switch (action) {
 

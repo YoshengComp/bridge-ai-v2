@@ -431,7 +431,7 @@ addAIMessage(
     case "create_po":
 
     console.log("目前採購草稿：", purchaseDraft);
-
+    addAIMessage("📄 正在建立採購單...");
     break;
     
         default:

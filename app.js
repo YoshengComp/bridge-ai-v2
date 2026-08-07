@@ -645,10 +645,26 @@ case "delivery_other":
     showPurchaseConfirm();
 
     break;
-     case "edit_purchase_draft":
+    case "edit_purchase_draft":
 
-showPurchaseDraft();
-    break;       
+    showPurchaseDraft();
+
+    break;
+
+case "edit_po_header":
+
+    let message = "📍 請選擇要編輯交貨資訊的採購單\n\n";
+
+    purchaseDraft.forEach((group, index) => {
+
+        message += `${index + 1}. 🏢 ${group.vendorName}\n`;
+        message += `📦 共 ${group.items.length} 項商品\n\n`;
+
+    });
+
+    addAIMessage(message);
+
+    break;
     default:
 
         console.warn("未知 Action：" + action);

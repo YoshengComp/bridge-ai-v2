@@ -521,12 +521,8 @@ addAIMessage(
     message,
     [
         {
-            text: "📄 建立採購單",
-            action: "create_po"
-        },
-        {
-            text: "✏️ 編輯採購內容",
-            action: "edit_purchase_draft"
+            text:"✏️ 編輯採購內容",
+            action:"edit_purchase_draft"
         }
     ]
 );

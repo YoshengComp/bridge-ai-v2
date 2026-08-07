@@ -856,7 +856,7 @@ function showPurchaseDraft() {
         message,
         [
             {
-                text: "➡️ 下一步",
+                text: "📄 建立全部採購單",
                 action: "continue_create_po"
             }
         ]

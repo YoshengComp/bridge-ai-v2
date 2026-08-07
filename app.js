@@ -9,6 +9,24 @@ const API_URL = "https://bridge-ai-api.yosheng96750043.workers.dev/";
 let lastResultData = [];
 // 採購草稿
 let purchaseDraft = [];
+// ===========================
+// AI 對話狀態
+// ===========================
+let conversation = {
+
+    step: "",
+
+    purchaseDraft: [],
+
+    deliveryAddress: "",
+
+    supplierAddress: "",
+
+    requestDate: "",
+
+    remark: ""
+
+};
 // DOM
 const chat = document.getElementById("chat");
 const messages = document.getElementById("messages");

@@ -642,7 +642,43 @@ function showInventoryDetail() {
     alert("下一步我們會改成顯示商品明細");
 }
 
+// ==========================================
+// 建立採購單
+// ==========================================
 
+async function createPurchaseOrder() {
+
+    addAIMessage("📄 正在建立採購單...");
+
+    const res = await fetch(API_URL, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            queryType: "create_purchase_order",
+
+            purchaseDraft: conversation.purchaseDraft,
+
+            deliveryAddress: conversation.deliveryAddress,
+
+            requestDate: conversation.requestDate,
+
+            remark: conversation.remark
+
+        })
+
+    });
+
+    const result = await res.json();
+
+    console.log("createPurchaseOrder：", result);
+
+}
 // ==========================================
 // 後續AI Agent預留
 // ==========================================

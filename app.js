@@ -452,7 +452,7 @@ addAIMessage(
 
     const result = await res.json();
 
-    console.log(result);
+    console.log("create_po 回傳：", result);
 
     break;
         default:

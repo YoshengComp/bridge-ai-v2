@@ -552,6 +552,11 @@ case "delivery_other":
     addAIMessage("✏️ 請直接輸入交貨地址。");
 
     break;
+            case "confirm_create_po":
+
+    await createPurchaseOrder();
+
+    break;
     default:
 
         console.warn("未知 Action：" + action);
@@ -769,6 +774,18 @@ async function createPurchaseOrder() {
     const result = await res.json();
 
     console.log("createPurchaseOrder：", result);
+
+if(result.success){
+
+    addAIMessage(
+        "✅ 採購單建立完成！"
+    );
+
+}else{
+
+    addAIMessage(
+        "❌ 建立失敗"
+    );
 
 }
 // ==========================================

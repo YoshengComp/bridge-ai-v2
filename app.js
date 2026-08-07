@@ -571,14 +571,7 @@ case "delivery_other":
     await createPurchaseOrder();
 
     break;
-    default:
-
-        console.warn("未知 Action：" + action);
-
-}
-
-} 
-case "edit_purchase":
+            case "edit_purchase":
 
     conversation.step = "edit_menu";
 
@@ -605,6 +598,14 @@ case "edit_purchase":
     );
 
     break;
+
+    default:
+
+        console.warn("未知 Action：" + action);
+
+}
+
+} 
 
 // ==========================================
 // Loading

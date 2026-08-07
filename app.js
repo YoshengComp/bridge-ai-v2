@@ -132,7 +132,24 @@ if (conversation.step === "ask_remark") {
 
     conversation.step = "confirm_purchase";
 
+    showPurchaseConfirm();
+
+    return;
+}
+    
+
+   if (conversation.step === "edit_delivery") {
+
+    conversation.deliveryAddress = question;
+
+    conversation.step = "confirm_purchase";
+
     console.log(conversation);
+
+    showPurchaseConfirm();
+
+    return;
+}
 
     addAIMessage(
 `📋 請確認本次採購資訊

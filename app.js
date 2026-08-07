@@ -862,9 +862,10 @@ async function createPurchaseOrder() {
 
 if(result.success){
 
-    addAIMessage(
-        "✅ 採購單建立完成！"
-    );
+   
+        conversation.createdPOs = result.createdPOs;
+
+showCreatedPOs();
 
 }else{
 
@@ -900,6 +901,39 @@ ${conversation.remark}`,
         action: "edit_purchase"
     }
 ]);
+
+}
+// ================================
+// 顯示已建立採購單
+// ================================
+
+function showCreatedPOs() {
+
+    let message = "✅ 已建立採購單\n\n";
+
+    conversation.createdPOs.forEach((po) => {
+
+        message +=
+`🏢 ${po.vendorName}
+${po.poNo}
+
+`;
+
+    });
+
+    addAIMessage(
+        message,
+        [
+            {
+                text: "✏️ 修改採購單",
+                action: "select_edit_po"
+            },
+            {
+                text: "✅ 完成",
+                action: "finish_purchase"
+            }
+        ]
+    );
 
 }
 // ==========================================

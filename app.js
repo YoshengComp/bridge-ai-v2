@@ -7,7 +7,8 @@ const API_URL = "https://bridge-ai-api.yosheng96750043.workers.dev/";
 
 // 暫存最近一次 AI 查詢回傳的 ERP 資料
 let lastResultData = [];
-
+// 採購草稿
+let purchaseDraft = [];
 // DOM
 const chat = document.getElementById("chat");
 const messages = document.getElementById("messages");
@@ -381,7 +382,8 @@ const res = await fetch(API_URL, {
 });
 
 const result = await res.json();
-
+purchaseDraft = result.data;
+console.log("採購草稿：", purchaseDraft);
 const groups = result.data;
 
 let message = "📊 已分析完成。\n\n";

@@ -516,8 +516,8 @@ addAIMessage(
             action: "create_po"
         },
         {
-            text: "✏️ 自行調整",
-            action: "adjust_vendor"
+            text: "✏️ 編輯採購內容",
+            action: "edit_purchase_draft"
         }
     ]
 );
@@ -640,6 +640,11 @@ case "delivery_other":
     showPurchaseConfirm();
 
     break;
+     case "edit_purchase_draft":
+
+    addAIMessage("🚧 採購內容編輯介面建置中...");
+
+    break;       
     default:
 
         console.warn("未知 Action：" + action);
@@ -721,63 +726,6 @@ function formatMessage(text){
         .replace(/\n/g,"<br>");
 
 }
-// ==========================================
-// Bridge AI V2
-// 預留企業功能
-// ==========================================
-
-/*
-
-目前流程
-
-使用者
-
-↓
-
-Cloudflare Worker
-
-↓
-
-Ragic AI
-
-↓
-
-answer
-
---------------------------------
-
-之後 Ragic 可以增加：
-
-answer
-form_url
-form_name
-sop_url
-sop_name
-action
-button_text
-
-例如
-
-{
-
- answer:"建立流程...",
-
- form_url:"https://ap16.ragic.com/...",
-
- form_name:"建立採購單",
-
- sop_url:"https://bridge.com/sop001",
-
- sop_name:"採購SOP"
-
-}
-
-AI 就可以自己長按鈕
-
-*/
-
-
-
 
 // ==========================================
 // 建立操作按鈕
@@ -995,3 +943,61 @@ V3
 AI Agent
 
 */
+// ==========================================
+// Bridge AI V2
+// 預留企業功能
+// ==========================================
+
+/*
+
+目前流程
+
+使用者
+
+↓
+
+Cloudflare Worker
+
+↓
+
+Ragic AI
+
+↓
+
+answer
+
+--------------------------------
+
+之後 Ragic 可以增加：
+
+answer
+form_url
+form_name
+sop_url
+sop_name
+action
+button_text
+
+例如
+
+{
+
+ answer:"建立流程...",
+
+ form_url:"https://ap16.ragic.com/...",
+
+ form_name:"建立採購單",
+
+ sop_url:"https://bridge.com/sop001",
+
+ sop_name:"採購SOP"
+
+}
+
+AI 就可以自己長按鈕
+
+*/
+
+
+
+

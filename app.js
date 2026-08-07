@@ -760,6 +760,8 @@ function showInventoryDetail() {
 async function createPurchaseOrder() {
 
     addAIMessage("📄 正在建立採購單...");
+    console.log("送出的 purchaseDraft：");
+    console.log(conversation.purchaseDraft);
 
     const res = await fetch(API_URL, {
 

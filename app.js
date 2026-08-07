@@ -875,9 +875,36 @@ if(result.success){
 }
   }   
 // ==========================================
+// 確認資訊
+// ==========================================
+function showPurchaseConfirm() {
+
+    addAIMessage(
+`📋 請確認本次採購資訊
+
+📍交貨地址：
+${conversation.deliveryAddress}
+
+📅 要求到貨日：
+${conversation.requestDate}
+
+📝 備註：
+${conversation.remark}`,
+[
+    {
+        text: "✅ 建立採購單",
+        action: "confirm_create_po"
+    },
+    {
+        text: "✏️ 修改",
+        action: "edit_purchase"
+    }
+]);
+
+}
+// ==========================================
 // 詢問交貨地址
 // ==========================================
-
 function askDeliveryAddress() {
 
     addAIMessage(

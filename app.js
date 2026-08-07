@@ -598,7 +598,29 @@ case "delivery_other":
     );
 
     break;
+      case "edit_request_date":
 
+    conversation.step = "edit_request_date";
+
+    addAIMessage("📅 請重新輸入要求到貨日");
+
+    break;
+     case "edit_delivery":
+
+    conversation.step = "edit_delivery";
+
+    addAIMessage("📍 請重新輸入交貨地址");
+
+    break;       
+    case "edit_delivery":
+
+    case "edit_remark":
+
+    conversation.step = "edit_remark";
+
+    addAIMessage("📝 請重新輸入備註");
+
+    break;
     default:
 
         console.warn("未知 Action：" + action);

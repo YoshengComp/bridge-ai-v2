@@ -448,39 +448,18 @@ addAIMessage(
     break;    
     case "create_po":
 
-    console.log("目前採購草稿：", purchaseDraft);
-    addAIMessage("📄 正在建立採購單...");
-    const res = await fetch(API_URL, {
+   console.log("目前採購草稿：", purchaseDraft);
 
-        method: "POST",
+    // 儲存目前採購資料
+    conversation.purchaseDraft = purchaseDraft;
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+    // 下一步流程
+    conversation.step = "ask_delivery_address";
 
-        body: JSON.stringify({
-
-            queryType: "create_purchase_order",
-
-            purchaseDraft: purchaseDraft
-
-        })
-
-    });
-
-    const result = await res.json();
-
-    console.log("create_po 回傳：", result);
+    console.log(conversation);
 
     break;
-        default:
-
-            console.warn("未知 Action：" + action);
-
-    }
-
-}
-
+   
 
 
 // ==========================================

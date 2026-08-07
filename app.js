@@ -432,8 +432,29 @@ addAIMessage(
 
     console.log("目前採購草稿：", purchaseDraft);
     addAIMessage("📄 正在建立採購單...");
+    const res = await fetch(API_URL, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            queryType: "create_purchase_order",
+
+            purchaseDraft: purchaseDraft
+
+        })
+
+    });
+
+    const result = await res.json();
+
+    console.log(result);
+
     break;
-    
         default:
 
             console.warn("未知 Action：" + action);

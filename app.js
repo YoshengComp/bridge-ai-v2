@@ -91,11 +91,27 @@ async function sendMessage() {
     addUserMessage(question);
 
     input.value = "";
+// ================================
+// AI 對話流程
+// ================================
 
-    const loading = addLoading();
+if (conversation.step === "ask_request_date") {
 
-    try {
+    conversation.requestDate = question;
 
+    conversation.step = "ask_remark";
+
+    console.log(conversation);
+
+    addAIMessage("📝 請問有沒有備註？\n\n沒有請輸入：沒有");
+
+    return;
+
+}
+
+const loading = addLoading();
+
+try {
         const response = await fetch(API_URL, {
 
             method: "POST",

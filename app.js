@@ -642,8 +642,7 @@ case "delivery_other":
     break;
      case "edit_purchase_draft":
 
-    addAIMessage("🚧 採購內容編輯介面建置中...");
-
+showPurchaseDraft();
     break;       
     default:
 
@@ -826,7 +825,37 @@ showCreatedPOs();
 // ==========================================
 // 確認資訊
 // ==========================================
-function showPurchaseConfirm() {
+function showPurchaseDraft() {
+
+    let message = "📦 採購內容\n\n";
+
+    purchaseDraft.forEach(group => {
+
+        message += `🏢 ${group.vendorName}\n\n`;
+
+        group.items.forEach(item => {
+
+            message += `☑ ${item.productName}\n`;
+            message += `📦 採購數量：${item.minQty}\n\n`;
+
+        });
+
+        message += "────────────\n\n";
+
+    });
+
+    addAIMessage(
+        message,
+        [
+            {
+                text: "➡️ 下一步",
+                action: "continue_create_po"
+            }
+        ]
+    );
+
+}
+   function showPurchaseConfirm() {
 
     addAIMessage(
 `📋 請確認本次採購資訊
@@ -840,15 +869,16 @@ ${conversation.requestDate}
 📝 備註：
 ${conversation.remark}`,
 [
-    {
-        text: "✅ 建立採購單",
-        action: "confirm_create_po"
-    },
-    {
-        text: "✏️ 修改",
-        action: "edit_purchase"
-    }
-]);
+{
+text: "✅ 建立採購單",
+action: "confirm_create_po"
+},
+{
+text: "✏️ 修改",
+action: "edit_purchase"
+}
+]
+);
 
 }
 // ================================

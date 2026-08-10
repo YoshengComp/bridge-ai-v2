@@ -850,13 +850,24 @@ function showProductSelect(){
 
     let message = "📋 請選擇要加入採購的商品\n\n";
 
+   lastResultData.forEach(item => {
+
+    if(item.selected === undefined){
+
+        item.selected = true;
+
+    }
+
+});
     lastResultData.forEach(item=>{
 
        message += `
 <div class="product-item">
 
     <span class="material-symbols-outlined product-check">
-        check_circle
+        ${item.selected
+    ? "check_circle"
+    : "radio_button_unchecked"}
     </span>
 
     <span class="product-name">

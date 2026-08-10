@@ -601,7 +601,42 @@ case "agent":
     );
 
     break;
-          
+ // ==========================================
+// 商品挑選
+// ==========================================
+
+function showProductSelect(){
+
+    let message = "📋 請選擇要加入採購的商品\n\n";
+
+    lastResultData.forEach(item=>{
+
+        message += `☑ ${item["商品"]}\n`;
+
+    });
+
+    addAIMessage(
+
+        message,
+
+        [
+
+            {
+
+                text:"➡️ 下一步",
+
+                action:"product_select_next"
+
+            }
+
+        ]
+
+    );
+
+}
+   showProductSelect();
+
+    break;        
 case "procurement_all":
    
 

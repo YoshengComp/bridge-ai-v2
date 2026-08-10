@@ -918,18 +918,18 @@ function toggleProduct(index){
 
 function showPurchaseDraft() {
 
-    console.log("================================");
     console.log("===== showPurchaseDraft 開始 =====");
     console.log("purchaseDraft =", purchaseDraft);
     console.log("purchaseDraft.length =", purchaseDraft.length);
-    console.log("================================");
 
     purchaseDraft.forEach((group, index) => {
 
-        console.log("➡️ 進入 forEach");
-        console.log("➡️ index =", index);
-        console.log("➡️ 供應商 =", group.vendorName);
-        console.log("➡️ 商品數 =", group.items.length);
+        console.log("================================");
+        console.log("forEach 執行第", index + 1, "次");
+        console.log("index =", index);
+        console.log("vendorCode =", group.vendorCode);
+        console.log("vendorName =", group.vendorName);
+        console.log("items =", group.items);
 
         let message = `
             <div class="purchase-draft">
@@ -989,9 +989,7 @@ function showPurchaseDraft() {
             </div>
         `;
 
-        console.log("🟡 準備建立第", index + 1, "張 AI 卡片");
-        console.log("🟡 本次供應商 =", group.vendorName);
-        console.log("🟡 message 長度 =", message.length);
+        console.log("準備建立第", index + 1, "張 AI 卡片");
 
         addAIMessage(
             message,
@@ -1001,7 +999,7 @@ function showPurchaseDraft() {
             true
         );
 
-        console.log("🟢 第", index + 1, "張 AI 卡片建立完成");
+        console.log("第", index + 1, "張 AI 卡片建立完成");
 
     });
 

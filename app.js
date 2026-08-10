@@ -910,7 +910,7 @@ function showProductSelect(){
         ],
         [],
         false,
-        true
+        true,
          "product-select-message"
     );
 

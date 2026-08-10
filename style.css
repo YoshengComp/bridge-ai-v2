@@ -493,3 +493,38 @@ body{
     margin-top:18px;
 
 }
+/* ==========================================
+   Product Select
+========================================== */
+
+.product-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin:12px 0;
+
+}
+
+.product-check{
+
+    font-size:28px;
+
+    color:#34A853;
+
+    cursor:pointer;
+
+    user-select:none;
+
+}
+
+.product-name{
+
+    font-size:16px;
+
+    font-weight:500;
+
+}

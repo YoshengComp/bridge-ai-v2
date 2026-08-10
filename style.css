@@ -729,3 +729,15 @@ body{
     text-align:center;
 
 }
+/* ==========================================
+   AI Message 外層卡片修正
+   避免 .ai-card + .ai-message 雙重白框
+   ========================================== */
+
+.ai-card:has(.ai-message) {
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    border: none;
+}

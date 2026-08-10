@@ -616,7 +616,7 @@ case "agent":
     // 儲存本次勾選的商品
     conversation.selectedProducts =
         lastResultData.filter(item => item.selected);
-
+console.log("已選商品：", conversation.selectedProducts);
     handleAction("procurement_all");
 
     break;
@@ -631,7 +631,7 @@ case "procurement_all":
       const products = conversation.selectedProducts.map(
     item => item["產品編號"]
 );
-
+console.log("送給 Worker 的產品：", products);
 const res = await fetch(API_URL, {
 
     method: "POST",

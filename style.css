@@ -428,20 +428,19 @@ body{
    Bridge AI Card
 ========================================== */
 
-.ai-message .ai-card{
+.ai-message {
+    background: #ffffff;
 
-    background:#ffffff;
+    border-radius: 18px;
 
-    border-radius:18px;
+    padding: 20px;
 
-    padding:20px;
+    margin-bottom: 16px;
 
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
+    box-shadow: 0 5px 18px rgba(0,0,0,.08);
 
-    border:1px solid #ececec;
-
+    border: 1px solid #ececec;
 }
-
 
 /* Header */
 

@@ -606,84 +606,114 @@ console.log("已選商品：", conversation.selectedProducts);
 
       
 case "procurement_all":
-   
 
-     addAIMessage("🔍 正在分析商品供應商...");
-       setTimeout(async () => {
+    // ==========================================
+    // 決定本次採購商品
+    // ==========================================
 
-      const products = conversation.selectedProducts.map(
-    item => item["產品編號"]
-);
-console.log("送給 Worker 的產品：", products);
-const res = await fetch(API_URL, {
+    if (!conversation.selectedProducts) {
 
-    method: "POST",
+        conversation.selectedProducts =
+            lastResultData.filter(item => item.selected !== false);
 
-    headers: {
-        "Content-Type": "application/json"
-    },
+    }
 
-    body: JSON.stringify({
+    console.log(
+        "本次採購商品：",
+        conversation.selectedProducts
+    );
 
-        queryType: "vendor_analysis",
 
-        products: products
+    // ==========================================
+    // 顯示分析中
+    // ==========================================
 
-    })
+    addAIMessage("🔍 正在分析商品供應商...");
 
-});
 
-const result = await res.json();
-purchaseDraft = result.data.map(group => ({
+    // ==========================================
+    // 呼叫 Worker
+    // ==========================================
 
-    ...group,
+    setTimeout(async () => {
 
-    deliveryAddress: "",
+        const products =
+            conversation.selectedProducts.map(
+                item => item["產品編號"]
+            );
 
-    requestDate: "",
+        console.log(
+            "送給 Worker 的產品：",
+            products
+        );
 
-    remark: ""
 
-}));console.log("採購草稿：", purchaseDraft);
-const groups = result.data;
+        const res = await fetch(API_URL, {
 
-let message = "📊 已分析完成。\n\n";
+            method: "POST",
 
-groups.forEach(group => {
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-    message += "━━━━━━━━━━━━━━\n\n";
+            body: JSON.stringify({
 
-    message += `🏢 ${group.vendorName}\n\n`;
-    message += `📦 共 ${group.items.length} 項商品\n\n`;
-    group.items.forEach(item => {
+                queryType: "vendor_analysis",
 
-        message += `📦 ${item.productName}\n`;
+                products: products
 
-    });
+            })
 
-    message += "\n";
+        });
 
-});
 
-message += "━━━━━━━━━━━━━━\n\n";
+        const result = await res.json();
 
-message += `共找到 ${groups.length} 家供應商。\n\n`;
 
-message += `預計建立 ${groups.length} 張採購單。`;
+        // ==========================================
+        // 建立採購草稿
+        // 一間供應商 = 一筆 purchaseDraft
+        // ==========================================
 
-addAIMessage(
-    message,
-    [
-        {
-            text:"✏️ 編輯採購內容",
-            action:"edit_purchase_draft"
-        }
-    ]
-);
+        purchaseDraft = result.data.map(group => ({
 
-    },600);
+            ...group,
 
-    break;    
+            deliveryAddress: "",
+
+            requestDate: "",
+
+            remark: ""
+
+        }));
+
+
+        console.log(
+            "===== 採購草稿建立完成 ====="
+        );
+
+        console.log(
+            "purchaseDraft =",
+            purchaseDraft
+        );
+
+        console.log(
+            "purchaseDraft.length =",
+            purchaseDraft.length
+        );
+
+
+        // ==========================================
+        // ⭐ 直接顯示採購草稿
+        // 一間供應商 = 一張 AI Card
+        // ==========================================
+
+        showPurchaseDraft();
+
+    }, 600);
+
+    break;
+  
     case "create_po":
 
    console.log("目前採購草稿：", purchaseDraft);
@@ -799,9 +829,27 @@ case "delivery_other":
     showPurchaseConfirm();
 
     break;
-    case "edit_purchase_draft":
-    
-    showPurchaseDraft();
+case "edit_purchase_draft":
+
+    console.log("進入採購草稿編輯");
+
+    addAIMessage(
+        "✏️ 請選擇要編輯的採購單"
+    );
+
+    purchaseDraft.forEach((group, index) => {
+
+        addAIMessage(
+            `🏢 ${group.vendorName}\n📦 共 ${group.items.length} 項商品`,
+            [
+                {
+                    text: "✏️ 編輯此採購單",
+                    action: `edit_po_${index}`
+                }
+            ]
+        );
+
+    });
 
     break;
 

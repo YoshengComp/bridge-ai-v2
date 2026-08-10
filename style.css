@@ -1,572 +1,564 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* ==========================================
+   Global
+========================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body{
-
-    background:#eef3f8;
+body {
+    background: #eef3f8;
 
     font-family:
-    "Microsoft JhengHei",
-    Arial,
-    sans-serif;
+        "Microsoft JhengHei",
+        Arial,
+        sans-serif;
 
-    display:flex;
+    display: flex;
+    justify-content: center;
 
-    justify-content:center;
-
-    padding:35px;
-
+    padding: 35px;
 }
 
-/* 主視窗 */
 
-.container{
+/* ==========================================
+   主視窗
+========================================== */
 
-    width:430px;
+.container {
+    width: 430px;
+    height: 760px;
 
-    height:760px;
+    background: #fff;
 
-    background:#fff;
+    border-radius: 22px;
 
-    border-radius:22px;
-
-    overflow:hidden;
+    overflow: hidden;
 
     box-shadow:
-    0 15px 45px rgba(0,0,0,.15);
+        0 15px 45px rgba(0, 0, 0, .15);
 
-    display:flex;
-
-    flex-direction:column;
-
+    display: flex;
+    flex-direction: column;
 }
 
-/* Header */
 
-.header{
+/* ==========================================
+   Header
+========================================== */
 
-    background:#ff7a00;
+.header {
+    background: #ff7a00;
+    color: #fff;
 
-    color:#fff;
+    padding: 18px 22px;
 
-    padding:18px 22px;
-
-    font-size:28px;
-
-    font-weight:bold;
-
+    font-size: 28px;
+    font-weight: bold;
 }
 
-.logo{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.version{
+.version {
+    font-size: 13px;
 
-    font-size:13px;
+    background: #ffffff33;
 
-    background:#ffffff33;
+    padding: 3px 10px;
 
-    padding:3px 10px;
-
-    border-radius:30px;
-
+    border-radius: 30px;
 }
 
-/* Chat */
 
-.chat{
+/* ==========================================
+   Chat
+========================================== */
 
-    flex:1;
+.chat {
+    flex: 1;
 
-    overflow-y:auto;
+    overflow-y: auto;
 
-    background:#f6f8fb;
+    background: #f6f8fb;
 
-    padding:22px;
-
+    padding: 22px;
 }
 
-/* Welcome Card */
 
-.ai-card{
+/* ==========================================
+   Welcome Card
+========================================== */
 
-    background:#fff;
+.ai-card {
+    background: #fff;
 
-    border-radius:18px;
+    border-radius: 18px;
 
-    padding:22px;
+    padding: 22px;
 
     box-shadow:
-
-    0 5px 18px rgba(0,0,0,.08);
-
+        0 5px 18px rgba(0, 0, 0, .08);
 }
 
-.welcome h2{
-
-    color:#222;
-
-    margin-bottom:15px;
-
+.welcome h2 {
+    color: #222;
+    margin-bottom: 15px;
 }
 
-.welcome p{
+.welcome p {
+    color: #666;
 
-    color:#666;
+    margin-top: 10px;
 
-    margin-top:10px;
-
-    line-height:1.7;
-
+    line-height: 1.7;
 }
 
-/* 快速提問 */
 
-.quick-area{
+/* ==========================================
+   快速提問
+========================================== */
 
-    margin-top:22px;
-
+.quick-area {
+    margin-top: 22px;
 }
 
-.quick-btn{
+.quick-btn {
+    width: 100%;
 
-    width:100%;
+    border: 1px solid #e4e7ec;
 
-    border:none;
+    background: #ffffff;
 
-    background:#ffffff;
+    padding: 14px;
 
-    border:1px solid #e4e7ec;
+    border-radius: 12px;
 
-    padding:14px;
+    margin-bottom: 12px;
 
-    border-radius:12px;
+    text-align: left;
 
-    margin-bottom:12px;
+    font-size: 16px;
 
-    text-align:left;
+    cursor: pointer;
 
-    font-size:16px;
-
-    cursor:pointer;
-
-    transition:.25s;
-
+    transition: .25s;
 }
 
-.quick-btn:hover{
-
-    background:#ff7a00;
-
-    color:#fff;
-
+.quick-btn:hover {
+    background: #ff7a00;
+    color: #fff;
 }
 
-/* Footer */
 
-.footer{
+/* ==========================================
+   Footer
+========================================== */
 
-    display:flex;
+.footer {
+    display: flex;
 
-    background:#fff;
+    background: #fff;
 
-    border-top:1px solid #ececec;
+    border-top: 1px solid #ececec;
 
-    padding:16px;
-
+    padding: 16px;
 }
 
-.footer input{
+.footer input {
+    flex: 1;
 
-    flex:1;
+    border: 1px solid #ddd;
 
-    border:1px solid #ddd;
+    border-radius: 12px;
 
-    border-radius:12px;
+    padding: 14px;
 
-    padding:14px;
+    font-size: 16px;
 
-    font-size:16px;
-
-    outline:none;
-
+    outline: none;
 }
 
-.footer button{
+.footer button {
+    width: 60px;
 
-    width:60px;
+    margin-left: 12px;
 
-    margin-left:12px;
+    border: none;
 
-    border:none;
+    border-radius: 12px;
 
-    border-radius:12px;
+    background: #ff7a00;
 
-    background:#ff7a00;
+    color: #fff;
 
-    color:#fff;
+    font-size: 26px;
 
-    font-size:26px;
-
-    cursor:pointer;
-
+    cursor: pointer;
 }
 
-.footer button:hover{
-
-    background:#ff6300;
-
+.footer button:hover {
+    background: #ff6300;
 }
+
+
 /* ==========================================
    Bridge AI Action Button
 ========================================== */
 
-.action-btn{
-    width:100%;
-    margin-top:12px;
-    padding:14px 18px;
+.action-btn {
+    width: 100%;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
+    margin-top: 12px;
 
-    border:none;
-    border-radius:12px;
+    padding: 14px 18px;
 
-    font-size:15px;
-    font-weight:600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    cursor:pointer;
-    transition:.25s;
+    gap: 8px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .25s;
 }
 
-.action-btn:hover{
-
+.action-btn:hover {
     transform: translateY(-2px);
 
-    box-shadow: 0 8px 20px rgba(255,122,0,.35);
-
+    box-shadow:
+        0 8px 20px rgba(255, 122, 0, .35);
 }
 
-.action-btn:active{
-
+.action-btn:active {
     transform: scale(.98);
-
 }
+
+.btn-icon {
+    font-size: 18px;
+}
+
+
 /* ==========================================
    User Message
 ========================================== */
 
-.user-message{
+.user-message {
+    display: flex;
 
-    display:flex;
+    justify-content: flex-end;
 
-    justify-content:flex-end;
-
-    margin:18px 0;
-
+    margin: 18px 0;
 }
 
-.user-wrapper{
+.user-wrapper {
+    display: flex;
 
-    display:flex;
+    flex-direction: column;
 
-    flex-direction:column;
+    align-items: flex-end;
 
-    align-items:flex-end;
-
-    max-width:80%;
-
+    max-width: 80%;
 }
 
-.user-bubble{
+.user-bubble {
+    background:
+        linear-gradient(
+            135deg,
+            #ff7a00,
+            #ff9a2f
+        );
 
-    background:linear-gradient(135deg,#ff7a00,#ff9a2f);
+    color: #fff;
 
-    color:#fff;
+    padding: 12px 18px;
 
-    padding:12px 18px;
+    border-radius: 18px 18px 4px 18px;
 
-    border-radius:18px 18px 4px 18px;
+    font-size: 15px;
 
-    font-size:15px;
+    line-height: 1.6;
 
-    line-height:1.6;
+    box-shadow:
+        0 6px 18px rgba(255, 122, 0, .25);
 
-    box-shadow:0 6px 18px rgba(255,122,0,.25);
-
-    word-break:break-word;
-
+    word-break: break-word;
 }
 
-.message-time{
+.message-time {
+    margin-top: 6px;
 
-    margin-top:6px;
+    font-size: 12px;
 
-    font-size:12px;
-
-    color:#999;
-
-}
-.erp-list{
-    margin-top:18px;
+    color: #999;
 }
 
-.erp-card{
 
-    background:#fafafa;
+/* ==========================================
+   ERP List
+========================================== */
 
-    border:1px solid #ececec;
-
-    border-radius:14px;
-
-    padding:14px;
-
-    margin-bottom:12px;
-
-    transition:.2s;
-
+.erp-list {
+    margin-top: 18px;
 }
 
-.erp-card:hover{
+.erp-card {
+    background: #fafafa;
 
-    transform:translateY(-2px);
+    border: 1px solid #ececec;
 
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
+    border-radius: 14px;
 
+    padding: 14px;
+
+    margin-bottom: 12px;
+
+    transition: .2s;
 }
 
-.erp-name{
+.erp-card:hover {
+    transform: translateY(-2px);
 
-    font-size:17px;
-
-    font-weight:700;
-
-    color:#333;
-
-    margin-bottom:12px;
-
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, .08);
 }
 
-.erp-row{
+.erp-name {
+    font-size: 17px;
 
-    display:flex;
+    font-weight: 700;
 
-    justify-content:space-between;
+    color: #333;
 
-    margin:6px 0;
-
-    font-size:14px;
-
+    margin-bottom: 12px;
 }
 
-.erp-row span{
+.erp-row {
+    display: flex;
 
-    color:#777;
+    justify-content: space-between;
 
+    margin: 6px 0;
+
+    font-size: 14px;
 }
 
-.erp-row strong{
-
-    color:#ff7a00;
-
-}
-.summary-btn{
-    width:100%;
-    margin-top:12px;
-    padding:10px 16px;
-    border:none;
-    border-radius:12px;
-    background:#fff7ec;
-    color:#ff7a00;
-    font-weight:600;
-    cursor:pointer;
-    transition:.2s;
-    border:1px solid #ffd3a3;
+.erp-row span {
+    color: #777;
 }
 
-.summary-btn:hover{
-    background:#fff0db;
+.erp-row strong {
+    color: #ff7a00;
 }
-.btn-icon{
-    font-size:18px;
+
+
+/* ==========================================
+   Summary Button
+========================================== */
+
+.summary-btn {
+    width: 100%;
+
+    margin-top: 12px;
+
+    padding: 10px 16px;
+
+    border: 1px solid #ffd3a3;
+
+    border-radius: 12px;
+
+    background: #fff7ec;
+
+    color: #ff7a00;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .2s;
 }
-.card-footer{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    margin-top:18px;
+
+.summary-btn:hover {
+    background: #fff0dc;
 }
+
+
 /* ==========================================
    Bridge AI Message
-   ========================================== */
+========================================== */
 
 .ai-message {
     margin: 16px 0;
+
     animation: fadeIn .25s ease;
 
     background: #ffffff;
+
     border-radius: 18px;
+
     padding: 20px;
 
-    box-shadow: 0 5px 18px rgba(0,0,0,.08);
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, .08);
 
     border: 1px solid #ececec;
 }
-@keyframes fadeIn{
-    from{
-        opacity:0;
-        transform:translateY(8px);
+
+
+/* ==========================================
+   AI Message Header
+========================================== */
+
+.card-header {
+    display: flex;
+
+    align-items: center;
+
+    margin-bottom: 14px;
+}
+
+.card-title {
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #333;
+}
+
+
+/* ==========================================
+   AI Message Body
+========================================== */
+
+.card-body {
+    font-size: 15px;
+
+    line-height: 1.9;
+
+    color: #333;
+}
+
+
+/* ==========================================
+   AI Message Footer
+========================================== */
+
+.card-footer {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+
+/* ==========================================
+   Fade Animation
+========================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
     }
 
-    to{
-        opacity:1;
-        transform:translateY(0);
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-/* Header */
 
-.card-header{
-
-    display:flex;
-
-    align-items:center;
-
-    margin-bottom:14px;
-
-}
-
-
-.card-title{
-
-    font-size:20px;
-
-    font-weight:700;
-
-    color:#333;
-
-}
-
-
-/* Body */
-
-.card-body{
-
-    font-size:15px;
-
-    line-height:1.9;
-
-    color:#333;
-
-}
-
-
-/* Footer */
-
-.card-footer{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:12px;
-
-    margin-top:18px;
-
-}
 /* ==========================================
    Product Select
 ========================================== */
 
-.product-item{
+.product-item {
+    display: flex;
 
-    display:flex;
+    align-items: center;
 
-    align-items:center;
+    gap: 14px;
 
-    gap:14px;
+    padding: 12px 16px;
 
-    padding:12px 16px;
+    margin: 8px 0;
 
-    margin:8px 0;
+    border-radius: 10px;
 
-    border-radius:10px;
+    cursor: pointer;
 
-    cursor:pointer;
+    transition: .2s;
 
-    transition:.2s;
-
-    border:1px solid transparent;
-
+    border: 1px solid transparent;
 }
+
 .product-item:hover {
     background: #f5f7fa;
+
     border: 1px solid #e0e0e0;
 }
-.product-check{
 
-    font-size:30px;
+.product-check {
+    font-size: 30px;
 
-    color:#34A853;
+    color: #34A853;
 
-    cursor:pointer;
+    cursor: pointer;
 
-    user-select:none;
+    user-select: none;
 
-    transition:.2s;
+    transition: .2s;
 
-    flex-shrink:0;
-
-}
-.product-check:hover{
-
-    transform:scale(1.15);
-
+    flex-shrink: 0;
 }
 
-.product-name{
-
-    font-size:17px;
-
-    font-weight:500;
-
-    color:#333;
-
-    line-height:1.4;
-
-}
-.product-item.selected{
-
-    background:#F3FBF4;
-
-    border:1px solid #D8F0DD;
-
+.product-check:hover {
+    transform: scale(1.15);
 }
 
-.product-item.unselected{
+.product-name {
+    font-size: 17px;
 
-    opacity:.75;
+    font-weight: 500;
 
+    color: #333;
+
+    line-height: 1.4;
 }
+
+.product-item.selected {
+    background: #F3FBF4;
+
+    border: 1px solid #D8F0DD;
+}
+
+.product-item.unselected {
+    opacity: .75;
+}
+
+
 /* ==========================================
    Purchase Draft
    一間供應商 = 一張採購單
-   ========================================== */
+========================================== */
 
 .purchase-draft {
-
     background: #ffffff;
 
     border: 1px solid #eeeeee;
@@ -577,17 +569,16 @@ body{
 
     margin: 12px 0;
 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, .05);
 }
 
 
 /* ==========================================
    供應商標題
-   ========================================== */
+========================================== */
 
 .purchase-header {
-
     display: flex;
 
     align-items: center;
@@ -597,46 +588,37 @@ body{
     font-size: 16px;
 
     margin-bottom: 10px;
-
 }
 
 .purchase-header .material-symbols-outlined {
-
     font-size: 22px;
-
 }
 
 
 /* ==========================================
    商品數量
-   ========================================== */
+========================================== */
 
 .purchase-info {
-
     font-size: 13px;
 
     color: #777;
 
     margin-bottom: 12px;
-
 }
 
 
 /* ==========================================
    採購商品
-   ========================================== */
+========================================== */
 
 .purchase-items {
-
     border-top: 1px solid #eeeeee;
 
     padding-top: 8px;
-
 }
 
-
 .purchase-item {
-
     display: flex;
 
     align-items: center;
@@ -646,52 +628,51 @@ body{
     padding: 8px 0;
 
     font-size: 14px;
-
 }
-
 
 .purchase-item .material-symbols-outlined {
-
     font-size: 20px;
-
 }
-
 
 
 /* ==========================================
    Product Summary
 ========================================== */
 
-.product-summary{
+.product-summary {
+    margin-top: 18px;
 
-    margin-top:18px;
+    padding: 12px 16px;
 
-    padding:12px 16px;
+    border-radius: 10px;
 
-    border-radius:10px;
+    background: #FFF7EC;
 
-    background:#FFF7EC;
+    border: 1px solid #FFD8A8;
 
-    border:1px solid #FFD8A8;
+    color: #FF7A00;
 
-    color:#FF7A00;
+    font-size: 15px;
 
-    font-size:15px;
+    font-weight: 600;
 
-    font-weight:600;
-
-    text-align:center;
-
+    text-align: center;
 }
+
+
 /* ==========================================
    AI Message 外層卡片修正
    避免 .ai-card + .ai-message 雙重白框
-   ========================================== */
+========================================== */
 
 .ai-card:has(.ai-message) {
     background: transparent;
+
     border-radius: 0;
+
     padding: 0;
+
     box-shadow: none;
+
     border: none;
 }

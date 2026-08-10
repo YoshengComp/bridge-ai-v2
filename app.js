@@ -590,11 +590,11 @@ case "agent":
         message,
         [
             {
-                text: "✅ 全部加入",
+                text: "🛒 全部加入採購",
                 action: "procurement_all"
             },
             {
-                text: "✏️ 自行挑選",
+                text: "📋 挑選採購商品",
                 action: "procurement_select"
             }
         ]

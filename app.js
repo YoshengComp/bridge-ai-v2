@@ -38,11 +38,10 @@ const API_URL = "https://bridge-ai-api.yosheng96750043.workers.dev/";
 // ======================================================
 
 // 最近一次 ERP 查詢結果
-// (例如：缺貨商品、查詢結果...)
 let lastResultData = [];
 
 // 採購草稿 Workspace
-// AI 分析完成後所有資料皆存放於此
+// 一間供應商 = 一張採購單
 let purchaseDraft = [];
 
 
@@ -53,9 +52,8 @@ let purchaseDraft = [];
 //
 // 僅保存聊天流程狀態
 //
-// 注意：
-// Header 資訊將逐步搬移至 purchaseDraft
-// conversation 不再保存正式採購資料
+// 正式採購資料統一放在 purchaseDraft
+// conversation 不再保存 purchaseDraft
 //
 // ======================================================
 
@@ -63,9 +61,6 @@ let conversation = {
 
     // 目前聊天流程
     step: "",
-
-    // 採購草稿 (同步參考)
-    purchaseDraft: [],
 
     // ===== 以下欄位後續將 Deprecated =====
 

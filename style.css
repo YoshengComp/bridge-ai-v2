@@ -568,6 +568,150 @@ body{
 
 }
 /* ==========================================
+   Purchase Draft
+   一間供應商 = 一張採購單
+   ========================================== */
+
+.purchase-draft {
+
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 14px;
+
+    padding: 16px;
+
+    margin: 12px 0;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+}
+
+
+/* ==========================================
+   供應商標題
+   ========================================== */
+
+.purchase-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 16px;
+
+    margin-bottom: 10px;
+
+}
+
+.purchase-header .material-symbols-outlined {
+
+    font-size: 22px;
+
+}
+
+
+/* ==========================================
+   商品數量
+   ========================================== */
+
+.purchase-info {
+
+    font-size: 13px;
+
+    color: #777;
+
+    margin-bottom: 12px;
+
+}
+
+
+/* ==========================================
+   採購商品
+   ========================================== */
+
+.purchase-items {
+
+    border-top: 1px solid #eeeeee;
+
+    padding-top: 8px;
+
+}
+
+
+.purchase-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px 0;
+
+    font-size: 14px;
+
+}
+
+
+.purchase-item .material-symbols-outlined {
+
+    font-size: 20px;
+
+}
+
+
+/* ==========================================
+   編輯採購單
+   ========================================== */
+
+.purchase-edit-btn {
+
+    width: 100%;
+
+    margin-top: 12px;
+
+    padding: 10px 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #f3f3f3;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    transition: 0.2s;
+
+}
+
+
+.purchase-edit-btn:hover {
+
+    background: #e9e9e9;
+
+}
+
+
+.purchase-edit-btn .material-symbols-outlined {
+
+    font-size: 19px;
+
+}
+/* ==========================================
    Product Summary
 ========================================== */
 

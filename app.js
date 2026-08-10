@@ -936,11 +936,9 @@ function toggleProduct(index){
 
 function showPurchaseDraft() {
 
-    let message = "📋 採購單草稿\n\n";
-
     purchaseDraft.forEach((group, index) => {
 
-        message += `
+        let message = `
         <div class="purchase-draft">
 
             <div class="purchase-header">
@@ -996,15 +994,17 @@ function showPurchaseDraft() {
         </div>
         `;
 
+        // ★ 每一家供應商各自建立一張 AI Message
+        addAIMessage(
+            message,
+            [],
+            [],
+            false,
+            true
+        );
+
     });
 
-    addAIMessage(
-        message,
-        [],
-        [],
-        false,
-        true
-    );
 }
 // ==========================================
 // 編輯指定供應商的採購單

@@ -437,79 +437,83 @@ function addAIMessage(text, buttons = [], data = [], showData = false) {
 
     div.className = "ai-message";
 
-
-
     div.innerHTML = `
 
-<div class="card-header">
+<div class="ai-card">
 
-<div class="card-title">
+    <div class="card-header">
 
-🤖 Bridge AI
-
-</div>
-
-</div>
-
-<div class="card-body">
-
-${formatMessage(text)}
-
-</div>
-
-${showData && data.length ? `
-
-${data.map(item => `
-
-<div class="erp-card">
-
-    <div class="erp-name">
-        📦 ${item["商品"] || ""}
-    </div>
-
-    <div class="erp-info">
-
-        <div class="erp-row">
-            <span>📦 庫存</span>
-            <strong>${item["庫存"] || "-"}</strong>
-        </div>
-
-        <div class="erp-row">
-            <span>🛡️ 安全庫存</span>
-            <strong>${item["安全庫存"] || "-"}</strong>
+        <div class="card-title">
+            🤖 Bridge AI
         </div>
 
     </div>
 
+    <div class="card-body">
+
+        ${formatMessage(text)}
+
+        ${showData && data.length ? `
+
+        <div class="erp-list">
+
+            ${data.map(item => `
+
+            <div class="erp-card">
+
+                <div class="erp-name">
+                    📦 ${item["商品"] || ""}
+                </div>
+
+                <div class="erp-info">
+
+                    <div class="erp-row">
+                        <span>📦 庫存</span>
+                        <strong>${item["庫存"] || "-"}</strong>
+                    </div>
+
+                    <div class="erp-row">
+                        <span>🛡️ 安全庫存</span>
+                        <strong>${item["安全庫存"] || "-"}</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+            `).join("")}
+
+        </div>
+
+        ` : ""}
+
+    </div>
+
+    ${buttons.length ? `
+
+    <div class="card-footer">
+
+        ${buttons.map(button => `
+
+        <button
+            class="action-btn ${button.color || "primary"}"
+            onclick="handleAction('${button.action}','${button.url || ""}')">
+
+            <span class="btn-icon">${button.icon || ""}</span>
+
+            <span>${button.text}</span>
+
+        </button>
+
+        `).join("")}
+
+    </div>
+
+    ` : ""}
+
 </div>
-
-`).join("")}
-
-` : ""}
-
-${buttons.length ? `
-
-${buttons.map(button => `
-
-<button
-
-class="action-btn ${button.color || "primary"}"
-
-onclick="handleAction('${button.action}','${button.url || ""}')">
-
-<span class="btn-icon">${button.icon || ""}</span>
-
-<span>${button.text}</span>
-
-</button>
-
-`).join("")}
-
-` : ""}
 
 `;
-
-
 
     messages.appendChild(div);
 

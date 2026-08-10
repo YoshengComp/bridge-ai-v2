@@ -350,11 +350,10 @@ ${answer}`;
 
 
 
-       addAIMessage(
+      addAIMessage(
     message,
     result.buttons,
-    result.data,
-    true
+    result.data
 );
 
 

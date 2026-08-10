@@ -504,7 +504,7 @@ console.log(
     messages.querySelectorAll(".ai-message").length
 );
 
-scrollBottom();
+//scrollBottom();
 }
 // ========================================
 // Bridge AI 動作

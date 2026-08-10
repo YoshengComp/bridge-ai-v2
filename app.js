@@ -431,8 +431,13 @@ ${time}
 // AI Message UI
 // ======================================================
 
-function addAIMessage(text, buttons = [], data = [], showData = false) {
-
+function addAIMessage(
+    text,
+    buttons = [],
+    data = [],
+    showData = false,
+    allowHtml = false
+) {
     const div = document.createElement("div");
 
     div.className = "ai-message";
@@ -451,7 +456,7 @@ function addAIMessage(text, buttons = [], data = [], showData = false) {
 
     <div class="card-body">
 
-        ${formatMessage(text)}
+${allowHtml ? text : formatMessage(text)}
 
         ${showData && data.length ? `
 
@@ -864,13 +869,16 @@ function showProductSelect(){
 
     addAIMessage(
         message,
-        [
-            {
-                text:"➡️ 下一步",
-                action:"product_select_next"
-            }
-        ]
-    );
+       [
+        {
+            text:"➡️ 下一步",
+            action:"product_select_next"
+        }
+    ],
+    [],
+    false,
+    true
+);
 
 }
 

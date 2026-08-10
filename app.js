@@ -1270,72 +1270,7 @@ async function createPurchaseOrder() {
     }
 
 }
-// ======================================================
-// Purchase Draft Workspace
-// 顯示 AI 建立的採購草稿
-//
-// 一家供應商 = 一張 PO Draft
-//
-// TODO
-// [ ] 修改數量
-// [ ] 更換供應商
-// [ ] Header Editor
-// [ ] Validation
-// ======================================================
 
-function showPurchaseDraft() {
-
-    let message = "📦 採購草稿 (Purchase Draft)\n\n";
-
-    purchaseDraft.forEach((group, index) => {
-
-        message += `━━━━━━━━━━━━━━━━━━━━\n\n`;
-
-        // Header
-        message += `🏢 ${group.vendorName}\n`;
-        message += `📦 ${group.items.length} 項商品\n\n`;
-
-        // Header 資訊
-        message += `📍 交貨地址：${group.deliveryAddress || "未設定"}\n`;
-        message += `📅 到貨日期：${group.requestDate || "未設定"}\n`;
-        message += `📝 備註：${group.remark || "未設定"}\n\n`;
-
-        message += `-------------------------\n`;
-
-        // 商品
-        group.items.forEach(item => {
-
-            message += `☑ ${item.productName}\n`;
-            message += `📦 採購數量：${item.minQty}\n`;
-            message += `🏢 供應商：${group.vendorName}\n\n`;
-
-        });
-
-    });
-
-    addAIMessage(
-        message,
-        [
-            {
-                text: "📍 編輯交貨資訊",
-                action: "edit_po_header"
-            },
-            {
-                text: "📦 修改採購數量",
-                action: "edit_quantity"
-            },
-            {
-                text: "🏢 更換供應商",
-                action: "change_vendor"
-            },
-            {
-                text: "📄 建立全部採購單",
-                action: "continue_create_po"
-            }
-        ]
-    );
-
-}
 // ======================================================
 // 顯示已建立採購單
 // ======================================================

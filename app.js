@@ -917,8 +917,7 @@ function toggleProduct(index){
 // ==========================================
 
 function showPurchaseDraft() {
-console.log("🔥🔥 showPurchaseDraft 被執行了 🔥🔥");
-    console.log("===== showPurchaseDraft 開始 =====");
+console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
     console.log("purchaseDraft =", purchaseDraft);
     console.log("purchaseDraft.length =", purchaseDraft.length);
 

@@ -386,47 +386,21 @@ function addUserMessage(text) {
     const now = new Date();
 
     const time =
-
         now.getHours().toString().padStart(2, "0") +
-
         ":" +
-
         now.getMinutes().toString().padStart(2, "0");
-
-
 
     const div = document.createElement("div");
 
     div.className = "user-message";
 
-
-
     div.innerHTML = `
+        ${escapeHtml(text)}
+        ${time}
+    `;
 
-<div class="user-bubble">
-
-${escapeHtml(text)}
-
-</div>
-
-<div class="message-time">
-
-${time}
-
-</div>
-
-`;
-
-
-
-   console.log("建立 AI 卡片");
-console.log("messageClass =", messageClass);
-
-
-scrollBottom();
-
+    scrollBottom();
 }
-
 
 
 // ======================================================

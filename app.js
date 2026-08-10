@@ -922,8 +922,12 @@ function toggleProduct(index){
 // ==========================================
 
 function showPurchaseDraft() {
-
+console.log("===== showPurchaseDraft 開始 =====");
+console.log("purchaseDraft =", purchaseDraft);
+console.log("purchaseDraft.length =", purchaseDraft.length);
     purchaseDraft.forEach((group, index) => {
+        console.log("目前建立第", index + 1, "張採購單");
+        console.log("供應商 =", group.vendorName);
 
         let message = `
             <div class="purchase-draft">

@@ -465,29 +465,25 @@ ${showData && data.length ? `
 
 ${data.map(item => `
 
-<div class="erp-name">
+<div class="erp-card">
 
-📦 ${item["商品"] || ""}
+    <div class="erp-name">
+        📦 ${item["商品"] || ""}
+    </div>
 
-</div>
+    <div class="erp-info">
 
-<div class="erp-info">
+        <div class="erp-row">
+            <span>📦 庫存</span>
+            <strong>${item["庫存"] || "-"}</strong>
+        </div>
 
-<div class="erp-row">
+        <div class="erp-row">
+            <span>🛡️ 安全庫存</span>
+            <strong>${item["安全庫存"] || "-"}</strong>
+        </div>
 
-<span>📦 庫存</span>
-
-<strong>${item["庫存"] || "-"}</strong>
-
-</div>
-
-<div class="erp-row">
-
-<span>🛡️ 安全庫存</span>
-
-<strong>${item["安全庫存"] || "-"}</strong>
-
-</div>
+    </div>
 
 </div>
 

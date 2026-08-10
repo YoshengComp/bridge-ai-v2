@@ -653,18 +653,23 @@ case "delivery_other":
 
 case "edit_po_header":
 
-    let message = "📍 請選擇要編輯交貨資訊的採購單\n\n";
+purchaseDraft.forEach((group, index) => {
 
-    purchaseDraft.forEach((group, index) => {
+    addAIMessage(
+        `🏢 ${group.vendorName}
 
-        message += `${index + 1}. 🏢 ${group.vendorName}\n`;
-        message += `📦 共 ${group.items.length} 項商品\n\n`;
+📦 共 ${group.items.length} 項商品`,
+        [
+            {
+                text: "📍 編輯交貨資訊",
+                action: `edit_header_${index}`
+            }
+        ]
+    );
 
-    });
+});
 
-    addAIMessage(message);
-
-    break;
+break;
     default:
 
         console.warn("未知 Action：" + action);

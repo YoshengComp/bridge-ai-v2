@@ -611,7 +611,11 @@ case "agent":
     showProductSelect();
 
     break;       
-            case "product_select_next":
+           case "product_select_next":
+
+    // 儲存本次勾選的商品
+    conversation.selectedProducts =
+        lastResultData.filter(item => item.selected);
 
     handleAction("procurement_all");
 
@@ -624,7 +628,9 @@ case "procurement_all":
      addAIMessage("🔍 正在分析商品供應商...");
        setTimeout(async () => {
 
-        const products = lastResultData.map(item => item["產品編號"]);
+      const products = conversation.selectedProducts.map(
+    item => item["產品編號"]
+);
 
 const res = await fetch(API_URL, {
 

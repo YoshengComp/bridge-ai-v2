@@ -1,22 +1,73 @@
-// ==========================================
-// Bridge AI V2
-// ==========================================
+// ======================================================
+// Bridge AI v2.1
+// ERP AI Assistant Framework
+// Company : 佑陞資訊 YOSHENG
+// Product : Bridge ERP
+// ======================================================
+//
+// 說明：
+// Bridge AI 為 ERP AI 助理，主要提供：
+//
+// 1. ERP 知識問答
+// 2. 缺貨分析
+// 3. AI 建立採購單
+// 4. 採購內容編輯 (Purchase Draft Workspace)
+// 5. 後續擴充：進貨、出貨、報價、庫存、財務...等 AI Agent
+//
+// 設計原則：
+// • AI 與 ERP 分離
+// • Purchase Draft 為唯一採購資料來源
+// • 每張 PO 擁有獨立 Header
+// • 支援未來更換資料庫(Ragic / MySQL / SQL Server)
+// • 支援未來串接 OpenAI / Azure OpenAI / Gemini
+//
+// ======================================================
 
+
+
+// ======================================================
 // Cloudflare Worker API
+// ======================================================
+
 const API_URL = "https://bridge-ai-api.yosheng96750043.workers.dev/";
 
-// 暫存最近一次 AI 查詢回傳的 ERP 資料
+
+
+// ======================================================
+// Runtime Data
+// ======================================================
+
+// 最近一次 ERP 查詢結果
+// (例如：缺貨商品、查詢結果...)
 let lastResultData = [];
-// 採購草稿
+
+// 採購草稿 Workspace
+// AI 分析完成後所有資料皆存放於此
 let purchaseDraft = [];
-// ===========================
-// AI 對話狀態
-// ===========================
+
+
+
+// ======================================================
+// AI Conversation State
+// ======================================================
+//
+// 僅保存聊天流程狀態
+//
+// 注意：
+// Header 資訊將逐步搬移至 purchaseDraft
+// conversation 不再保存正式採購資料
+//
+// ======================================================
+
 let conversation = {
 
+    // 目前聊天流程
     step: "",
 
+    // 採購草稿 (同步參考)
     purchaseDraft: [],
+
+    // ===== 以下欄位後續將 Deprecated =====
 
     deliveryAddress: "",
 
@@ -27,25 +78,44 @@ let conversation = {
     remark: ""
 
 };
+
+
+
+// ======================================================
 // DOM
+// ======================================================
+
 const chat = document.getElementById("chat");
+
 const messages = document.getElementById("messages");
+
 const welcome = document.getElementById("welcome");
 
 const input = document.getElementById("question");
+
 const sendButton = document.getElementById("send");
 
 const quickButtons = document.querySelectorAll(".quick-btn");
 
-// 是否已開始聊天
+
+
+// ======================================================
+// UI State
+// ======================================================
+
+// 是否開始聊天
 let started = false;
 
-// ------------------------------
-// 事件
-// ------------------------------
 
+
+// ======================================================
+// Event Binding
+// ======================================================
+
+// 送出訊息
 sendButton.addEventListener("click", sendMessage);
 
+// Enter 送出
 input.addEventListener("keydown", function (e) {
 
     if (e.key === "Enter") {
@@ -56,8 +126,7 @@ input.addEventListener("keydown", function (e) {
 
 });
 
-// 快速提問
-
+// 首頁快速提問
 quickButtons.forEach(function (button) {
 
     button.addEventListener("click", function () {
@@ -70,9 +139,12 @@ quickButtons.forEach(function (button) {
 
 });
 
-// ------------------------------
-// 送出訊息
-// ------------------------------
+
+
+// ======================================================
+// Chat Controller
+// sendMessage()
+// ======================================================
 
 async function sendMessage() {
 
@@ -80,6 +152,7 @@ async function sendMessage() {
 
     if (question === "") return;
 
+    // 第一次聊天後隱藏首頁
     if (!started) {
 
         started = true;
@@ -91,10 +164,10 @@ async function sendMessage() {
     addUserMessage(question);
 
     input.value = "";
-// ================================
-// AI 對話流程
-// ================================
-// ⭐ 新增這一段
+// ----------------------------------
+// 輸入交貨地址
+// ----------------------------------
+
 if (conversation.step === "input_delivery_address") {
 
     conversation.deliveryAddress = question;
@@ -108,7 +181,15 @@ if (conversation.step === "input_delivery_address") {
     );
 
     return;
+
 }
+
+
+
+// ----------------------------------
+// 輸入到貨日期
+// ----------------------------------
+
 if (conversation.step === "ask_request_date") {
 
     conversation.requestDate = question;
@@ -117,14 +198,19 @@ if (conversation.step === "ask_request_date") {
 
     console.log(conversation);
 
-    addAIMessage("📝 請問有沒有備註？\n\n沒有請輸入：沒有");
+    addAIMessage(
+        "📝 請問有沒有備註？\n\n沒有請輸入：沒有"
+    );
 
     return;
-   } 
 
-// ==========================================
-// AI 對話流程：備註
-// ==========================================
+}
+
+
+
+// ----------------------------------
+// 輸入備註
+// ----------------------------------
 
 if (conversation.step === "ask_remark") {
 
@@ -135,21 +221,37 @@ if (conversation.step === "ask_remark") {
     showPurchaseConfirm();
 
     return;
-}
-    
 
-   if (conversation.step === "edit_delivery") {
+}
+
+
+
+// ======================================================
+// Header 修改 (Deprecated)
+// ======================================================
+//
+// 後續將改為：
+//
+// purchaseDraft[index]
+//
+// ======================================================
+
+
+
+if (conversation.step === "edit_delivery") {
 
     conversation.deliveryAddress = question;
 
     conversation.step = "confirm_purchase";
 
-    console.log(conversation);
-
     showPurchaseConfirm();
 
     return;
+
 }
+
+
+
 if (conversation.step === "edit_request_date") {
 
     conversation.requestDate = question;
@@ -159,7 +261,10 @@ if (conversation.step === "edit_request_date") {
     showPurchaseConfirm();
 
     return;
+
 }
+
+
 
 if (conversation.step === "edit_remark") {
 
@@ -170,107 +275,153 @@ if (conversation.step === "edit_remark") {
     showPurchaseConfirm();
 
     return;
+
 }
-    
+
+
+
+// ======================================================
+// Worker Query
+// ======================================================
+
 const loading = addLoading();
 
 try {
-        const response = await fetch(API_URL, {
 
-            method: "POST",
+    const response = await fetch(API_URL, {
 
-            headers: {
+        method: "POST",
 
-                "Content-Type": "application/json"
+        headers: {
 
-            },
+            "Content-Type": "application/json"
 
-            body: JSON.stringify({
+        },
 
-                question: question
+        body: JSON.stringify({
 
-            })
+            question: question
 
-        });
+        })
 
-        const result = await response.json();
-        console.log("Worker 回傳：", result);
-        // 暫存 ERP 查詢結果，供後續按鈕使用
-lastResultData = result.data || [];
-     const icon = result.icon || "";
-const category = result.category || "";
-const answer = result.answer || "";
-        loading.remove();
+    });
 
-if (result.success) {
+    const result = await response.json();
 
-    //const message = `${icon} ${category}
+    console.log("Worker 回傳：", result);
 
-let message = `${icon} ${category}
+
+
+    // ==========================================
+    // Runtime Data
+    // ==========================================
+
+    lastResultData = result.data || [];
+
+
+
+    const icon = result.icon || "";
+
+    const category = result.category || "";
+
+    const answer = result.answer || "";
+
+
+
+    loading.remove();
+
+
+
+    if (result.success) {
+
+        let message = `${icon} ${category}
 
 ${answer}`;
 
-if (result.data && result.data.length > 0) {
-    message += `
+
+
+        if (result.data && result.data.length > 0) {
+
+            message += `
+
 📋 目前共有 ${result.data.length} 項商品庫存不足。`;
-}
 
-addAIMessage(
-    message,
-    result.buttons,
-    result.data
-);
-} else {
+        }
 
-    addAIMessage("查詢失敗：" + result.error);
 
-}
 
-    } catch (e) {
+        addAIMessage(
 
-        loading.remove();
+            message,
 
-        addAIMessage("無法連線 Cloudflare Worker");
+            result.buttons,
+
+            result.data
+
+        );
+
+
+
+    } else {
+
+        addAIMessage("查詢失敗：" + result.error);
 
     }
 
 }
-// ==========================================
-// 使用者訊息
-// ==========================================
+catch (e) {
+
+    loading.remove();
+
+    addAIMessage("無法連線 Cloudflare Worker");
+
+}
+
+}
+
+
+
+// ======================================================
+// User Message UI
+// ======================================================
 
 function addUserMessage(text) {
 
     const now = new Date();
 
     const time =
+
         now.getHours().toString().padStart(2, "0") +
+
         ":" +
+
         now.getMinutes().toString().padStart(2, "0");
+
+
 
     const div = document.createElement("div");
 
     div.className = "user-message";
 
+
+
     div.innerHTML = `
 
-<div class="user-wrapper">
+<div class="user-bubble">
 
-    <div class="user-bubble">
+${escapeHtml(text)}
 
-        ${escapeHtml(text)}
+</div>
 
-    </div>
+<div class="message-time">
 
-    <div class="message-time">
-
-        ${time}
-
-    </div>
+${time}
 
 </div>
 
 `;
+
+
 
     messages.appendChild(div);
 
@@ -280,91 +431,93 @@ function addUserMessage(text) {
 
 
 
-// ==========================================
-// AI訊息
-// ==========================================
+// ======================================================
+// AI Message UI
+// ======================================================
 
 function addAIMessage(text, buttons = [], data = [], showData = false) {
+
     const div = document.createElement("div");
 
     div.className = "ai-message";
 
-  div.innerHTML = `
 
-<div class="ai-card">
 
-    <div class="card-header">
+    div.innerHTML = `
 
-        <div class="card-title">
+<div class="card-header">
 
-            🤖 Bridge AI
+<div class="card-title">
 
-        </div>
+🤖 Bridge AI
 
-    </div>
+</div>
 
-    <div class="card-body">
+</div>
 
-        ${formatMessage(text)}
+<div class="card-body">
 
-    </div>
-    ${showData && data.length ? `
+${formatMessage(text)}
 
-<div class="erp-list">
+</div>
+
+${showData && data.length ? `
 
 ${data.map(item => `
 
-<div class="erp-card">
+<div class="erp-name">
 
-    <div class="erp-name">
-        📦 ${item["商品"] || ""}
-    </div>
+📦 ${item["商品"] || ""}
 
-    <div class="erp-info">
+</div>
 
-        <div class="erp-row">
-            <span>📦 庫存</span>
-            <strong>${item["庫存"] || "-"}</strong>
-        </div>
+<div class="erp-info">
 
-        <div class="erp-row">
-            <span>🛡️ 安全庫存</span>
-            <strong>${item["安全庫存"] || "-"}</strong>
-        </div>
+<div class="erp-row">
 
-    </div>
+<span>📦 庫存</span>
+
+<strong>${item["庫存"] || "-"}</strong>
+
+</div>
+
+<div class="erp-row">
+
+<span>🛡️ 安全庫存</span>
+
+<strong>${item["安全庫存"] || "-"}</strong>
+
+</div>
 
 </div>
 
 `).join("")}
-</div>
 
 ` : ""}
 
 ${buttons.length ? `
 
-<div class="card-footer">
+${buttons.map(button => `
 
-    ${buttons.map(button => `
+<button
 
-    <button
-    class="action-btn ${button.color || "primary"}"
-    onclick="handleAction('${button.action}','${button.url || ""}')">
+class="action-btn ${button.color || "primary"}"
 
-    <span class="btn-icon">${button.icon || ""}</span>
-    <span>${button.text}</span>
+onclick="handleAction('${button.action}','${button.url || ""}')">
+
+<span class="btn-icon">${button.icon || ""}</span>
+
+<span>${button.text}</span>
 
 </button>
 
-    `).join("")}
-
-</div>
+`).join("")}
 
 ` : ""}
 
-</div>
-
 `;
+
+
 
     messages.appendChild(div);
 

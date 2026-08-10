@@ -408,11 +408,18 @@ body{
     gap:12px;
     margin-top:18px;
 }
-.ai-message{
-    margin: 24px 0;
+.ai-message {
+    margin: 16px 0;
     animation: fadeIn .25s ease;
-}
 
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 20px;
+
+    box-shadow: 0 5px 18px rgba(0,0,0,.08);
+
+    border: 1px solid #ececec;
+}
 @keyframes fadeIn{
     from{
         opacity:0;

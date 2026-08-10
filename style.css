@@ -408,6 +408,10 @@ body{
     gap:12px;
     margin-top:18px;
 }
+/* ==========================================
+   Bridge AI Message
+   ========================================== */
+
 .ai-message {
     margin: 16px 0;
     animation: fadeIn .25s ease;
@@ -430,23 +434,6 @@ body{
         opacity:1;
         transform:translateY(0);
     }
-}
-/* ==========================================
-   Bridge AI Card
-========================================== */
-
-.ai-message {
-    background: #ffffff;
-
-    border-radius: 18px;
-
-    padding: 20px;
-
-    margin-bottom: 16px;
-
-    box-shadow: 0 5px 18px rgba(0,0,0,.08);
-
-    border: 1px solid #ececec;
 }
 
 /* Header */

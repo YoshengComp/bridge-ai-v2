@@ -862,11 +862,11 @@ function showProductSelect(){
     lastResultData.forEach(item => {
 
         message += `
-<div class="product-item">
+<div
+    class="product-item"
+    onclick="toggleProduct(${lastResultData.indexOf(item)})">
 
-    <span
-        class="material-symbols-outlined product-check"
-        onclick="toggleProduct(${lastResultData.indexOf(item)})">
+    <span class="material-symbols-outlined product-check">
 
         ${item.selected
             ? "check_circle"

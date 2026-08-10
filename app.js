@@ -874,25 +874,26 @@ function showProductSelect(){
     const selectedCount =
         lastResultData.filter(item => item.selected).length;
 
-    lastResultData.forEach(item => {
+    lastResultData.forEach((item, index) => {
 
-        message += `
-        <div class="product-item">
+    message += `
+    <div class="product-item"
+         onclick="toggleProduct(${index})">
 
-            <span class="material-symbols-outlined product-check">
-                ${item.selected
-                    ? "check_circle"
-                    : "radio_button_unchecked"}
-            </span>
+        <span class="material-symbols-outlined product-check">
+            ${item.selected
+                ? "check_circle"
+                : "radio_button_unchecked"}
+        </span>
 
-            <span class="product-name">
-                ${item["商品"]}
-            </span>
+        <span class="product-name">
+            ${item["商品"]}
+        </span>
 
-        </div>
-        `;
+    </div>
+    `;
 
-    });
+});
 
     message += `
         <div class="selected-count">

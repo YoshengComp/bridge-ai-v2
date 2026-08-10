@@ -847,8 +847,19 @@ function showProductSelect(){
 
     lastResultData.forEach(item=>{
 
-        message += `☑ ${item["商品"]}\n`;
+       message += `
+<div class="product-item">
 
+    <span class="material-symbols-outlined product-check">
+        check_circle
+    </span>
+
+    <span class="product-name">
+        ${item["商品"]}
+    </span>
+
+</div>
+`;
     });
 
     addAIMessage(

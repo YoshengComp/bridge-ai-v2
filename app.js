@@ -436,11 +436,12 @@ function addAIMessage(
     buttons = [],
     data = [],
     showData = false,
-    allowHtml = false
+    allowHtml = false,
+    messageClass = ""
 ) {
     const div = document.createElement("div");
 
-    div.className = "ai-message";
+div.className = `ai-message ${messageClass}`;
 
     div.innerHTML = `
 
@@ -853,6 +854,11 @@ break;
 // ==========================================
 
 function showProductSelect(){
+ const oldSelect = document.querySelector(".product-select-message");
+
+    if(oldSelect){
+        oldSelect.remove();
+    }
 
     let message = "📋 請選擇要加入採購的商品\n\n";
 
@@ -868,34 +874,31 @@ function showProductSelect(){
     const selectedCount =
         lastResultData.filter(item => item.selected).length;
 
-    lastResultData.forEach((item,index) => {
+    lastResultData.forEach(item => {
 
         message += `
-<div class="product-item"
-     onclick="toggleProduct(${index})">
+        <div class="product-item">
 
-    <span class="material-symbols-outlined product-check">
+            <span class="material-symbols-outlined product-check">
+                ${item.selected
+                    ? "check_circle"
+                    : "radio_button_unchecked"}
+            </span>
 
-        ${item.selected
-            ? "check_circle"
-            : "radio_button_unchecked"}
+            <span class="product-name">
+                ${item["商品"]}
+            </span>
 
-    </span>
-
-    <span class="product-name">
-        ${item["商品"]}
-    </span>
-
-</div>
-`;
+        </div>
+        `;
 
     });
 
     message += `
-<div class="product-summary">
-已選擇 <strong>${selectedCount}</strong> / ${lastResultData.length} 項商品
-</div>
-`;
+        <div class="selected-count">
+            已選擇 <strong>${selectedCount}</strong> / ${lastResultData.length} 項商品
+        </div>
+    `;
 
     addAIMessage(
         message,
@@ -908,6 +911,7 @@ function showProductSelect(){
         [],
         false,
         true
+         "product-select-message"
     );
 
 }

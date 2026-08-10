@@ -859,12 +859,14 @@ function showProductSelect(){
 
     });
 
-    lastResultData.forEach(item => {
+    const selectedCount =
+        lastResultData.filter(item => item.selected).length;
+
+    lastResultData.forEach((item,index) => {
 
         message += `
-<div
-    class="product-item"
-    onclick="toggleProduct(${lastResultData.indexOf(item)})">
+<div class="product-item"
+     onclick="toggleProduct(${index})">
 
     <span class="material-symbols-outlined product-check">
 
@@ -882,6 +884,12 @@ function showProductSelect(){
 `;
 
     });
+
+    message += `
+<div class="product-summary">
+已選擇 <strong>${selectedCount}</strong> / ${lastResultData.length} 項商品
+</div>
+`;
 
     addAIMessage(
         message,

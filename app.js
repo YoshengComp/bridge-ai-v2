@@ -939,23 +939,25 @@ function showPurchaseDraft() {
     purchaseDraft.forEach((group, index) => {
 
         let message = `
-        <div class="purchase-draft">
+            <div class="purchase-draft">
 
-            <div class="purchase-header">
-                <span class="material-symbols-outlined">
-                    business
-                </span>
+                <div class="purchase-header">
 
-                <strong>
-                    ${group.vendorName}
-                </strong>
-            </div>
+                    <span class="material-symbols-outlined">
+                        business
+                    </span>
 
-            <div class="purchase-info">
-                📦 共 ${group.items.length} 項商品
-            </div>
+                    <strong>
+                        ${group.vendorName}
+                    </strong>
 
-            <div class="purchase-items">
+                </div>
+
+                <div class="purchase-info">
+                    📦 共 ${group.items.length} 項商品
+                </div>
+
+                <div class="purchase-items">
         `;
 
         group.items.forEach(item => {
@@ -977,24 +979,24 @@ function showPurchaseDraft() {
         });
 
         message += `
+                </div>
+
+                <button
+                    class="purchase-edit-btn"
+                    onclick="editPurchaseDraft(${index})">
+
+                    <span class="material-symbols-outlined">
+                        edit
+                    </span>
+
+                    編輯此採購單
+
+                </button>
+
             </div>
-
-            <button
-                class="purchase-edit-btn"
-                onclick="editPurchaseDraft(${index})">
-
-                <span class="material-symbols-outlined">
-                    edit
-                </span>
-
-                編輯此採購單
-
-            </button>
-
-        </div>
         `;
 
-        // ★ 每一家供應商各自建立一張 AI Message
+        // ★ 每一家供應商各自建立一張 AI 卡片
         addAIMessage(
             message,
             [],

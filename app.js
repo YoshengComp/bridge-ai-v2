@@ -850,24 +850,28 @@ function showProductSelect(){
 
     let message = "📋 請選擇要加入採購的商品\n\n";
 
-   lastResultData.forEach(item => {
+    // 第一次預設全部勾選
+    lastResultData.forEach(item => {
 
-    if(item.selected === undefined){
+        if(item.selected === undefined){
+            item.selected = true;
+        }
 
-        item.selected = true;
+    });
 
-    }
+    lastResultData.forEach(item => {
 
-});
-    lastResultData.forEach(item=>{
-
-       message += `
+        message += `
 <div class="product-item">
 
-    <span class="material-symbols-outlined product-check">
+    <span
+        class="material-symbols-outlined product-check"
+        onclick="toggleProduct(${lastResultData.indexOf(item)})">
+
         ${item.selected
-    ? "check_circle"
-    : "radio_button_unchecked"}
+            ? "check_circle"
+            : "radio_button_unchecked"}
+
     </span>
 
     <span class="product-name">
@@ -876,20 +880,33 @@ function showProductSelect(){
 
 </div>
 `;
+
     });
 
     addAIMessage(
         message,
-       [
-        {
-            text:"➡️ 下一步",
-            action:"product_select_next"
-        }
-    ],
-    [],
-    false,
-    true
-);
+        [
+            {
+                text:"➡️ 下一步",
+                action:"product_select_next"
+            }
+        ],
+        [],
+        false,
+        true
+    );
+
+}
+// ==========================================
+// 切換商品勾選
+// ==========================================
+
+function toggleProduct(index){
+
+    lastResultData[index].selected =
+        !lastResultData[index].selected;
+
+    showProductSelect();
 
 }
 

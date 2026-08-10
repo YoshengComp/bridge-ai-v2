@@ -351,13 +351,10 @@ ${answer}`;
 
 
        addAIMessage(
-
     message,
-
     result.buttons,
-
-    result.data
-
+    result.data,
+    true
 );
 
 

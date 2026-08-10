@@ -657,53 +657,7 @@ body{
 }
 
 
-/* ==========================================
-   編輯採購單
-   ========================================== */
 
-.purchase-edit-btn {
-
-    width: 100%;
-
-    margin-top: 12px;
-
-    padding: 10px 14px;
-
-    border: none;
-
-    border-radius: 10px;
-
-    background: #f3f3f3;
-
-    font-size: 14px;
-
-    cursor: pointer;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 6px;
-
-    transition: 0.2s;
-
-}
-
-
-.purchase-edit-btn:hover {
-
-    background: #e9e9e9;
-
-}
-
-
-.purchase-edit-btn .material-symbols-outlined {
-
-    font-size: 19px;
-
-}
 /* ==========================================
    Product Summary
 ========================================== */

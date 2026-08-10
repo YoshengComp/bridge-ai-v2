@@ -818,7 +818,7 @@ case "delivery_other":
 
     break;
     case "edit_purchase_draft":
-
+    
     showPurchaseDraft();
 
     break;
@@ -916,6 +916,7 @@ function showProductSelect(){
     );
 
 }
+
 // ==========================================
 // 切換商品勾選
 // ==========================================
@@ -928,7 +929,103 @@ function toggleProduct(index){
     showProductSelect();
 
 }
+// ==========================================
+// 顯示採購草稿
+// 一間供應商 = 一張採購單
+// ==========================================
 
+function showPurchaseDraft() {
+
+    let message = "📋 採購單草稿\n\n";
+
+    purchaseDraft.forEach((group, index) => {
+
+        message += `
+        <div class="purchase-draft">
+
+            <div class="purchase-header">
+                <span class="material-symbols-outlined">
+                    business
+                </span>
+
+                <strong>
+                    ${group.vendorName}
+                </strong>
+            </div>
+
+            <div class="purchase-info">
+                📦 共 ${group.items.length} 項商品
+            </div>
+
+            <div class="purchase-items">
+        `;
+
+        group.items.forEach(item => {
+
+            message += `
+                <div class="purchase-item">
+
+                    <span class="material-symbols-outlined">
+                        inventory_2
+                    </span>
+
+                    <span class="product-name">
+                        ${item.productName}
+                    </span>
+
+                </div>
+            `;
+
+        });
+
+        message += `
+            </div>
+
+            <button
+                class="purchase-edit-btn"
+                onclick="editPurchaseDraft(${index})">
+
+                <span class="material-symbols-outlined">
+                    edit
+                </span>
+
+                編輯此採購單
+
+            </button>
+
+        </div>
+        `;
+
+    });
+
+    addAIMessage(
+        message,
+        [],
+        [],
+        false,
+        true
+    );
+}
+// ==========================================
+// 編輯指定供應商的採購單
+// ==========================================
+
+function editPurchaseDraft(index) {
+
+    const group = purchaseDraft[index];
+
+    console.log("目前編輯的採購單：", group);
+
+    addAIMessage(
+        `✏️ 編輯採購單\n\n🏢 ${group.vendorName}\n📦 共 ${group.items.length} 項商品`,
+        [
+            {
+                text: "📝 編輯採購內容",
+                action: `edit_po_${index}`
+            }
+        ]
+    );
+}
 // ==========================================
 // Loading
 // ==========================================

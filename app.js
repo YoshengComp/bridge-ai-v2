@@ -1020,19 +1020,15 @@ console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
 
         message += `
                 </div>
+<button
+    class="action-btn"
+    onclick="editPurchaseDraft(${index})">
 
-                <button
-                    class="purchase-edit-btn"
-                    onclick="editPurchaseDraft(${index})">
+    <span class="btn-icon">✏️</span>
 
-                    <span class="material-symbols-outlined">
-                        edit
-                    </span>
+    <span>編輯此採購單</span>
 
-                    編輯此採購單
-
-                </button>
-
+</button>
             </div>
         `;
 

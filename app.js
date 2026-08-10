@@ -954,139 +954,121 @@ function showInventoryDetail() {
 
 async function createPurchaseOrder() {
 
+    // ------------------------------
+    // 建立中
+    // ------------------------------
+
     addAIMessage("📄 正在建立採購單...");
-    console.log("送出的 purchaseDraft：");
-    console.log(conversation.purchaseDraft);
 
-    const res = await fetch(API_URL, {
+    console.log("========== Purchase Draft ==========");
 
-        method: "POST",
+    console.log(purchaseDraft);
 
-        headers: {
-            "Content-Type": "application/json"
-        },
 
-        body: JSON.stringify({
 
-            queryType: "create_purchase_order",
+    try {
 
-            purchaseDraft: conversation.purchaseDraft,
+        const res = await fetch(API_URL, {
 
-            deliveryAddress: conversation.deliveryAddress,
+            method: "POST",
 
-            requestDate: conversation.requestDate,
+            headers: {
 
-            remark: conversation.remark
+                "Content-Type": "application/json"
 
-        })
+            },
 
-    });
+            body: JSON.stringify({
 
-    const result = await res.json();
+                queryType: "create_purchase_order",
 
-    console.log("createPurchaseOrder：", result);
+                purchaseDraft: purchaseDraft
 
-if(result.success){
+            })
 
-   
-        conversation.createdPOs = result.createdPOs;
+        });
 
-showCreatedPOs();
 
-}else{
 
-    addAIMessage(
-        "❌ 建立失敗"
-    );
+        const result = await res.json();
+
+        console.log("createPurchaseOrder", result);
+
+
+
+        if(result.success){
+
+            conversation.createdPOs = result.createdPOs || [];
+
+            showCreatedPOs();
+
+        }
+        else{
+
+            addAIMessage(
+
+                "❌ 建立採購單失敗\n\n" +
+
+                (result.error || "")
+
+            );
+
+        }
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        addAIMessage(
+
+            "❌ 無法連線 ERP"
+
+        );
+
+    }
 
 }
-  }   
-// ==========================================
-// 確認資訊
-// ==========================================
+// ======================================================
+// Purchase Draft Workspace
+// 顯示 AI 建立的採購草稿
+//
+// 一家供應商 = 一張 PO Draft
+//
+// TODO
+// [ ] 修改數量
+// [ ] 更換供應商
+// [ ] Header Editor
+// [ ] Validation
+// ======================================================
+
 function showPurchaseDraft() {
 
-    let message = "📦 採購內容\n\n";
+    let message = "📦 採購草稿 (Purchase Draft)\n\n";
 
-    purchaseDraft.forEach(group => {
+    purchaseDraft.forEach((group, index) => {
 
-       message += `🏢 ${group.vendorName}\n\n`;
-    message += `📦 共 ${group.items.length} 項商品\n\n`;
+        message += `━━━━━━━━━━━━━━━━━━━━\n\n`;
 
+        // Header
+        message += `🏢 ${group.vendorName}\n`;
+        message += `📦 ${group.items.length} 項商品\n\n`;
+
+        // Header 資訊
+        message += `📍 交貨地址：${group.deliveryAddress || "未設定"}\n`;
+        message += `📅 到貨日期：${group.requestDate || "未設定"}\n`;
+        message += `📝 備註：${group.remark || "未設定"}\n\n`;
+
+        message += `-------------------------\n`;
+
+        // 商品
         group.items.forEach(item => {
 
             message += `☑ ${item.productName}\n`;
             message += `📦 採購數量：${item.minQty}\n`;
-            message += `✏️ 修改數量\n`;
-            message += `🏢 更換供應商\n\n`;
-            
+            message += `🏢 供應商：${group.vendorName}\n\n`;
 
         });
-        // ← 一張 PO 共用資訊
-    message += `📍 交貨地址：未設定\n`;
-    message += `📅 到貨日期：未設定\n`;
-    message += `📝 備註：未設定\n\n`;
-
-        message += "────────────\n\n";
-
-    });
-
-    addAIMessage(
-    message,
-    [
-        {
-            text:"✏️ 編輯交貨資訊",
-            action:"edit_po_header"
-        },
-        {
-            text:"📄 建立全部採購單",
-            action:"continue_create_po"
-        }
-    ]
-);
-
-}
-   function showPurchaseConfirm() {
-
-    addAIMessage(
-`📋 請確認本次採購資訊
-
-📍交貨地址：
-${conversation.deliveryAddress}
-
-📅 要求到貨日：
-${conversation.requestDate}
-
-📝 備註：
-${conversation.remark}`,
-[
-{
-text: "✅ 建立採購單",
-action: "confirm_create_po"
-},
-{
-text: "✏️ 修改",
-action: "edit_purchase"
-}
-]
-);
-
-}
-// ================================
-// 顯示已建立採購單
-// ================================
-
-function showCreatedPOs() {
-
-    let message = "✅ 已建立採購單\n\n";
-
-    conversation.createdPOs.forEach((po) => {
-
-        message +=
-`🏢 ${po.vendorName}
-${po.poNo}
-
-`;
 
     });
 
@@ -1094,8 +1076,65 @@ ${po.poNo}
         message,
         [
             {
-                text: "✏️ 修改採購單",
-                action: "select_edit_po"
+                text: "📍 編輯交貨資訊",
+                action: "edit_po_header"
+            },
+            {
+                text: "📦 修改採購數量",
+                action: "edit_quantity"
+            },
+            {
+                text: "🏢 更換供應商",
+                action: "change_vendor"
+            },
+            {
+                text: "📄 建立全部採購單",
+                action: "continue_create_po"
+            }
+        ]
+    );
+
+}
+// ======================================================
+// 顯示已建立採購單
+// ======================================================
+//
+// AI 已成功建立至 ERP
+//
+// TODO
+// [ ] 查看採購單
+// [ ] 編輯採購單
+// [ ] 開啟 Ragic
+// [ ] 列印採購單
+//
+// ======================================================
+
+function showCreatedPOs() {
+
+    let message = "✅ 採購單建立完成\n\n";
+
+    conversation.createdPOs.forEach((po, index) => {
+
+        message += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+        message += `📄 PO ${index + 1}\n`;
+
+        message += `🏢 ${po.vendorName}\n`;
+
+        message += `🆔 ${po.poNo}\n\n`;
+
+    });
+
+    addAIMessage(
+        message,
+        [
+            {
+                text: "📂 查看採購單",
+                action: "view_purchase_order"
+            },
+            {
+                text: "🖨️ 列印採購單",
+                action: "print_purchase_order"
             },
             {
                 text: "✅ 完成",
@@ -1108,117 +1147,32 @@ ${po.poNo}
 // ==========================================
 // 詢問交貨地址
 // ==========================================
-function askDeliveryAddress() {
+function askDeliveryAddress(){
 
-    addAIMessage(
-        "📍 請問本次採購商品要送到哪裡？",
-        [
-            {
-                text: "🏢 台北總公司",
-                action: "delivery_taipei"
-            },
-            {
-                text: "🏭 桃園物流中心",
-                action: "delivery_taoyuan"
-            },
-            {
-                text: "✏️ 其他地址",
-                action: "delivery_other"
-            }
-        ]
-    );
+    console.warn("askDeliveryAddress 已停用");
 
 }
-// ==========================================
-// 後續AI Agent預留
-// ==========================================
+// ======================================================
+// AI Agent Framework
+//
+// Bridge AI 後續所有 AI Agent
+//
+// Inventory Agent
+// Purchase Agent
+// Sales Agent
+// Warehouse Agent
+// Finance Agent
+// Report Agent
+//
+// ======================================================
 
-async function runAgent(action,data){
+async function runAgent(action, data){
 
-    console.log("AI Agent",action,data);
+    console.log("Bridge AI Agent");
 
-}
+    console.log("Action :", action);
 
-
-
-/*
-
-V2
-
-聊天
-
-V2.1
-
-建立採購單
-
-V2.2
-
-新增供應商
-
-V2.3
-
-開啟ERP表單
-
-V3
-
-AI Agent
-
-*/
-// ==========================================
-// Bridge AI V2
-// 預留企業功能
-// ==========================================
-
-/*
-
-目前流程
-
-使用者
-
-↓
-
-Cloudflare Worker
-
-↓
-
-Ragic AI
-
-↓
-
-answer
-
---------------------------------
-
-之後 Ragic 可以增加：
-
-answer
-form_url
-form_name
-sop_url
-sop_name
-action
-button_text
-
-例如
-
-{
-
- answer:"建立流程...",
-
- form_url:"https://ap16.ragic.com/...",
-
- form_name:"建立採購單",
-
- sop_url:"https://bridge.com/sop001",
-
- sop_name:"採購SOP"
+    console.log("Data :", data);
 
 }
-
-AI 就可以自己長按鈕
-
-*/
-
-
-
 

@@ -922,12 +922,19 @@ function toggleProduct(index){
 // ==========================================
 
 function showPurchaseDraft() {
-console.log("===== showPurchaseDraft 開始 =====");
-console.log("purchaseDraft =", purchaseDraft);
-console.log("purchaseDraft.length =", purchaseDraft.length);
+
+    console.log("================================");
+    console.log("===== showPurchaseDraft 開始 =====");
+    console.log("purchaseDraft =", purchaseDraft);
+    console.log("purchaseDraft.length =", purchaseDraft.length);
+    console.log("================================");
+
     purchaseDraft.forEach((group, index) => {
-        console.log("目前建立第", index + 1, "張採購單");
-        console.log("供應商 =", group.vendorName);
+
+        console.log("➡️ 進入 forEach");
+        console.log("➡️ index =", index);
+        console.log("➡️ 供應商 =", group.vendorName);
+        console.log("➡️ 商品數 =", group.items.length);
 
         let message = `
             <div class="purchase-draft">
@@ -987,7 +994,10 @@ console.log("purchaseDraft.length =", purchaseDraft.length);
             </div>
         `;
 
-        // ★ 每一家供應商各自建立一張 AI 卡片
+        console.log("🟡 準備建立第", index + 1, "張 AI 卡片");
+        console.log("🟡 本次供應商 =", group.vendorName);
+        console.log("🟡 message 長度 =", message.length);
+
         addAIMessage(
             message,
             [],
@@ -996,8 +1006,11 @@ console.log("purchaseDraft.length =", purchaseDraft.length);
             true
         );
 
+        console.log("🟢 第", index + 1, "張 AI 卡片建立完成");
+
     });
 
+    console.log("===== showPurchaseDraft 結束 =====");
 }
 // ==========================================
 // 編輯指定供應商的採購單

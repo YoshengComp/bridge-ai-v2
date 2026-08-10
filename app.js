@@ -705,11 +705,13 @@ case "procurement_all":
         // ⭐ 直接顯示採購草稿
         // 一間供應商 = 一張 AI Card
         // ==========================================
+console.log("🔥🔥🔥 準備呼叫 showPurchaseDraft 🔥🔥🔥");
 
         showPurchaseDraft();
 
     }, 600);
 
+console.log("🔥🔥🔥 showPurchaseDraft 呼叫結束 🔥🔥🔥");
     break;
   
     case "create_po":

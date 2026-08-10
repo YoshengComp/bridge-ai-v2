@@ -421,17 +421,7 @@ ${time}
 
    console.log("建立 AI 卡片");
 console.log("messageClass =", messageClass);
-console.log(
-    "目前 AI 卡片數 =",
-    messages.querySelectorAll(".ai-message").length
-);
 
-messages.appendChild(div);
-
-console.log(
-    "加入後 AI 卡片數 =",
-    messages.querySelectorAll(".ai-message").length
-);
 
 scrollBottom();
 
@@ -533,10 +523,21 @@ ${allowHtml ? text : formatMessage(text)}
 
 `;
 
-    messages.appendChild(div);
+   console.log("建立 AI 卡片");
+console.log("messageClass =", messageClass);
+console.log(
+    "加入前 AI 卡片數 =",
+    messages.querySelectorAll(".ai-message").length
+);
 
-    scrollBottom();
+messages.appendChild(div);
 
+console.log(
+    "加入後 AI 卡片數 =",
+    messages.querySelectorAll(".ai-message").length
+);
+
+scrollBottom();
 }
 // ========================================
 // Bridge AI 動作

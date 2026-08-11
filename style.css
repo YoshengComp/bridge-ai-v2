@@ -676,3 +676,37 @@ body {
 
     border: none;
 }
+/* ==========================================
+   採購數量輸入
+========================================== */
+
+.purchase-qty-editor {
+    margin: 8px 0 14px;
+}
+
+.purchase-qty-label {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+.purchase-qty-input {
+    width: 100%;
+    height: 40px;
+
+    padding: 8px 12px;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    outline: none;
+    box-sizing: border-box;
+}
+
+.purchase-qty-input:focus {
+    border-color: #ff7a00;
+    box-shadow: 0 0 0 3px rgba(255,122,0,.1);
+}

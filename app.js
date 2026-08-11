@@ -1051,7 +1051,6 @@ console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
 // ==========================================
 // 編輯指定供應商的採購單
 // ==========================================
-
 function editPurchaseDraft(index) {
 
     const group = purchaseDraft[index];
@@ -1100,6 +1099,22 @@ function editPurchaseDraft(index) {
 
                 </div>
 
+                <div class="purchase-qty-editor">
+
+                    <div class="purchase-qty-label">
+                        採購數量
+                    </div>
+
+                    <input
+                        type="number"
+                        min="0"
+                        class="purchase-qty-input"
+                        id="purchase-qty-${index}-${itemIndex}"
+                        value="${item.minQty || 0}"
+                    >
+
+                </div>
+
             `).join("")}
 
         </div>
@@ -1111,7 +1126,6 @@ function editPurchaseDraft(index) {
                 onclick="savePurchaseDraft(${index})">
 
                 <span class="btn-icon">💾</span>
-
                 <span>儲存修改</span>
 
             </button>
@@ -1121,7 +1135,6 @@ function editPurchaseDraft(index) {
                 onclick="cancelEditPurchaseDraft(${index})">
 
                 <span class="btn-icon">↩️</span>
-
                 <span>取消編輯</span>
 
             </button>
@@ -1129,7 +1142,6 @@ function editPurchaseDraft(index) {
         </div>
 
     `;
-
 }
 // ==========================================
 // Loading

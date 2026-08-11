@@ -1147,6 +1147,52 @@ function editPurchaseDraft(index) {
             📦 共 ${group.items.length} 項商品
         </div>
 
+        <!-- 交貨資訊 -->
+        <div class="purchase-edit-info">
+
+            <div class="purchase-edit-field">
+
+                <label>📍 交貨地址</label>
+
+                <input
+                    type="text"
+                    id="delivery-address-${index}"
+                    value="${group.deliveryAddress || ""}"
+                    placeholder="請輸入交貨地址"
+                >
+
+            </div>
+
+
+            <div class="purchase-edit-field">
+
+                <label>📅 要求到貨日</label>
+
+                <input
+                    type="date"
+                    id="request-date-${index}"
+                    value="${group.requestDate || ""}"
+                >
+
+            </div>
+
+
+            <div class="purchase-edit-field">
+
+                <label>📝 備註</label>
+
+                <input
+                    type="text"
+                    id="remark-${index}"
+                    value="${group.remark || ""}"
+                    placeholder="請輸入備註"
+                >
+
+            </div>
+
+        </div>
+
+
         <div class="purchase-items">
 
             ${group.items.map((item, itemIndex) => `
@@ -1184,27 +1230,6 @@ function editPurchaseDraft(index) {
         </div>
 
 
-        <!-- =====================================
-             交貨地址
-        ====================================== -->
-
-        <div class="purchase-qty-editor">
-
-            <div class="purchase-qty-label">
-                📍 交貨地址
-            </div>
-
-            <input
-                type="text"
-                class="purchase-qty-input"
-                id="purchase-address-${index}"
-                value="${group.deliveryAddress || ""}"
-                placeholder="請輸入交貨地址"
-            >
-
-        </div>
-
-
         <div class="card-footer">
 
             <button
@@ -1215,6 +1240,7 @@ function editPurchaseDraft(index) {
                 <span>儲存修改</span>
 
             </button>
+
 
             <button
                 class="action-btn"
@@ -1241,9 +1267,41 @@ function savePurchaseDraft(index) {
     console.log("儲存前資料：", group);
 
 
-    // ======================================
-    // 儲存商品採購數量
-    // ======================================
+    // ==========================================
+    // 儲存交貨資訊
+    // ==========================================
+
+    const deliveryAddressInput =
+        document.getElementById(`delivery-address-${index}`);
+
+    const requestDateInput =
+        document.getElementById(`request-date-${index}`);
+
+    const remarkInput =
+        document.getElementById(`remark-${index}`);
+
+
+    if (deliveryAddressInput) {
+        group.deliveryAddress =
+            deliveryAddressInput.value.trim();
+    }
+
+
+    if (requestDateInput) {
+        group.requestDate =
+            requestDateInput.value;
+    }
+
+
+    if (remarkInput) {
+        group.remark =
+            remarkInput.value.trim();
+    }
+
+
+    // ==========================================
+    // 儲存商品數量
+    // ==========================================
 
     group.items.forEach((item, itemIndex) => {
 
@@ -1252,52 +1310,58 @@ function savePurchaseDraft(index) {
         );
 
         if (!input) {
+
             console.warn(
                 "找不到採購數量輸入框：",
                 index,
                 itemIndex
             );
+
             return;
         }
 
+
         let qty = Number(input.value);
 
-        // 防止輸入空值或負數
+
         if (isNaN(qty) || qty < 0) {
             qty = 0;
         }
+
 
         item.minQty = qty;
 
     });
 
 
-    // ======================================
-    // 儲存這一張採購單的交貨地址
-    // ======================================
-
-    const addressInput = document.getElementById(
-        `purchase-address-${index}`
-    );
-
-    if (addressInput) {
-
-        group.deliveryAddress = addressInput.value.trim();
-
-    } else {
-
-        console.warn(
-            "找不到交貨地址輸入框：",
-            index
-        );
-
-    }
-
+    // ==========================================
+    // 確認儲存結果
+    // ==========================================
 
     console.log("💾 儲存後資料：", group);
 
+    console.log(
+        "📍 交貨地址：",
+        group.deliveryAddress
+    );
+
+    console.log(
+        "📅 要求到貨日：",
+        group.requestDate
+    );
+
+    console.log(
+        "📝 備註：",
+        group.remark
+    );
+
+
+    // ==========================================
     // 恢復這張採購單的一般顯示
+    // ==========================================
+
     renderPurchaseDraft(index);
+
 }
 // ==========================================
 // 重新顯示指定採購單

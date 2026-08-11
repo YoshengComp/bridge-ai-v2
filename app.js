@@ -1144,6 +1144,122 @@ function editPurchaseDraft(index) {
     `;
 }
 // ==========================================
+// 儲存採購單修改
+// ==========================================
+
+function savePurchaseDraft(index) {
+
+    const group = purchaseDraft[index];
+
+    console.log("💾 儲存第", index + 1, "張採購單");
+    console.log("儲存前資料：", group);
+
+    group.items.forEach((item, itemIndex) => {
+
+        const input = document.getElementById(
+            `purchase-qty-${index}-${itemIndex}`
+        );
+
+        if (!input) {
+            console.warn(
+                "找不到採購數量輸入框：",
+                index,
+                itemIndex
+            );
+            return;
+        }
+
+        let qty = Number(input.value);
+
+        // 防止輸入空值或負數
+        if (isNaN(qty) || qty < 0) {
+            qty = 0;
+        }
+
+        item.minQty = qty;
+
+    });
+
+    console.log("💾 儲存後資料：", group);
+
+    // 恢復這張採購單的一般顯示
+    renderPurchaseDraft(index);
+}
+// ==========================================
+// 重新顯示指定採購單
+// ==========================================
+
+function renderPurchaseDraft(index) {
+
+    const group = purchaseDraft[index];
+
+    const card = document.getElementById(
+        `purchase-draft-${index}`
+    );
+
+    if (!card) {
+        console.error("找不到採購單卡片：", index);
+        return;
+    }
+
+    card.innerHTML = `
+
+        <div class="purchase-header">
+
+            <span class="material-symbols-outlined">
+                business
+            </span>
+
+            <strong>
+                ${group.vendorName}
+            </strong>
+
+        </div>
+
+        <div class="purchase-info">
+            📦 共 ${group.items.length} 項商品
+        </div>
+
+        <div class="purchase-items">
+
+            ${group.items.map(item => `
+
+                <div class="purchase-item">
+
+                    <span class="material-symbols-outlined">
+                        inventory_2
+                    </span>
+
+                    <span class="product-name">
+                        ${item.productName}
+                    </span>
+
+                    <span class="product-qty">
+                        × ${item.minQty || 0}
+                    </span>
+
+                </div>
+
+            `).join("")}
+
+        </div>
+
+        <div class="card-footer">
+
+            <button
+                class="action-btn"
+                onclick="editPurchaseDraft(${index})">
+
+                <span class="btn-icon">✏️</span>
+                <span>編輯此採購單</span>
+
+            </button>
+
+        </div>
+
+    `;
+}
+// ==========================================
 // Loading
 // ==========================================
 

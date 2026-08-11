@@ -730,31 +730,45 @@ console.log("🔥🔥🔥 showPurchaseDraft 呼叫結束 🔥🔥🔥");
     askDeliveryAddress();
 
     break;
-            case "delivery_taipei":
+  case "delivery_taipei":
 
     conversation.deliveryAddress = "台北總公司";
 
+    // 將交貨地址寫入所有採購單
+    purchaseDraft.forEach(group => {
+        group.deliveryAddress = conversation.deliveryAddress;
+    });
+
     conversation.step = "ask_request_date";
 
-    console.log(conversation);
+    console.log("📍 交貨地址：", conversation.deliveryAddress);
+    console.log("📦 更新後採購草稿：", purchaseDraft);
 
-    addAIMessage("📅 請問要求到貨日？\n\n例如：2026/08/15");
+    addAIMessage(
+        `📍 交貨地址已設定：${conversation.deliveryAddress}\n\n📅 請問要求到貨日？\n\n例如：2026/08/15`
+    );
 
     break;
-
 
 case "delivery_taoyuan":
 
     conversation.deliveryAddress = "桃園物流中心";
 
+    // 將交貨地址寫入所有採購單
+    purchaseDraft.forEach(group => {
+        group.deliveryAddress = conversation.deliveryAddress;
+    });
+
     conversation.step = "ask_request_date";
 
-    console.log(conversation);
+    console.log("📍 交貨地址：", conversation.deliveryAddress);
+    console.log("📦 更新後採購草稿：", purchaseDraft);
 
-    addAIMessage("📅 請問要求到貨日？\n\n例如：2026/08/15");
+    addAIMessage(
+        `📍 交貨地址已設定：${conversation.deliveryAddress}\n\n📅 請問要求到貨日？\n\n例如：2026/08/15`
+    );
 
     break;
-
 
 case "delivery_other":
 
@@ -762,7 +776,7 @@ case "delivery_other":
 
     conversation.step = "input_delivery_address";
 
-    console.log(conversation);
+    console.log("等待使用者輸入交貨地址");
 
     addAIMessage("✏️ 請直接輸入交貨地址。");
 
@@ -1119,6 +1133,28 @@ function editPurchaseDraft(index) {
 
         </div>
 
+
+        <!-- =====================================
+             交貨地址
+        ====================================== -->
+
+        <div class="purchase-qty-editor">
+
+            <div class="purchase-qty-label">
+                📍 交貨地址
+            </div>
+
+            <input
+                type="text"
+                class="purchase-qty-input"
+                id="purchase-address-${index}"
+                value="${group.deliveryAddress || ""}"
+                placeholder="請輸入交貨地址"
+            >
+
+        </div>
+
+
         <div class="card-footer">
 
             <button
@@ -1154,6 +1190,11 @@ function savePurchaseDraft(index) {
     console.log("💾 儲存第", index + 1, "張採購單");
     console.log("儲存前資料：", group);
 
+
+    // ======================================
+    // 儲存商品採購數量
+    // ======================================
+
     group.items.forEach((item, itemIndex) => {
 
         const input = document.getElementById(
@@ -1179,6 +1220,29 @@ function savePurchaseDraft(index) {
         item.minQty = qty;
 
     });
+
+
+    // ======================================
+    // 儲存這一張採購單的交貨地址
+    // ======================================
+
+    const addressInput = document.getElementById(
+        `purchase-address-${index}`
+    );
+
+    if (addressInput) {
+
+        group.deliveryAddress = addressInput.value.trim();
+
+    } else {
+
+        console.warn(
+            "找不到交貨地址輸入框：",
+            index
+        );
+
+    }
+
 
     console.log("💾 儲存後資料：", group);
 
@@ -1258,6 +1322,32 @@ function renderPurchaseDraft(index) {
         </div>
 
     `;
+}
+// ========================================
+// 詢問交貨地址
+// ========================================
+
+function askDeliveryAddress() {
+
+    conversation.step = "ask_delivery_address";
+
+    addAIMessage(
+        "📍 請選擇交貨地址",
+        [
+            {
+                text: "🏢 台北總公司",
+                action: "delivery_taipei"
+            },
+            {
+                text: "🚚 桃園物流中心",
+                action: "delivery_taoyuan"
+            },
+            {
+                text: "✏️ 其他地址",
+                action: "delivery_other"
+            }
+        ]
+    );
 }
 // ==========================================
 // Loading

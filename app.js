@@ -972,15 +972,7 @@ function showPurchaseDraft() {
     console.log("purchaseDraft.length =", purchaseDraft.length);
 
     purchaseDraft.forEach((group, index) => {
-
-        console.log("================================");
-        console.log("forEach 執行第", index + 1, "次");
-        console.log("index =", index);
-        console.log("vendorCode =", group.vendorCode);
-        console.log("vendorName =", group.vendorName);
-        console.log("items =", group.items);
-
-        let message = `
+     let message = `
             <div class="purchase-draft" id="purchase-draft-${index}">
 
                 <div class="purchase-header">
@@ -1078,7 +1070,7 @@ function showPurchaseDraft() {
             </div>
         `;
 
-        console.log("準備建立第", index + 1, "張 AI 卡片");
+        
 
         addAIMessage(
             message,
@@ -1087,17 +1079,6 @@ function showPurchaseDraft() {
             false,
             true
         );
-
-        console.log(
-            "第",
-            index + 1,
-            "張 AI 卡片建立完成"
-        );
-
-    });
-
-    console.log("===== showPurchaseDraft 結束 =====");
-
 }
 // ==========================================
 // 編輯指定供應商的採購單

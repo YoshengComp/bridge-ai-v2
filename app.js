@@ -1198,6 +1198,85 @@ function editPurchaseDraft(index) {
             </div>
 
         </div>
+
+        <!-- ================================= -->
+        <!-- 商品 -->
+        <!-- ================================= -->
+
+        <div class="purchase-items">
+
+            ${group.items.map((item, itemIndex) => `
+
+                <div class="purchase-item">
+
+                    <span class="material-symbols-outlined">
+                        inventory_2
+                    </span>
+
+                    <span class="product-name">
+                        ${item.productName}
+                    </span>
+
+                </div>
+
+
+                <div class="purchase-qty-editor">
+
+                    <div class="purchase-qty-label">
+                        採購數量
+                    </div>
+
+                    <input
+                        type="number"
+                        min="0"
+                        class="purchase-qty-input"
+                        id="purchase-qty-${index}-${itemIndex}"
+                        value="${item.minQty || 0}"
+                        onkeydown="
+        handleQtyEnter(
+            event,
+            ${index},
+            ${itemIndex},
+            ${group.items.length}
+        )
+    "
+                    >
+
+                </div>
+
+            `).join("")}
+
+        </div>
+
+
+        <!-- ================================= -->
+        <!-- 按鈕 -->
+        <!-- ================================= -->
+
+        <div class="card-footer">
+
+            <button
+                class="action-btn"
+                onclick="savePurchaseDraft(${index})">
+
+                <span class="btn-icon">💾</span>
+                <span>儲存修改</span>
+
+            </button>
+
+            <button
+                class="action-btn"
+                onclick="cancelEditPurchaseDraft(${index})">
+
+                <span class="btn-icon">↩️</span>
+                <span>取消編輯</span>
+
+            </button>
+
+        </div>
+
+    `;
+}
 // ==========================================
 // 採購單編輯：Enter 跳到下一個欄位
 // ==========================================
@@ -1252,55 +1331,9 @@ function handlePurchaseEnter(event, index, nextField) {
 
     }
 }
-
-        <!-- ================================= -->
-        <!-- 商品 -->
-        <!-- ================================= -->
-
-        <div class="purchase-items">
-
-            ${group.items.map((item, itemIndex) => `
-
-                <div class="purchase-item">
-
-                    <span class="material-symbols-outlined">
-                        inventory_2
-                    </span>
-
-                    <span class="product-name">
-                        ${item.productName}
-                    </span>
-
-                </div>
-
-
-                <div class="purchase-qty-editor">
-
-                    <div class="purchase-qty-label">
-                        採購數量
-                    </div>
-
-                    <input
-                        type="number"
-                        min="0"
-                        class="purchase-qty-input"
-                        id="purchase-qty-${index}-${itemIndex}"
-                        value="${item.minQty || 0}"
-                        onkeydown="
-        handleQtyEnter(
-            event,
-            ${index},
-            ${itemIndex},
-            ${group.items.length}
-        )
-    "
-                    >
-
-                </div>
-
-            `).join("")}
-
-        </div>
+// ==========================================
+// 採購數量：Enter 跳下一個商品
+// ==========================================
 function handleQtyEnter(event, index, itemIndex, totalItems) {
 
     if (event.key !== "Enter") {
@@ -1338,36 +1371,6 @@ function handleQtyEnter(event, index, itemIndex, totalItems) {
 
     }
 }
-
-        <!-- ================================= -->
-        <!-- 按鈕 -->
-        <!-- ================================= -->
-
-        <div class="card-footer">
-
-            <button
-                class="action-btn"
-                onclick="savePurchaseDraft(${index})">
-
-                <span class="btn-icon">💾</span>
-                <span>儲存修改</span>
-
-            </button>
-
-            <button
-                class="action-btn"
-                onclick="cancelEditPurchaseDraft(${index})">
-
-                <span class="btn-icon">↩️</span>
-                <span>取消編輯</span>
-
-            </button>
-
-        </div>
-
-    `;
-}
-
 // ==========================================
 // 儲存指定採購單修改
 // ==========================================

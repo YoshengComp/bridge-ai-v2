@@ -893,7 +893,14 @@ case "edit_purchase_draft":
 
     });
 
+case "edit_current_purchase":
 
+    console.log("✏️ 返回修改目前採購單");
+
+    // 目前先直接編輯第 1 張採購單
+    renderPurchaseDraft(0);
+
+    break;
 case "finish_edit_purchase":
 
     console.log("✅ 完成採購單編輯");
@@ -1887,7 +1894,7 @@ function showPurchaseFinalConfirm() {
             },
             {
                 text: "✏️ 返回修改",
-                action: "edit_purchase_draft"
+                action: "edit_current_purchase"
             }
         ],
         [],

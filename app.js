@@ -808,6 +808,10 @@ case "delivery_other":
 
     break;
             case "confirm_create_po":
+             // 建立採購單前先檢查資料
+    if (!validatePurchaseDraft()) {
+        break;
+    }
 
     await createPurchaseOrder();
 
@@ -1896,6 +1900,102 @@ function showPurchaseFinalConfirm() {
         false,
         true
     );
+}
+// ==========================================
+// 採購單建立前：資料完整性檢查
+// ==========================================
+function validatePurchaseDraft() {
+
+    console.log("🔍 開始檢查採購資料");
+    console.log("📦 採購草稿：", purchaseDraft);
+
+    const errors = [];
+
+    purchaseDraft.forEach((group, groupIndex) => {
+
+        // ------------------------------
+        // 交貨地址：必填
+        // ------------------------------
+        if (!group.deliveryAddress || !group.deliveryAddress.trim()) {
+
+            errors.push(
+                `🏢 ${group.vendorName}：未填寫交貨地址`
+            );
+
+        }
+
+        // ------------------------------
+        // 商品採購數量：必填且 > 0
+        // ------------------------------
+        if (!group.items || group.items.length === 0) {
+
+            errors.push(
+                `🏢 ${group.vendorName}：沒有採購商品`
+            );
+
+            return;
+        }
+
+        group.items.forEach((item, itemIndex) => {
+
+            const qty = Number(item.minQty);
+
+            if (!item.minQty || isNaN(qty) || qty <= 0) {
+
+                errors.push(
+                    `🏢 ${group.vendorName}／📦 ${item.productName}：採購數量必須大於 0`
+                );
+
+            }
+
+        });
+
+    });
+
+
+    // ==========================================
+    // 有錯誤
+    // ==========================================
+
+    if (errors.length > 0) {
+
+        console.warn("❌ 採購資料檢查失敗");
+        console.warn(errors);
+
+        let message =
+            "⚠️ 採購單尚有資料未完成\n\n";
+
+        errors.forEach((error, index) => {
+
+            message += `${index + 1}. ${error}\n`;
+
+        });
+
+        message +=
+            "\n請返回修改後，再重新確認。";
+
+
+        addAIMessage(
+            message,
+            [
+                {
+                    text: "✏️ 返回修改",
+                    action: "edit_purchase_draft"
+                }
+            ]
+        );
+
+        return false;
+    }
+
+
+    // ==========================================
+    // 全部通過
+    // ==========================================
+
+    console.log("✅ 採購資料檢查通過");
+
+    return true;
 }
 // ==========================================
 // 建立採購單

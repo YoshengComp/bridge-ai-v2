@@ -1013,7 +1013,24 @@ console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
 
                 <div class="purchase-items">
         `;
+<div class="purchase-header-info">
 
+    <div>
+        📍 交貨地址：
+        <strong>${group.deliveryAddress || "未設定"}</strong>
+    </div>
+
+    <div>
+        📅 要求到貨日：
+        <strong>${group.requestDate || "未設定"}</strong>
+    </div>
+
+    <div>
+        📝 備註：
+        <strong>${group.remark || "未設定"}</strong>
+    </div>
+
+</div>
         group.items.forEach(item => {
 
             message += `

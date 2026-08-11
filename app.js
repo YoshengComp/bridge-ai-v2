@@ -494,7 +494,7 @@ ${allowHtml ? text : formatMessage(text)}
 // ========================================
 // 編輯指定採購單
 // ========================================
-
+async function handleAction(action, url) {
 if (action.startsWith("edit_po_")) {
 
     console.log("🔍 收到編輯 Action：", action);

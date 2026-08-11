@@ -741,3 +741,89 @@ body {
 .purchase-header-info strong{
     color:#333;
 }
+/* ==========================================
+   Purchase Draft Edit
+   ========================================== */
+
+.purchase-edit-info{
+    margin:16px 0;
+    padding:14px;
+    background:#fafafa;
+    border-radius:12px;
+}
+
+.purchase-edit-field{
+    margin-bottom:14px;
+}
+
+.purchase-edit-field:last-child{
+    margin-bottom:0;
+}
+
+.purchase-edit-field label{
+    display:block;
+    margin-bottom:6px;
+
+    font-size:13px;
+    color:#666;
+    font-weight:600;
+}
+
+.purchase-edit-input{
+    width:100%;
+
+    padding:12px 14px;
+
+    border:1px solid #ddd;
+    border-radius:10px;
+
+    background:#fff;
+
+    font-size:15px;
+
+    box-sizing:border-box;
+    outline:none;
+
+    transition:.2s;
+}
+
+.purchase-edit-input:focus{
+    border-color:#ff7a00;
+    box-shadow:0 0 0 3px rgba(255,122,0,.12);
+}
+
+.purchase-edit-textarea{
+    min-height:80px;
+
+    resize:vertical;
+
+    font-family:
+        "Microsoft JhengHei",
+        Arial,
+        sans-serif;
+}
+
+
+/* 商品數量 */
+
+.purchase-qty-editor{
+    margin:4px 0 12px;
+}
+
+.purchase-qty-label{
+    font-size:13px;
+    color:#777;
+    margin-bottom:5px;
+}
+
+.purchase-qty-input{
+    width:100%;
+
+    padding:10px 12px;
+
+    border:1px solid #ddd;
+    border-radius:10px;
+
+    font-size:15px;
+    box-sizing:border-box;
+}

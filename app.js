@@ -958,39 +958,10 @@ case "edit_po_header":
 case "edit_current_po":
 
     console.log("✏️ 返回修改目前採購單");
+    console.log("目前採購資料：", purchaseDraft);
 
-    // 目前只有一張採購單
-    const editIndex = 0;
-
-    conversation.editPurchaseIndex = editIndex;
-
-    const editGroup = purchaseDraft[editIndex];
-
-    console.log("目前修改採購單：", editGroup);
-
-    conversation.step = "edit_menu";
-
-    addAIMessage(
-        `✏️ 目前編輯：${editGroup.vendorName}`,
-        [
-            {
-                text: "📍 交貨地址",
-                action: "edit_delivery"
-            },
-            {
-                text: "📅 要求到貨日",
-                action: "edit_request_date"
-            },
-            {
-                text: "📝 備註",
-                action: "edit_remark"
-            },
-            {
-                text: "❌ 返回確認",
-                action: "back_confirm"
-            }
-        ]
-    );
+    // 直接重新顯示採購單確認
+    showPurchaseFinalConfirm();
 
     break;
 

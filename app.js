@@ -1415,7 +1415,64 @@ function savePurchaseDraft(index) {
     if (remarkInput) {
         group.remark = remarkInput.value.trim();
     }
+// ==========================================
+// 儲存前必填檢查
+// ==========================================
 
+// ① 交貨地址：必填
+if (!deliveryInput || !deliveryInput.value.trim()) {
+
+    alert("⚠️ 請填寫交貨地址");
+
+    if (deliveryInput) {
+        deliveryInput.focus();
+    }
+
+    return;
+}
+
+
+// ② 要求到貨日：非必填
+// 不需要檢查
+
+
+// ③ 商品採購數量：每一項都必填，而且必須 > 0
+
+for (let itemIndex = 0; itemIndex < group.items.length; itemIndex++) {
+
+    const input = document.getElementById(
+        `purchase-qty-${index}-${itemIndex}`
+    );
+
+    if (!input) {
+
+        console.warn(
+            "找不到採購數量輸入框：",
+            index,
+            itemIndex
+        );
+
+        return;
+    }
+
+    const qty = Number(input.value);
+
+    if (!input.value.trim() || isNaN(qty) || qty <= 0) {
+
+        alert(
+            `⚠️ 請填寫「${group.items[itemIndex].productName}」的採購數量，且數量必須大於 0`
+        );
+
+        input.focus();
+        input.select();
+
+        return;
+    }
+}
+
+
+// ④ 備註：非必填
+// 不需要檢查
 
     // ==========================================
     // 儲存商品數量

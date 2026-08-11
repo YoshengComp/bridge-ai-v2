@@ -891,34 +891,58 @@ case "edit_purchase_draft":
 
     });
 
-    break;
 
-case "edit_po_header":
-
-purchaseDraft.forEach((group, index) => {
+    // ==========================================
+    // 全部編輯完成
+    // ==========================================
 
     addAIMessage(
-        `🏢 ${group.vendorName}
-
-📦 共 ${group.items.length} 項商品`,
+        "如果已完成所有採購單的修改，請點擊下方按鈕。",
         [
             {
-                text: "📍 編輯交貨資訊",
-                action: `edit_header_${index}`
+                text: "✅ 完成編輯",
+                action: "finish_edit_purchase"
             }
         ]
     );
 
-});
+    break;
 
-break;
-    default:
 
-        console.warn("未知 Action：" + action);
+case "finish_edit_purchase":
+
+    console.log("✅ 完成採購單編輯");
+    console.log("📦 最終採購資料：", purchaseDraft);
+
+    showPurchaseFinalConfirm();
+
+    break;
+
+
+case "edit_po_header":
+
+    purchaseDraft.forEach((group, index) => {
+
+        addAIMessage(
+            `🏢 ${group.vendorName}\n📦 共 ${group.items.length} 項商品`,
+            [
+                {
+                    text: "📍 編輯交貨資訊",
+                    action: `edit_header_${index}`
+                }
+            ]
+        );
+
+    });
+
+    break;
+
+
+default:
+
+    console.warn("未知 Action：" + action);
 
 }
-
-} 
 // ==========================================
 // 商品挑選
 // ==========================================
@@ -1530,7 +1554,7 @@ group.items.forEach((item, itemIndex) => {
     // 重新顯示這一張採購單
     // ==========================================
 
-    renderPurchaseDraft(index);
+  renderPurchaseDraft(index);
 
 }
 // ==========================================
@@ -1775,7 +1799,102 @@ function createAnswerCard(answer){
 function showInventoryDetail() {
     alert("下一步我們會改成顯示商品明細");
 }
+// ==========================================
+// 顯示採購單最終確認
+// ==========================================
+function showPurchaseFinalConfirm() {
 
+    console.log("📋 顯示採購單最終確認");
+    console.log("目前採購資料：", purchaseDraft);
+
+    let message = `
+        <div class="purchase-final-confirm">
+
+            <div class="purchase-confirm-title">
+                📋 採購單確認
+            </div>
+    `;
+
+    purchaseDraft.forEach((group, index) => {
+
+        message += `
+            <div class="purchase-confirm-vendor">
+
+                <div class="purchase-confirm-vendor-name">
+                    🏢 ${group.vendorName}
+                </div>
+
+                <div class="purchase-confirm-info">
+                    📍 交貨地址：
+                    <strong>${group.deliveryAddress || "未填寫"}</strong>
+                </div>
+
+                <div class="purchase-confirm-info">
+                    📅 要求到貨日：
+                    <strong>${group.requestDate || "未填寫"}</strong>
+                </div>
+
+                <div class="purchase-confirm-info">
+                    📝 備註：
+                    <strong>${group.remark || "無"}</strong>
+                </div>
+
+                <div class="purchase-confirm-items">
+        `;
+
+        group.items.forEach(item => {
+
+            message += `
+                <div class="purchase-confirm-item">
+
+                    <div>
+                        📦 ${item.productName}
+                    </div>
+
+                    <div>
+                        數量：
+                        <strong>${item.minQty}</strong>
+                    </div>
+
+                    <div>
+                        單價：
+                        <strong>$${item.price || 0}</strong>
+                    </div>
+
+                </div>
+            `;
+
+        });
+
+        message += `
+                </div>
+
+            </div>
+        `;
+
+    });
+
+    message += `
+        </div>
+    `;
+
+    addAIMessage(
+        message,
+        [
+            {
+                text: "✅ 確認建立採購單",
+                action: "confirm_create_po"
+            },
+            {
+                text: "✏️ 返回修改",
+                action: "edit_purchase_draft"
+            }
+        ],
+        [],
+        false,
+        true
+    );
+}
 // ==========================================
 // 建立採購單
 // ==========================================

@@ -913,7 +913,7 @@ case "edit_purchase_draft":
             [
                 {
                     text: "✏️ 編輯此採購單",
-                    action: `edit_po_${index}`
+                    action: "edit_po_" + index
                 }
             ]
         );

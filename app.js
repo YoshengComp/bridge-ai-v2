@@ -492,52 +492,79 @@ ${allowHtml ? text : formatMessage(text)}
 //scrollBottom();
 }
 // ========================================
-// Bridge AI 動作
+// 編輯指定採購單
 // ========================================
 
-async function handleAction(action, url) {
 if (action.startsWith("edit_po_")) {
 
-        const index = Number(
-            action.replace("edit_po_", "")
-        );
+    console.log("🔍 收到編輯 Action：", action);
 
-        conversation.editPurchaseIndex = index;
+    const match = action.match(/^edit_po_(\d+)$/);
 
-        const group = purchaseDraft[index];
+    if (!match) {
 
-        console.log(
-            "✏️ 選擇編輯採購單：",
-            index,
-            group
-        );
-
-        conversation.step = "edit_menu";
-
-        addAIMessage(
-            `✏️ 目前編輯：${group.vendorName}`,
-            [
-                {
-                    text: "📍 交貨地址",
-                    action: "edit_delivery"
-                },
-                {
-                    text: "📅 要求到貨日",
-                    action: "edit_request_date"
-                },
-                {
-                    text: "📝 備註",
-                    action: "edit_remark"
-                },
-                {
-                    text: "❌ 返回",
-                    action: "back_confirm"
-                }
-            ]
+        console.error(
+            "❌ 無法解析採購單編號，Action：",
+            action
         );
 
         return;
     }
+
+    const index = parseInt(match[1], 10);
+
+    console.log(
+        "🔢 解析出的採購單 Index：",
+        index
+    );
+
+    const group = purchaseDraft[index];
+
+    if (!group) {
+
+        console.error(
+            "❌ 找不到指定採購單：",
+            index,
+            purchaseDraft
+        );
+
+        return;
+    }
+
+    conversation.editPurchaseIndex = index;
+
+    console.log(
+        "✏️ 選擇編輯採購單：",
+        index,
+        group
+    );
+
+    conversation.step = "edit_menu";
+
+    addAIMessage(
+        `✏️ 目前編輯：${group.vendorName}`,
+        [
+            {
+                text: "📍 交貨地址",
+                action: "edit_delivery"
+            },
+            {
+                text: "📅 要求到貨日",
+                action: "edit_request_date"
+            },
+            {
+                text: "📝 備註",
+                action: "edit_remark"
+            },
+            {
+                text: "❌ 返回",
+                action: "back_confirm"
+            }
+        ]
+    );
+
+    return;
+}
 
 
     switch (action) {

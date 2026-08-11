@@ -1509,6 +1509,21 @@ for (let itemIndex = 0; itemIndex < group.items.length; itemIndex++) {
     console.log("📍 交貨地址：", group.deliveryAddress);
     console.log("📅 要求到貨日：", group.requestDate);
     console.log("📝 備註：", group.remark);
+    console.log("📦 商品資料：");
+
+group.items.forEach((item, itemIndex) => {
+
+    console.log(
+        `商品 ${itemIndex + 1}：`,
+        {
+            productCode: item.productCode,
+            productName: item.productName,
+            price: item.price,
+            minQty: item.minQty
+        }
+    );
+
+});
 
 
     // ==========================================

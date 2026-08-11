@@ -1894,7 +1894,7 @@ function showPurchaseFinalConfirm() {
             },
             {
                 text: "✏️ 返回修改",
-                action: "edit_current_purchase"
+                action: "edit_po_${index}"
             }
         ],
         [],

@@ -894,7 +894,31 @@ case "edit_purchase_draft":
         );
 
     });
+ // ==========================================
+    // 全部編輯完成
+    // ==========================================
 
+    addAIMessage(
+        "如果已完成所有採購單的修改，請點擊下方按鈕。",
+        [
+            {
+                text: "✅ 完成編輯",
+                action: "finish_edit_purchase"
+            }
+        ]
+    );
+
+    break;
+
+
+case "finish_edit_purchase":
+
+    console.log("✅ 完成採購單編輯");
+    console.log("📦 最終採購資料：", purchaseDraft);
+
+    showPurchaseFinalConfirm();
+
+    break;
 
     // ==========================================
     // 全部編輯完成

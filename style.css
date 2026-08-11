@@ -724,6 +724,15 @@ body {
     line-height:1.9;
     color:#555;
 }
+.purchase-header-info {
+    margin-top: 12px;
+    padding: 12px;
+    background: #fafafa;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.9;
+    color: #555;
+}
 
 .purchase-header-info div{
     margin:4px 0;

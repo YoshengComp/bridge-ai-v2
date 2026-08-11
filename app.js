@@ -1147,7 +1147,10 @@ function editPurchaseDraft(index) {
             📦 共 ${group.items.length} 項商品
         </div>
 
+        <!-- ================================= -->
         <!-- 交貨資訊 -->
+        <!-- ================================= -->
+
         <div class="purchase-edit-info">
 
             <div class="purchase-edit-field">
@@ -1156,6 +1159,7 @@ function editPurchaseDraft(index) {
 
                 <input
                     type="text"
+                    class="purchase-edit-input"
                     id="delivery-address-${index}"
                     value="${group.deliveryAddress || ""}"
                     placeholder="請輸入交貨地址"
@@ -1170,6 +1174,7 @@ function editPurchaseDraft(index) {
 
                 <input
                     type="date"
+                    class="purchase-edit-input"
                     id="request-date-${index}"
                     value="${group.requestDate || ""}"
                 >
@@ -1181,17 +1186,20 @@ function editPurchaseDraft(index) {
 
                 <label>📝 備註</label>
 
-                <input
-                    type="text"
+                <textarea
+                    class="purchase-edit-input purchase-edit-textarea"
                     id="remark-${index}"
-                    value="${group.remark || ""}"
                     placeholder="請輸入備註"
-                >
+                >${group.remark || ""}</textarea>
 
             </div>
 
         </div>
 
+
+        <!-- ================================= -->
+        <!-- 商品 -->
+        <!-- ================================= -->
 
         <div class="purchase-items">
 
@@ -1208,6 +1216,7 @@ function editPurchaseDraft(index) {
                     </span>
 
                 </div>
+
 
                 <div class="purchase-qty-editor">
 
@@ -1230,6 +1239,10 @@ function editPurchaseDraft(index) {
         </div>
 
 
+        <!-- ================================= -->
+        <!-- 按鈕 -->
+        <!-- ================================= -->
+
         <div class="card-footer">
 
             <button
@@ -1240,7 +1253,6 @@ function editPurchaseDraft(index) {
                 <span>儲存修改</span>
 
             </button>
-
 
             <button
                 class="action-btn"
@@ -1256,9 +1268,8 @@ function editPurchaseDraft(index) {
     `;
 }
 // ==========================================
-// 儲存採購單修改
+// 儲存指定採購單修改
 // ==========================================
-
 function savePurchaseDraft(index) {
 
     const group = purchaseDraft[index];
@@ -1271,7 +1282,7 @@ function savePurchaseDraft(index) {
     // 儲存交貨資訊
     // ==========================================
 
-    const deliveryAddressInput =
+    const deliveryInput =
         document.getElementById(`delivery-address-${index}`);
 
     const requestDateInput =
@@ -1281,21 +1292,16 @@ function savePurchaseDraft(index) {
         document.getElementById(`remark-${index}`);
 
 
-    if (deliveryAddressInput) {
-        group.deliveryAddress =
-            deliveryAddressInput.value.trim();
+    if (deliveryInput) {
+        group.deliveryAddress = deliveryInput.value.trim();
     }
-
 
     if (requestDateInput) {
-        group.requestDate =
-            requestDateInput.value;
+        group.requestDate = requestDateInput.value;
     }
 
-
     if (remarkInput) {
-        group.remark =
-            remarkInput.value.trim();
+        group.remark = remarkInput.value.trim();
     }
 
 
@@ -1310,70 +1316,50 @@ function savePurchaseDraft(index) {
         );
 
         if (!input) {
-
             console.warn(
                 "找不到採購數量輸入框：",
                 index,
                 itemIndex
             );
-
             return;
         }
 
-
         let qty = Number(input.value);
-
 
         if (isNaN(qty) || qty < 0) {
             qty = 0;
         }
-
 
         item.minQty = qty;
 
     });
 
 
-    // ==========================================
-    // 確認儲存結果
-    // ==========================================
-
     console.log("💾 儲存後資料：", group);
 
-    console.log(
-        "📍 交貨地址：",
-        group.deliveryAddress
-    );
-
-    console.log(
-        "📅 要求到貨日：",
-        group.requestDate
-    );
-
-    console.log(
-        "📝 備註：",
-        group.remark
-    );
+    console.log("📍 交貨地址：", group.deliveryAddress);
+    console.log("📅 要求到貨日：", group.requestDate);
+    console.log("📝 備註：", group.remark);
 
 
     // ==========================================
-    // 恢復這張採購單的一般顯示
+    // 重新顯示這一張採購單
     // ==========================================
 
     renderPurchaseDraft(index);
 
 }
 // ==========================================
-// 重新顯示指定採購單
+// 顯示指定採購單
 // ==========================================
-
 function renderPurchaseDraft(index) {
 
     const group = purchaseDraft[index];
 
-    const card = document.getElementById(
-        `purchase-draft-${index}`
-    );
+    console.log("🔄 重新顯示第", index + 1, "張採購單");
+    console.log("目前資料：", group);
+
+    const card = document.getElementById(`purchase-draft-${index}`);
 
     if (!card) {
         console.error("找不到採購單卡片：", index);
@@ -1398,6 +1384,32 @@ function renderPurchaseDraft(index) {
             📦 共 ${group.items.length} 項商品
         </div>
 
+        <!-- 採購單資訊 -->
+        <div class="purchase-meta">
+
+            <div class="purchase-meta-row">
+                <span>📍 交貨地址</span>
+                <strong>
+                    ${group.deliveryAddress || "未設定"}
+                </strong>
+            </div>
+
+            <div class="purchase-meta-row">
+                <span>📅 要求到貨日</span>
+                <strong>
+                    ${group.requestDate || "未設定"}
+                </strong>
+            </div>
+
+            <div class="purchase-meta-row">
+                <span>📝 備註</span>
+                <strong>
+                    ${group.remark || "未設定"}
+                </strong>
+            </div>
+
+        </div>
+
         <div class="purchase-items">
 
             ${group.items.map(item => `
@@ -1412,7 +1424,7 @@ function renderPurchaseDraft(index) {
                         ${item.productName}
                     </span>
 
-                    <span class="product-qty">
+                    <span class="purchase-qty">
                         × ${item.minQty || 0}
                     </span>
 

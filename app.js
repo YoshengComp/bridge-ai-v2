@@ -543,8 +543,6 @@ async function handleAction(action, url) {
             
 case "agent":
 
-    console.log("agent 被點擊了");
-
     let message = "🤖 好的，我將協助您建立採購單。\n\n";
 
     message += "請問是否將目前缺貨商品全部加入採購單？\n\n";
@@ -692,13 +690,11 @@ case "procurement_all":
         // ⭐ 直接顯示採購草稿
         // 一間供應商 = 一張 AI Card
         // ==========================================
-console.log("🔥🔥🔥 準備呼叫 showPurchaseDraft 🔥🔥🔥");
 
-        showPurchaseDraft();
+showPurchaseDraft();
 
     }, 600);
 
-console.log("🔥🔥🔥 showPurchaseDraft 呼叫結束 🔥🔥🔥");
     break;
   
     case "create_po":
@@ -763,7 +759,7 @@ case "delivery_other":
 
     conversation.step = "input_delivery_address";
 
-    console.log("等待使用者輸入交貨地址");
+  
 
     addAIMessage("✏️ 請直接輸入交貨地址。");
 
@@ -967,9 +963,8 @@ function toggleProduct(index){
 
 function showPurchaseDraft() {
 
-    console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
     console.log("purchaseDraft =", purchaseDraft);
-    console.log("purchaseDraft.length =", purchaseDraft.length);
+
 
     purchaseDraft.forEach((group, index) => {
      let message = `

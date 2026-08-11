@@ -1163,6 +1163,7 @@ function editPurchaseDraft(index) {
                     id="delivery-address-${index}"
                     value="${group.deliveryAddress || ""}"
                     placeholder="請輸入交貨地址"
+                     onkeydown="handlePurchaseEnter(event, ${index}, 'request-date')"
                 >
 
             </div>
@@ -1177,6 +1178,7 @@ function editPurchaseDraft(index) {
                     class="purchase-edit-input"
                     id="request-date-${index}"
                     value="${group.requestDate || ""}"
+                      onkeydown="handlePurchaseEnter(event, ${index}, 'remark')"
                 >
 
             </div>
@@ -1190,12 +1192,66 @@ function editPurchaseDraft(index) {
                     class="purchase-edit-input purchase-edit-textarea"
                     id="remark-${index}"
                     placeholder="請輸入備註"
+                     onkeydown="handlePurchaseEnter(event, ${index}, 'qty-0')"
                 >${group.remark || ""}</textarea>
 
             </div>
 
         </div>
+// ==========================================
+// 採購單編輯：Enter 跳到下一個欄位
+// ==========================================
+function handlePurchaseEnter(event, index, nextField) {
 
+    if (event.key !== "Enter") {
+        return;
+    }
+
+    // textarea 不讓 Enter 直接換行
+    event.preventDefault();
+
+    let nextElement = null;
+
+    if (nextField === "request-date") {
+
+        nextElement =
+            document.getElementById(`request-date-${index}`);
+
+    }
+
+    else if (nextField === "remark") {
+
+        nextElement =
+            document.getElementById(`remark-${index}`);
+
+    }
+
+    else if (nextField.startsWith("qty-")) {
+
+        const itemIndex =
+            Number(nextField.replace("qty-", ""));
+
+        nextElement =
+            document.getElementById(
+                `purchase-qty-${index}-${itemIndex}`
+            );
+
+    }
+
+    if (nextElement) {
+
+        nextElement.focus();
+
+        // 日期欄位如果需要，可以讓游標直接進入
+        if (
+            nextElement.tagName === "INPUT" &&
+            nextElement.type !== "date"
+        ) {
+            nextElement.select();
+        }
+
+    }
+}
 
         <!-- ================================= -->
         <!-- 商品 -->
@@ -1230,6 +1286,14 @@ function editPurchaseDraft(index) {
                         class="purchase-qty-input"
                         id="purchase-qty-${index}-${itemIndex}"
                         value="${item.minQty || 0}"
+                        onkeydown="
+        handleQtyEnter(
+            event,
+            ${index},
+            ${itemIndex},
+            ${group.items.length}
+        )
+    "
                     >
 
                 </div>
@@ -1237,7 +1301,43 @@ function editPurchaseDraft(index) {
             `).join("")}
 
         </div>
+function handleQtyEnter(event, index, itemIndex, totalItems) {
 
+    if (event.key !== "Enter") {
+        return;
+    }
+
+    event.preventDefault();
+
+    // 還有下一個商品
+    if (itemIndex + 1 < totalItems) {
+
+        const nextInput =
+            document.getElementById(
+                `purchase-qty-${index}-${itemIndex + 1}`
+            );
+
+        if (nextInput) {
+            nextInput.focus();
+            nextInput.select();
+        }
+
+    }
+
+    // 最後一個商品
+    else {
+
+        const saveButton =
+            document.querySelector(
+                `#purchase-draft-${index} .card-footer .action-btn`
+            );
+
+        if (saveButton) {
+            saveButton.focus();
+        }
+
+    }
+}
 
         <!-- ================================= -->
         <!-- 按鈕 -->
@@ -1267,6 +1367,7 @@ function editPurchaseDraft(index) {
 
     `;
 }
+
 // ==========================================
 // 儲存指定採購單修改
 // ==========================================

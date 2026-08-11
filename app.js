@@ -979,7 +979,7 @@ console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
         console.log("items =", group.items);
 
         let message = `
-            <div class="purchase-draft">
+        <div class="purchase-draft" id="purchase-draft-${index}">
 
                 <div class="purchase-header">
 
@@ -1056,17 +1056,80 @@ function editPurchaseDraft(index) {
 
     const group = purchaseDraft[index];
 
-    console.log("目前編輯的採購單：", group);
+    console.log("✏️ 編輯第", index + 1, "張採購單");
+    console.log("目前資料：", group);
 
-    addAIMessage(
-        `✏️ 編輯採購單\n\n🏢 ${group.vendorName}\n📦 共 ${group.items.length} 項商品`,
-        [
-            {
-                text: "📝 編輯採購內容",
-                action: `edit_po_${index}`
-            }
-        ]
-    );
+    const card = document.getElementById(`purchase-draft-${index}`);
+
+    if (!card) {
+        console.error("找不到採購單卡片：", index);
+        return;
+    }
+
+    card.innerHTML = `
+
+        <div class="purchase-header">
+
+            <span class="material-symbols-outlined">
+                business
+            </span>
+
+            <strong>
+                ${group.vendorName}
+            </strong>
+
+        </div>
+
+        <div class="purchase-info">
+            📦 共 ${group.items.length} 項商品
+        </div>
+
+        <div class="purchase-items">
+
+            ${group.items.map((item, itemIndex) => `
+
+                <div class="purchase-item">
+
+                    <span class="material-symbols-outlined">
+                        inventory_2
+                    </span>
+
+                    <span class="product-name">
+                        ${item.productName}
+                    </span>
+
+                </div>
+
+            `).join("")}
+
+        </div>
+
+        <div class="card-footer">
+
+            <button
+                class="action-btn"
+                onclick="savePurchaseDraft(${index})">
+
+                <span class="btn-icon">💾</span>
+
+                <span>儲存修改</span>
+
+            </button>
+
+            <button
+                class="action-btn"
+                onclick="cancelEditPurchaseDraft(${index})">
+
+                <span class="btn-icon">↩️</span>
+
+                <span>取消編輯</span>
+
+            </button>
+
+        </div>
+
+    `;
+
 }
 // ==========================================
 // Loading

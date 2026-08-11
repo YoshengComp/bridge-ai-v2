@@ -955,7 +955,44 @@ case "edit_po_header":
     });
 
     break;
+case "edit_current_po":
 
+    console.log("✏️ 返回修改目前採購單");
+
+    // 目前只有一張採購單
+    const editIndex = 0;
+
+    conversation.editPurchaseIndex = editIndex;
+
+    const editGroup = purchaseDraft[editIndex];
+
+    console.log("目前修改採購單：", editGroup);
+
+    conversation.step = "edit_menu";
+
+    addAIMessage(
+        `✏️ 目前編輯：${editGroup.vendorName}`,
+        [
+            {
+                text: "📍 交貨地址",
+                action: "edit_delivery"
+            },
+            {
+                text: "📅 要求到貨日",
+                action: "edit_request_date"
+            },
+            {
+                text: "📝 備註",
+                action: "edit_remark"
+            },
+            {
+                text: "❌ 返回確認",
+                action: "back_confirm"
+            }
+        ]
+    );
+
+    break;
 
 default:
 
@@ -1921,7 +1958,7 @@ function showPurchaseFinalConfirm() {
             },
             {
                 text: "✏️ 返回修改",
-                action: "edit_po_${index}"
+                action: "edit_current_po"
             }
         ],
         [],

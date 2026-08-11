@@ -402,19 +402,7 @@ body {
 
 .ai-message {
     margin: 16px 0;
-
     animation: fadeIn .25s ease;
-
-    background: #ffffff;
-
-    border-radius: 18px;
-
-    padding: 20px;
-
-    box-shadow:
-        0 5px 18px rgba(0, 0, 0, .08);
-
-    border: 1px solid #ececec;
 }
 
 
@@ -660,22 +648,6 @@ body {
 }
 
 
-/* ==========================================
-   AI Message 外層卡片修正
-   避免 .ai-card + .ai-message 雙重白框
-========================================== */
-
-.ai-card:has(.ai-message) {
-    background: transparent;
-
-    border-radius: 0;
-
-    padding: 0;
-
-    box-shadow: none;
-
-    border: none;
-}
 /* ==========================================
    採購數量輸入
 ========================================== */

@@ -979,7 +979,8 @@ function toggleProduct(index){
 // ==========================================
 
 function showPurchaseDraft() {
-console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
+
+    console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
     console.log("purchaseDraft =", purchaseDraft);
     console.log("purchaseDraft.length =", purchaseDraft.length);
 
@@ -993,7 +994,7 @@ console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
         console.log("items =", group.items);
 
         let message = `
-        <div class="purchase-draft" id="purchase-draft-${index}">
+            <div class="purchase-draft" id="purchase-draft-${index}">
 
                 <div class="purchase-header">
 
@@ -1011,26 +1012,38 @@ console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
                     📦 共 ${group.items.length} 項商品
                 </div>
 
+                <div class="purchase-header-info">
+
+                    <div>
+                        📍 交貨地址：
+                        <strong>
+                            ${group.deliveryAddress || "未設定"}
+                        </strong>
+                    </div>
+
+                    <div>
+                        📅 要求到貨日：
+                        <strong>
+                            ${group.requestDate || "未設定"}
+                        </strong>
+                    </div>
+
+                    <div>
+                        📝 備註：
+                        <strong>
+                            ${group.remark || "未設定"}
+                        </strong>
+                    </div>
+
+                </div>
+
                 <div class="purchase-items">
         `;
-<div class="purchase-header-info">
 
-    <div>
-        📍 交貨地址：
-        <strong>${group.deliveryAddress || "未設定"}</strong>
-    </div>
+        // ================================
+        // 商品
+        // ================================
 
-    <div>
-        📅 要求到貨日：
-        <strong>${group.requestDate || "未設定"}</strong>
-    </div>
-
-    <div>
-        📝 備註：
-        <strong>${group.remark || "未設定"}</strong>
-    </div>
-
-</div>
         group.items.forEach(item => {
 
             message += `
@@ -1044,22 +1057,37 @@ console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
                         ${item.productName}
                     </span>
 
+                    <strong style="margin-left:auto;color:#ff7a00;">
+                        × ${item.minQty || 0}
+                    </strong>
+
                 </div>
             `;
 
         });
 
+        // ================================
+        // 編輯按鈕
+        // ================================
+
         message += `
+
                 </div>
-<button
-    class="action-btn"
-    onclick="editPurchaseDraft(${index})">
 
-    <span class="btn-icon">✏️</span>
+                <div class="card-footer">
 
-    <span>編輯此採購單</span>
+                    <button
+                        class="action-btn"
+                        onclick="editPurchaseDraft(${index})">
 
-</button>
+                        <span class="btn-icon">✏️</span>
+
+                        <span>編輯此採購單</span>
+
+                    </button>
+
+                </div>
+
             </div>
         `;
 
@@ -1073,11 +1101,16 @@ console.log("🚨🚨🚨 新版 showPurchaseDraft 被執行了 🚨🚨🚨");
             true
         );
 
-        console.log("第", index + 1, "張 AI 卡片建立完成");
+        console.log(
+            "第",
+            index + 1,
+            "張 AI 卡片建立完成"
+        );
 
     });
 
     console.log("===== showPurchaseDraft 結束 =====");
+
 }
 // ==========================================
 // 編輯指定供應商的採購單

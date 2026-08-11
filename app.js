@@ -498,6 +498,49 @@ ${allowHtml ? text : formatMessage(text)}
 // ========================================
 
 async function handleAction(action, url) {
+if (action.startsWith("edit_po_")) {
+
+        const index = Number(
+            action.replace("edit_po_", "")
+        );
+
+        conversation.editPurchaseIndex = index;
+
+        const group = purchaseDraft[index];
+
+        console.log(
+            "✏️ 選擇編輯採購單：",
+            index,
+            group
+        );
+
+        conversation.step = "edit_menu";
+
+        addAIMessage(
+            `✏️ 目前編輯：${group.vendorName}`,
+            [
+                {
+                    text: "📍 交貨地址",
+                    action: "edit_delivery"
+                },
+                {
+                    text: "📅 要求到貨日",
+                    action: "edit_request_date"
+                },
+                {
+                    text: "📝 備註",
+                    action: "edit_remark"
+                },
+                {
+                    text: "❌ 返回",
+                    action: "back_confirm"
+                }
+            ]
+        );
+
+        return;
+    }
+
 
     switch (action) {
 

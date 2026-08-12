@@ -924,8 +924,8 @@ case "edit_current_purchase":
 
     console.log("✏️ 返回修改目前採購單");
 
-    // 目前先直接編輯第 1 張採購單
-    renderPurchaseDraft(0);
+    // 直接進入目前第 1 張採購單的編輯模式
+    editPurchaseDraft(0);
 
     break;
 case "finish_edit_purchase":

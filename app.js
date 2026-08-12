@@ -899,25 +899,12 @@ case "delivery_other":
     break;
 case "edit_purchase_draft":
 
-    console.log("進入採購草稿編輯");
+    console.log("✏️ 返回修改目前採購單");
 
-    addAIMessage(
-        "✏️ 請選擇要編輯的採購單"
-    );
+    // 直接進入目前這張採購單的編輯模式
+    editPurchaseDraft(0);
 
-    purchaseDraft.forEach((group, index) => {
-
-        addAIMessage(
-            `🏢 ${group.vendorName}\n📦 共 ${group.items.length} 項商品`,
-            [
-                {
-                    text: "✏️ 編輯此採購單",
-                    action: "edit_po_" + index
-                }
-            ]
-        );
-
-    });
+    break;
 
 case "edit_current_purchase":
 

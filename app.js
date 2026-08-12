@@ -54,7 +54,6 @@ let purchaseDraft = [];
 // conversation 不再保存 purchaseDraft
 //
 // ======================================================
-
 let conversation = {
 
     // 目前聊天流程

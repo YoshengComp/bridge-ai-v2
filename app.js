@@ -906,14 +906,7 @@ case "edit_purchase_draft":
 
     break;
 
-case "edit_current_purchase":
 
-    console.log("✏️ 返回修改目前採購單");
-
-    // 直接進入目前第 1 張採購單的編輯模式
-    editPurchaseDraft(0);
-
-    break;
 case "finish_edit_purchase":
 
     console.log("✅ 完成採購單編輯");

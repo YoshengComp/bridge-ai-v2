@@ -939,8 +939,7 @@ case "edit_current_po":
     console.log("✏️ 返回修改目前採購單");
     console.log("目前採購資料：", purchaseDraft);
 
-    // 直接重新顯示採購單確認
-    showPurchaseFinalConfirm();
+     editCurrentPurchaseConfirm();
 
     break;
 
@@ -1918,6 +1917,196 @@ function showPurchaseFinalConfirm() {
     );
 }
 // ==========================================
+// 將目前「採購單最終確認」切換成編輯模式
+// 不新增 AI 訊息
+// ==========================================
+function editCurrentPurchaseConfirm() {
+
+    console.log("✏️ 進入目前採購單編輯模式");
+    console.log("目前採購資料：", purchaseDraft);
+
+    // 找到最後一張「採購單最終確認」訊息
+    const messagesList = document.querySelectorAll(
+        ".ai-message.purchase-final-message"
+    );
+
+    if (!messagesList.length) {
+
+        console.error("❌ 找不到採購單最終確認訊息");
+        return;
+
+    }
+
+    const messageDiv = messagesList[messagesList.length - 1];
+
+    const cardBody = messageDiv.querySelector(".card-body");
+    const cardFooter = messageDiv.querySelector(".card-footer");
+
+    if (!cardBody || !cardFooter) {
+
+        console.error("❌ 找不到採購單確認內容區域");
+        return;
+
+    }
+
+    // ==========================================
+    // 目前先編輯第 1 張採購單
+    // ==========================================
+
+    const index = 0;
+    const group = purchaseDraft[index];
+
+    if (!group) {
+
+        console.error("❌ 找不到目前採購單資料");
+        return;
+
+    }
+
+    console.log("✏️ 編輯第", index + 1, "張採購單");
+    console.log("目前資料：", group);
+
+
+    // ==========================================
+    // 直接把「確認內容」改成「編輯內容」
+    // ==========================================
+
+    cardBody.innerHTML = `
+
+        <div class="purchase-final-confirm">
+
+            <div class="purchase-confirm-title">
+                ✏️ 編輯採購單
+            </div>
+
+
+            <div class="purchase-edit-info">
+
+                <div class="purchase-edit-field">
+
+                    <label>🏢 供應商</label>
+
+                    <strong>
+                        ${group.vendorName}
+                    </strong>
+
+                </div>
+
+
+                <div class="purchase-edit-field">
+
+                    <label>📍 交貨地址</label>
+
+                    <input
+                        type="text"
+                        class="purchase-edit-input"
+                        id="delivery-address-${index}"
+                        value="${group.deliveryAddress || ""}"
+                        placeholder="請輸入交貨地址"
+                    >
+
+                </div>
+
+
+                <div class="purchase-edit-field">
+
+                    <label>📅 要求到貨日</label>
+
+                    <input
+                        type="date"
+                        class="purchase-edit-input"
+                        id="request-date-${index}"
+                        value="${group.requestDate || ""}"
+                    >
+
+                </div>
+
+
+                <div class="purchase-edit-field">
+
+                    <label>📝 備註</label>
+
+                    <textarea
+                        class="purchase-edit-input purchase-edit-textarea"
+                        id="remark-${index}"
+                        placeholder="請輸入備註"
+                    >${group.remark || ""}</textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="purchase-items">
+
+                ${group.items.map((item, itemIndex) => `
+
+                    <div class="purchase-item">
+
+                        <span class="material-symbols-outlined">
+                            inventory_2
+                        </span>
+
+                        <span class="product-name">
+                            ${item.productName}
+                        </span>
+
+                    </div>
+
+
+                    <div class="purchase-qty-editor">
+
+                        <div class="purchase-qty-label">
+                            採購數量
+                        </div>
+
+                        <input
+                            type="number"
+                            min="0"
+                            class="purchase-qty-input"
+                            id="purchase-qty-${index}-${itemIndex}"
+                            value="${item.minQty || 0}"
+                        >
+
+                    </div>
+
+                `).join("")}
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    // ==========================================
+    // 修改原本按鈕
+    // ==========================================
+
+    cardFooter.innerHTML = `
+
+        <button
+            class="action-btn primary"
+            onclick="savePurchaseDraft(${index})">
+
+            <span class="btn-icon">💾</span>
+            <span>儲存修改</span>
+
+        </button>
+
+        <button
+            class="action-btn"
+            onclick="cancelEditPurchaseConfirm()">
+
+            <span class="btn-icon">↩️</span>
+            <span>取消編輯</span>
+
+        </button>
+
+    `;
+
+}
+// ==========================================
 // 採購單建立前：資料完整性檢查
 // ==========================================
 function validatePurchaseDraft() {
@@ -2143,15 +2332,7 @@ function showCreatedPOs() {
         ]
     );
 
-}
-// ==========================================
-// 詢問交貨地址
-// ==========================================
-function askDeliveryAddress(){
 
-    console.warn("askDeliveryAddress 已停用");
-
-}
 // ======================================================
 // AI Agent Framework
 //

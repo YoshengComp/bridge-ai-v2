@@ -1913,7 +1913,8 @@ function showPurchaseFinalConfirm() {
         ],
         [],
         false,
-        true
+        true,
+    "purchase-final-message"
     );
 }
 // ==========================================

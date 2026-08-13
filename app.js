@@ -1976,6 +1976,7 @@ function showPurchaseFinalConfirm() {
                 </div>
 
                 <div class="purchase-confirm-items">
+
         `;
 
         group.items.forEach(item => {
@@ -2003,6 +2004,20 @@ function showPurchaseFinalConfirm() {
         });
 
         message += `
+
+                </div>
+
+                <div class="purchase-confirm-edit">
+
+                    <button
+                        class="action-btn"
+                        onclick="editCurrentPurchaseConfirm(${index})">
+
+                        <span class="btn-icon">✏️</span>
+                        <span>編輯此採購單</span>
+
+                    </button>
+
                 </div>
 
             </div>
@@ -2020,71 +2035,84 @@ function showPurchaseFinalConfirm() {
             {
                 text: "✅ 確認建立採購單",
                 action: "confirm_create_po"
-            },
-            {
-                text: "✏️ 返回修改",
-                action: "edit_current_po"
             }
         ],
         [],
         false,
         true,
-    "purchase-final-message"
+        "purchase-final-message"
     );
 }
 // ==========================================
 // 將目前「採購單最終確認」切換成編輯模式
 // 不新增 AI 訊息
 // ==========================================
-function editCurrentPurchaseConfirm() {
+function editCurrentPurchaseConfirm(index) {
 
-    console.log("✏️ 進入目前採購單編輯模式");
+    console.log("✏️ 進入採購單編輯模式");
+    console.log("編輯第", index + 1, "張採購單");
+
     console.log("目前採購資料：", purchaseDraft);
 
+    // ==========================================
     // 找到最後一張「採購單最終確認」訊息
+    // ==========================================
+
     const messagesList = document.querySelectorAll(
         ".ai-message.purchase-final-message"
     );
 
     if (!messagesList.length) {
 
-        console.error("❌ 找不到採購單最終確認訊息");
-        return;
+        console.error(
+            "❌ 找不到採購單最終確認訊息"
+        );
 
+        return;
     }
 
-    const messageDiv = messagesList[messagesList.length - 1];
+    const messageDiv =
+        messagesList[messagesList.length - 1];
 
-    const cardBody = messageDiv.querySelector(".card-body");
-    const cardFooter = messageDiv.querySelector(".card-footer");
+    const cardBody =
+        messageDiv.querySelector(".card-body");
+
+    const cardFooter =
+        messageDiv.querySelector(".card-footer");
 
     if (!cardBody || !cardFooter) {
 
-        console.error("❌ 找不到採購單確認內容區域");
-        return;
+        console.error(
+            "❌ 找不到採購單確認內容區域"
+        );
 
+        return;
     }
 
     // ==========================================
-    // 目前先編輯第 1 張採購單
+    // 取得指定採購單
     // ==========================================
 
-    const index = 0;
     const group = purchaseDraft[index];
 
     if (!group) {
 
-        console.error("❌ 找不到目前採購單資料");
-        return;
+        console.error(
+            "❌ 找不到第",
+            index + 1,
+            "張採購單"
+        );
 
+        return;
     }
 
-    console.log("✏️ 編輯第", index + 1, "張採購單");
-    console.log("目前資料：", group);
-
+    console.log(
+        "✏️ 編輯資料：",
+        group
+    );
 
     // ==========================================
-    // 直接把「確認內容」改成「編輯內容」
+    // 直接切換成編輯畫面
     // ==========================================
 
     cardBody.innerHTML = `
@@ -2094,7 +2122,6 @@ function editCurrentPurchaseConfirm() {
             <div class="purchase-confirm-title">
                 ✏️ 編輯採購單
             </div>
-
 
             <div class="purchase-edit-info">
 
@@ -2107,7 +2134,6 @@ function editCurrentPurchaseConfirm() {
                     </strong>
 
                 </div>
-
 
                 <div class="purchase-edit-field">
 
@@ -2123,7 +2149,6 @@ function editCurrentPurchaseConfirm() {
 
                 </div>
 
-
                 <div class="purchase-edit-field">
 
                     <label>📅 要求到貨日</label>
@@ -2136,7 +2161,6 @@ function editCurrentPurchaseConfirm() {
                     >
 
                 </div>
-
 
                 <div class="purchase-edit-field">
 
@@ -2151,7 +2175,6 @@ function editCurrentPurchaseConfirm() {
                 </div>
 
             </div>
-
 
             <div class="purchase-items">
 
@@ -2168,7 +2191,6 @@ function editCurrentPurchaseConfirm() {
                         </span>
 
                     </div>
-
 
                     <div class="purchase-qty-editor">
 
@@ -2194,9 +2216,8 @@ function editCurrentPurchaseConfirm() {
 
     `;
 
-
     // ==========================================
-    // 修改原本按鈕
+    // 修改按鈕
     // ==========================================
 
     cardFooter.innerHTML = `

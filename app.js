@@ -2270,29 +2270,20 @@ function validatePurchaseDraft() {
     return true;
 }
 // ==========================================
-// 建立全部採購單
+// 建立採購單
 // ==========================================
 
 async function createPurchaseOrder() {
-
-    console.log("========== 開始建立全部採購單 ==========");
-    console.log("📦 採購資料：", purchaseDraft);
-
-    // ==========================================
-    // 建立中
-    // ==========================================
-
-    addAIMessage(
-        "📄 正在建立採購單..."
-    );
-
-    // ==========================================
+ // ==========================================
     // 初始化已建立採購單
     // ==========================================
 
     if (!conversation.createdPOs) {
         conversation.createdPOs = [];
     }
+
+    console.log("========== 開始建立全部採購單 ==========");
+    console.log("📦 採購資料：", purchaseDraft);
 
     try {
 
@@ -2307,6 +2298,21 @@ async function createPurchaseOrder() {
         ) {
 
             const group = purchaseDraft[index];
+
+            // ==========================================
+            // 檢查採購資料
+            // ==========================================
+
+            if (!group) {
+
+                console.error(
+                    "❌ 找不到第",
+                    index + 1,
+                    "張採購資料"
+                );
+
+                continue;
+            }
 
             console.log(
                 "📄 準備建立第",
@@ -2332,22 +2338,7 @@ async function createPurchaseOrder() {
             }
 
             // ==========================================
-            // 檢查資料
-            // ==========================================
-
-            if (!group) {
-
-                console.error(
-                    "❌ 找不到第",
-                    index + 1,
-                    "張採購資料"
-                );
-
-                continue;
-            }
-
-            // ==========================================
-            // 顯示目前建立進度
+            // 顯示建立進度
             // ==========================================
 
             addAIMessage(
@@ -2355,14 +2346,14 @@ async function createPurchaseOrder() {
                 `🏢 ${group.vendorName}`
             );
 
+            // ==========================================
+            // 呼叫 Worker
+            // ==========================================
+
             console.log(
                 "📦 本次只送這一張：",
                 group
             );
-
-            // ==========================================
-            // 呼叫 Worker
-            // ==========================================
 
             const res = await fetch(API_URL, {
 
@@ -2403,7 +2394,7 @@ async function createPurchaseOrder() {
                 );
 
                 // --------------------------------------
-                // 標記這張已建立
+                // 標記已建立
                 // --------------------------------------
 
                 group.created = true;
@@ -2426,21 +2417,37 @@ async function createPurchaseOrder() {
                 // 儲存建立結果
                 // --------------------------------------
 
-              if (result.createdPOs) {
-        conversation.createdPOs.push(
-            ...result.createdPOs
-        );
-    }
+                if (result.createdPOs) {
 
-    console.log(
-        "📋 已建立採購單：",
-        conversation.createdPOs
-    );
+                    conversation.createdPOs.push(
+                        ...result.createdPOs
+                    );
 
-    addAIMessage(
-        `✅ ${group.vendorName} 的採購單建立完成\n\n` +
-        `🆔 ${group.poNo || "已建立"}`
-    );
+                }
+
+                console.log(
+                    "📋 目前已建立採購單：",
+                    conversation.createdPOs
+                );
+
+            }
+            else {
+
+                console.error(
+                    "❌ 第",
+                    index + 1,
+                    "張採購單建立失敗：",
+                    result.error
+                );
+
+                addAIMessage(
+                    `❌ ${group.vendorName} 的採購單建立失敗\n\n` +
+                    (result.error || "")
+                );
+
+            }
+
+        }
 
         // ==========================================
         // 全部建立完成
@@ -2451,18 +2458,18 @@ async function createPurchaseOrder() {
         );
 
         console.log(
-            "📋 已建立採購單：",
+            "📋 最終已建立採購單：",
             conversation.createdPOs
         );
 
         // ==========================================
-        // 顯示建立結果
+        // ⭐ 只在全部完成後顯示一次
         // ==========================================
 
         showCreatedPOs();
+
     }
-    }
-    catch(error) {
+    catch (error) {
 
         console.error(
             "❌ 建立採購單錯誤：",
@@ -2476,6 +2483,8 @@ async function createPurchaseOrder() {
     }
 
 }
+
+    
 // ======================================================
 // 顯示已建立採購單
 // ======================================================

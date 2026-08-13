@@ -2116,52 +2116,71 @@ function editCurrentPurchaseConfirm() {
 // ==========================================
 function validatePurchaseDraft() {
 
-  console.log("🔍 開始檢查第", index + 1, "張採購資料");
-
-    const group = purchaseDraft[index];
-
-    if (!group) {
-
-        console.error("❌ 找不到採購單：", index);
-
-        addAIMessage(
-            "❌ 找不到要建立的採購單"
-        );
-
-        return false;
-    }
+  console.log("🔍 開始檢查全部採購資料");
+    console.log("📦 採購草稿：", purchaseDraft);
 
     const errors = [];
+
+    purchaseDraft.forEach((group, groupIndex) => {
+
+        console.log(
+            "🔍 檢查第",
+            groupIndex + 1,
+            "張採購單：",
+            group
+        );
+// ==========================================
+// 檢查採購單是否存在
+// ==========================================
+   if (!group) {
+
+            console.error(
+                "❌ 找不到採購單：",
+                groupIndex
+            );
+
+            errors.push(
+                `第 ${groupIndex + 1} 張採購單不存在`
+            );
+
+            return;
+        }
 
     // ==========================================
     // 交貨地址
     // ==========================================
 
+   if (
+            !group.deliveryAddress ||
+            !group.deliveryAddress.trim()
+        ) {
+
+            errors.push(
+                `🏢 ${group.vendorName}：未填寫交貨地址`
+            );
+
+        }
+
+    // ==========================================
+    // 商品檢查
+    // ==========================================
+
     if (
-        !group.deliveryAddress ||
-        !group.deliveryAddress.trim()
-    ) {
+            !group.items ||
+            group.items.length === 0
+        ) {
 
-        errors.push(
-            `🏢 ${group.vendorName}：未填寫交貨地址`
-        );
+            errors.push(
+                `🏢 ${group.vendorName}：沒有採購商品`
+            );
 
-    }
+            return;
+        }
+ // ==========================================
+// 商品採購數量：必須 > 0
+// ==========================================
 
-    // ==========================================
-    // 商品
-    // ==========================================
-
-    if (!group.items || group.items.length === 0) {
-
-        errors.push(
-            `🏢 ${group.vendorName}：沒有採購商品`
-        );
-
-    }
-    else {
-
-        group.items.forEach((item) => {
+        group.items.forEach((item, itemIndex) => {
 
             const qty = Number(item.minQty);
 
@@ -2179,209 +2198,259 @@ function validatePurchaseDraft() {
 
         });
 
-    }
+    });
 
     // ==========================================
     // 有錯誤
     // ==========================================
 
-    if (errors.length > 0) {
+     if (errors.length > 0) {
 
-        console.warn("❌ 採購資料檢查失敗");
+        console.warn(
+            "❌ 採購資料檢查失敗"
+        );
+
         console.warn(errors);
 
         let message =
             "⚠️ 採購單尚有資料未完成\n\n";
 
-        errors.forEach((error, i) => {
+        errors.forEach((error, errorIndex) => {
 
-            message += `${i + 1}. ${error}\n`;
+            message +=
+                `${errorIndex + 1}. ${error}\n`;
 
         });
 
         message +=
             "\n請返回修改後，再重新確認。";
 
+
         addAIMessage(
             message,
             [
                 {
                     text: "✏️ 返回修改",
-                    action: `edit_purchase_${index}`
+                    action: "edit_purchase_draft"
                 }
             ]
         );
 
         return false;
     }
+    // ==========================================
+    // 全部通過
+    // ==========================================
 
-    console.log("✅ 第", index + 1, "張採購資料檢查通過");
+    console.log("✅ 所有採購資料檢查通過");
 
     return true;
 }
 // ==========================================
-// 建立採購單
+// 建立全部採購單
 // ==========================================
 
-async function createPurchaseOrder(index) {
+async function createPurchaseOrder() {
 
-    console.log("========== 建立採購單 ==========");
-    console.log("建立第", index + 1, "張採購單");
-
-    const group = purchaseDraft[index];
-
-    if (!group) {
-
-        console.error("❌ 找不到採購資料：", index);
-
-        addAIMessage(
-            "❌ 找不到要建立的採購單"
-        );
-
-        return;
-    }
-
-    // ==========================================
-    // 防止重複建立
-    // ==========================================
-
-    if (group.created) {
-
-        console.warn(
-            "⚠️ 這張採購單已經建立過：",
-            group.poNo
-        );
-
-        addAIMessage(
-            `⚠️ 此採購單已建立\n\n採購單號：${group.poNo || "已建立"}`
-        );
-
-        return;
-    }
+    console.log("========== 開始建立全部採購單 ==========");
+    console.log("📦 採購資料：", purchaseDraft);
 
     // ==========================================
     // 建立中
     // ==========================================
 
     addAIMessage(
-        `📄 正在建立 ${group.vendorName} 的採購單...`
+        "📄 正在建立採購單..."
     );
 
-    console.log("📦 本次只建立這一張：");
-    console.log(group);
+    // ==========================================
+    // 初始化已建立採購單
+    // ==========================================
+
+    if (!conversation.createdPOs) {
+        conversation.createdPOs = [];
+    }
 
     try {
 
-        const res = await fetch(API_URL, {
+        // ==========================================
+        // 逐張建立採購單
+        // ==========================================
 
-            method: "POST",
+        for (
+            let index = 0;
+            index < purchaseDraft.length;
+            index++
+        ) {
 
-            headers: {
+            const group = purchaseDraft[index];
 
-                "Content-Type": "application/json"
+            console.log(
+                "📄 準備建立第",
+                index + 1,
+                "張採購單：",
+                group
+            );
 
-            },
+            // ==========================================
+            // 防止重複建立
+            // ==========================================
 
-            body: JSON.stringify({
+            if (group.created) {
 
-                queryType: "create_purchase_order",
+                console.warn(
+                    "⚠️ 第",
+                    index + 1,
+                    "張採購單已經建立過：",
+                    group.poNo
+                );
 
-                // ⭐ 重點：只送目前這一張
-                purchaseDraft: [group]
+                continue;
+            }
 
-            })
+            // ==========================================
+            // 檢查資料
+            // ==========================================
 
-        });
+            if (!group) {
 
-        const result = await res.json();
+                console.error(
+                    "❌ 找不到第",
+                    index + 1,
+                    "張採購資料"
+                );
+
+                continue;
+            }
+
+            // ==========================================
+            // 顯示目前建立進度
+            // ==========================================
+
+            addAIMessage(
+                `📄 正在建立第 ${index + 1} / ${purchaseDraft.length} 張採購單\n\n` +
+                `🏢 ${group.vendorName}`
+            );
+
+            console.log(
+                "📦 本次只送這一張：",
+                group
+            );
+
+            // ==========================================
+            // 呼叫 Worker
+            // ==========================================
+
+            const res = await fetch(API_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    queryType: "create_purchase_order",
+
+                    // ⭐ 一次只送目前這一張
+                    purchaseDraft: [group]
+
+                })
+
+            });
+
+            const result = await res.json();
+
+            console.log(
+                "createPurchaseOrder result：",
+                result
+            );
+
+            // ==========================================
+            // 建立成功
+            // ==========================================
+
+            if (result.success) {
+
+                console.log(
+                    "✅ 第",
+                    index + 1,
+                    "張採購單建立成功"
+                );
+
+                // --------------------------------------
+                // 標記這張已建立
+                // --------------------------------------
+
+                group.created = true;
+
+                // --------------------------------------
+                // 儲存採購單號
+                // --------------------------------------
+
+                if (
+                    result.createdPOs &&
+                    result.createdPOs.length > 0
+                ) {
+
+                    group.poNo =
+                        result.createdPOs[0].poNo;
+
+                }
+
+                // --------------------------------------
+                // 儲存建立結果
+                // --------------------------------------
+
+                if (result.createdPOs) {
+
+                    conversation.createdPOs.push(
+                        ...result.createdPOs
+                    );
+
+                }
+
+            }
+            else {
+
+                console.error(
+                    "❌ 第",
+                    index + 1,
+                    "張採購單建立失敗：",
+                    result.error
+                );
+
+                addAIMessage(
+                    `❌ 第 ${index + 1} 張採購單建立失敗\n\n` +
+                    `${result.error || "未知錯誤"}`
+                );
+
+                // 有一張失敗就停止
+                return;
+
+            }
+
+        }
+
+        // ==========================================
+        // 全部建立完成
+        // ==========================================
 
         console.log(
-            "createPurchaseOrder result：",
-            result
+            "🎉 全部採購單建立完成"
+        );
+
+        console.log(
+            "📋 已建立採購單：",
+            conversation.createdPOs
         );
 
         // ==========================================
-        // 建立成功
+        // 顯示建立結果
         // ==========================================
 
-        if (result.success) {
-
-            console.log(
-                "✅ 第",
-                index + 1,
-                "張採購單建立成功"
-            );
-
-            // --------------------------------------
-            // 標記這一張已建立
-            // --------------------------------------
-
-            group.created = true;
-
-            // --------------------------------------
-            // 儲存採購單號
-            // --------------------------------------
-
-            if (
-                result.createdPOs &&
-                result.createdPOs.length > 0
-            ) {
-
-                group.poNo =
-                    result.createdPOs[0].poNo;
-
-            }
-
-            // --------------------------------------
-            // 不要覆蓋原本的 createdPOs
-            // --------------------------------------
-
-            if (!conversation.createdPOs) {
-
-                conversation.createdPOs = [];
-
-            }
-
-            if (result.createdPOs) {
-
-                conversation.createdPOs.push(
-                    ...result.createdPOs
-                );
-
-            }
-
-            console.log(
-                "📋 已建立採購單：",
-                conversation.createdPOs
-            );
-
-            // --------------------------------------
-            // 顯示建立成功
-            // --------------------------------------
-
-            addAIMessage(
-                `✅ ${group.vendorName} 的採購單建立完成\n\n` +
-                `🆔 ${group.poNo || "已建立"}`
-            );
-
-            // --------------------------------------
-            // 回到採購單確認畫面
-            // --------------------------------------
-
-            showPurchaseFinalConfirm();
-
-        }
-        else {
-
-            addAIMessage(
-
-                "❌ 建立採購單失敗\n\n" +
-
-                (result.error || "")
-
-            );
-
-        }
+        showCreatedPOs();
 
     }
     catch(error) {

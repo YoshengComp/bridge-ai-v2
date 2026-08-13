@@ -1423,9 +1423,12 @@ function savePurchaseDraft(index) {
     console.log("💾 儲存第", index + 1, "張採購單");
     console.log("儲存前資料：", group);
 
-
-    // ==========================================
-    // 儲存交貨資訊
+    if (!group) {
+        console.error("❌ 找不到採購單：", index);
+        return;
+    }
+// ==========================================
+    // 取得輸入欄位
     // ==========================================
 
     const deliveryInput =
@@ -1436,34 +1439,40 @@ function savePurchaseDraft(index) {
 
     const remarkInput =
         document.getElementById(`remark-${index}`);
-
+    // ==========================================
+    // 儲存交貨資訊
+    // ==========================================
 
     if (deliveryInput) {
-        group.deliveryAddress = deliveryInput.value.trim();
+        group.deliveryAddress =
+            deliveryInput.value.trim();
     }
 
     if (requestDateInput) {
-        group.requestDate = requestDateInput.value;
+        group.requestDate =
+            requestDateInput.value;
     }
 
     if (remarkInput) {
-        group.remark = remarkInput.value.trim();
+        group.remark =
+            remarkInput.value.trim();
     }
+
 // ==========================================
 // 儲存前必填檢查
 // ==========================================
 
 // ① 交貨地址：必填
-if (!deliveryInput || !deliveryInput.value.trim()) {
+ if (!deliveryInput || !deliveryInput.value.trim()) {
 
-    alert("⚠️ 請填寫交貨地址");
+        alert("⚠️ 請填寫交貨地址");
 
-    if (deliveryInput) {
-        deliveryInput.focus();
+        if (deliveryInput) {
+            deliveryInput.focus();
+        }
+
+        return;
     }
-
-    return;
-}
 
 
 // ② 要求到貨日：非必填
@@ -1472,37 +1481,48 @@ if (!deliveryInput || !deliveryInput.value.trim()) {
 
 // ③ 商品採購數量：每一項都必填，而且必須 > 0
 
-for (let itemIndex = 0; itemIndex < group.items.length; itemIndex++) {
+for (
+        let itemIndex = 0;
+        itemIndex < group.items.length;
+        itemIndex++
+    ) {
 
-    const input = document.getElementById(
-        `purchase-qty-${index}-${itemIndex}`
-    );
+        const input =
+            document.getElementById(
+                `purchase-qty-${index}-${itemIndex}`
+            );
 
-    if (!input) {
+        if (!input) {
 
-        console.warn(
-            "找不到採購數量輸入框：",
-            index,
-            itemIndex
-        );
+            console.warn(
+                "找不到採購數量輸入框：",
+                index,
+                itemIndex
+            );
 
-        return;
+            return;
+        }
+
+        const qty =
+            Number(input.value);
+
+        if (
+            !input.value.trim() ||
+            isNaN(qty) ||
+            qty <= 0
+        ) {
+
+            alert(
+                `⚠️ 請填寫「${group.items[itemIndex].productName}」的採購數量，且數量必須大於 0`
+            );
+
+            input.focus();
+            input.select();
+
+            return;
+        }
     }
 
-    const qty = Number(input.value);
-
-    if (!input.value.trim() || isNaN(qty) || qty <= 0) {
-
-        alert(
-            `⚠️ 請填寫「${group.items[itemIndex].productName}」的採購數量，且數量必須大於 0`
-        );
-
-        input.focus();
-        input.select();
-
-        return;
-    }
-}
 
 
 // ④ 備註：非必填
@@ -1512,85 +1532,126 @@ for (let itemIndex = 0; itemIndex < group.items.length; itemIndex++) {
     // 儲存商品數量
     // ==========================================
 
-    group.items.forEach((item, itemIndex) => {
+   group.items.forEach(
+        (item, itemIndex) => {
 
-        const input = document.getElementById(
-            `purchase-qty-${index}-${itemIndex}`
-        );
+            const input =
+                document.getElementById(
+                    `purchase-qty-${index}-${itemIndex}`
+                );
 
-        if (!input) {
-            console.warn(
-                "找不到採購數量輸入框：",
-                index,
-                itemIndex
-            );
-            return;
-        }
+            if (!input) {
 
-        let qty = Number(input.value);
+                console.warn(
+                    "找不到採購數量輸入框：",
+                    index,
+                    itemIndex
+                );
 
-        if (isNaN(qty) || qty < 0) {
-            qty = 0;
-        }
+                return;
+            }
 
-        item.minQty = qty;
+            let qty =
+                Number(input.value);
 
-    });
+            if (
+                isNaN(qty) ||
+                qty < 0
+            ) {
 
+                qty = 0;
+            }
 
-    console.log("💾 儲存後資料：", group);
-
-    console.log("📍 交貨地址：", group.deliveryAddress);
-    console.log("📅 要求到貨日：", group.requestDate);
-    console.log("📝 備註：", group.remark);
-    console.log("📦 商品資料：");
-
-group.items.forEach((item, itemIndex) => {
-
-    console.log(
-        `商品 ${itemIndex + 1}：`,
-        {
-            productCode: item.productCode,
-            productName: item.productName,
-            price: item.price,
-            minQty: item.minQty
+            item.minQty = qty;
         }
     );
 
-});
 
-
-  // ==========================================
-// 標記這張採購單已完成編輯
-// ==========================================
-
-group.edited = true;
-
-console.log(
-    "✅ 第",
-    index + 1,
-    "張採購單編輯完成"
-);
 
 // ==========================================
-// 重新顯示這一張採購單
-// ==========================================
+    // Console 顯示儲存結果
+    // ==========================================
 
-renderPurchaseDraft(index);
+    console.log(
+        "💾 儲存後資料：",
+        group
+    );
 
-// ==========================================
-// 檢查是否所有採購單都已完成編輯
-// ==========================================
+    console.log(
+        "📍 交貨地址：",
+        group.deliveryAddress
+    );
 
-const allEdited = purchaseDraft.every(
-    group => group && group.edited === true
-);
+    console.log(
+        "📅 要求到貨日：",
+        group.requestDate
+    );
 
-if (allEdited) {
+    console.log(
+        "📝 備註：",
+        group.remark
+    );
 
-    console.log("🎉 所有採購單都已完成編輯");
+    console.log("📦 商品資料：");
 
-    showFinishEditButton();
+    group.items.forEach(
+        (item, itemIndex) => {
+
+            console.log(
+                `商品 ${itemIndex + 1}：`,
+                {
+                    productCode: item.productCode,
+                    productName: item.productName,
+                    price: item.price,
+                    minQty: item.minQty
+                }
+            );
+
+        }
+    );
+
+
+    // ==========================================
+    // ⭐ 標記這張採購單已完成編輯
+    // ==========================================
+
+    group.edited = true;
+
+    console.log(
+        "✅ 第",
+        index + 1,
+        "張採購單編輯完成"
+    );
+
+
+    // ==========================================
+    // 重新顯示這一張採購單
+    // ==========================================
+
+    renderPurchaseDraft(index);
+
+
+    // ==========================================
+    // ⭐ 檢查是否所有採購單都已完成編輯
+    // ==========================================
+
+    const allEdited =
+        purchaseDraft.every(
+            group =>
+                group &&
+                group.edited === true
+        );
+
+
+    if (allEdited) {
+
+        console.log(
+            "🎉 所有採購單都已完成編輯"
+        );
+
+        showFinishEditButton();
+
+    }
 
 }
 

@@ -2274,7 +2274,8 @@ function validatePurchaseDraft() {
 // ==========================================
 
 async function createPurchaseOrder() {
- // ==========================================
+
+    // ==========================================
     // 初始化已建立採購單
     // ==========================================
 
@@ -2367,7 +2368,7 @@ async function createPurchaseOrder() {
 
                     queryType: "create_purchase_order",
 
-                    // ⭐ 一次只送目前這一張
+                    // 一次只送目前這一張
                     purchaseDraft: [group]
 
                 })
@@ -2393,16 +2394,10 @@ async function createPurchaseOrder() {
                     "張採購單建立成功"
                 );
 
-                // --------------------------------------
                 // 標記已建立
-                // --------------------------------------
-
                 group.created = true;
 
-                // --------------------------------------
                 // 儲存採購單號
-                // --------------------------------------
-
                 if (
                     result.createdPOs &&
                     result.createdPOs.length > 0
@@ -2413,10 +2408,7 @@ async function createPurchaseOrder() {
 
                 }
 
-                // --------------------------------------
                 // 儲存建立結果
-                // --------------------------------------
-
                 if (result.createdPOs) {
 
                     conversation.createdPOs.push(
@@ -2462,10 +2454,7 @@ async function createPurchaseOrder() {
             conversation.createdPOs
         );
 
-        // ==========================================
         // ⭐ 只在全部完成後顯示一次
-        // ==========================================
-
         showCreatedPOs();
 
     }
@@ -2484,19 +2473,9 @@ async function createPurchaseOrder() {
 
 }
 
-    
+
 // ======================================================
 // 顯示已建立採購單
-// ======================================================
-//
-// AI 已成功建立至 ERP
-//
-// TODO
-// [ ] 查看採購單
-// [ ] 編輯採購單
-// [ ] 開啟 Ragic
-// [ ] 列印採購單
-//
 // ======================================================
 
 function showCreatedPOs() {
@@ -2533,22 +2512,14 @@ function showCreatedPOs() {
         ]
     );
 
-}    
+}
+
+
 // ======================================================
 // AI Agent Framework
-//
-// Bridge AI 後續所有 AI Agent
-//
-// Inventory Agent
-// Purchase Agent
-// Sales Agent
-// Warehouse Agent
-// Finance Agent
-// Report Agent
-//
 // ======================================================
 
-async function runAgent(action, data){
+async function runAgent(action, data) {
 
     console.log("Bridge AI Agent");
 
@@ -2557,4 +2528,3 @@ async function runAgent(action, data){
     console.log("Data :", data);
 
 }
-

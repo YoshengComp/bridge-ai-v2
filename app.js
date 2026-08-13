@@ -2476,7 +2476,55 @@ async function createPurchaseOrder() {
     }
 
 }
+// ======================================================
+// 顯示已建立採購單
+// ======================================================
+//
+// AI 已成功建立至 ERP
+//
+// TODO
+// [ ] 查看採購單
+// [ ] 編輯採購單
+// [ ] 開啟 Ragic
+// [ ] 列印採購單
+//
+// ======================================================
 
+function showCreatedPOs() {
+
+    let message = "✅ 採購單建立完成\n\n";
+
+    conversation.createdPOs.forEach((po, index) => {
+
+        message += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+        message += `📄 PO ${index + 1}\n`;
+
+        message += `🏢 ${po.vendorName}\n`;
+
+        message += `🆔 ${po.poNo}\n\n`;
+
+    });
+
+    addAIMessage(
+        message,
+        [
+            {
+                text: "📂 查看採購單",
+                action: "view_purchase_order"
+            },
+            {
+                text: "🖨️ 列印採購單",
+                action: "print_purchase_order"
+            },
+            {
+                text: "✅ 完成",
+                action: "finish_purchase"
+            }
+        ]
+    );
+
+}    
 // ======================================================
 // AI Agent Framework
 //

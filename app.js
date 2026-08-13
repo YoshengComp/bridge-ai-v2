@@ -1654,7 +1654,284 @@ for (
     }
 
 }
+// ==========================================
+// 儲存所有採購單修改
+// ==========================================
+function saveAllPurchaseDraft() {
 
+    console.log("💾 儲存全部採購單修改");
+
+    purchaseDraft.forEach((group, index) => {
+
+        if (!group) {
+            return;
+        }
+
+        // ==========================================
+        // 交貨地址
+        // ==========================================
+
+        const deliveryInput =
+            document.getElementById(
+                `delivery-address-${index}`
+            );
+
+        if (deliveryInput) {
+
+            group.deliveryAddress =
+                deliveryInput.value.trim();
+
+        }
+
+
+        // ==========================================
+        // 要求到貨日
+        // ==========================================
+
+        const requestDateInput =
+            document.getElementById(
+                `request-date-${index}`
+            );
+
+        if (requestDateInput) {
+
+            group.requestDate =
+                requestDateInput.value;
+
+        }
+
+
+        // ==========================================
+        // 備註
+        // ==========================================
+
+        const remarkInput =
+            document.getElementById(
+                `remark-${index}`
+            );
+
+        if (remarkInput) {
+
+            group.remark =
+                remarkInput.value.trim();
+
+        }
+
+
+        // ==========================================
+        // 商品數量
+        // ==========================================
+
+        if (group.items) {
+
+            group.items.forEach(
+                (item, itemIndex) => {
+
+                    const qtyInput =
+                        document.getElementById(
+                            `purchase-qty-${index}-${itemIndex}`
+                        );
+
+                    if (qtyInput) {
+
+                        item.minQty =
+                            Number(qtyInput.value);
+
+                    }
+
+                }
+            );
+
+        }
+
+    });
+
+
+    console.log(
+        "✅ 全部採購單修改完成"
+    );
+
+    console.log(
+        "📦 最新採購資料：",
+        purchaseDraft
+    );
+
+
+    // ==========================================
+    // 儲存後直接回到同一張最終確認畫面
+    // 不新增訊息
+    // ==========================================
+
+    const messagesList =
+        document.querySelectorAll(
+            ".ai-message.purchase-final-message"
+        );
+
+    if (!messagesList.length) {
+
+        console.error(
+            "❌ 找不到採購單最終確認訊息"
+        );
+
+        return;
+
+    }
+
+
+    const messageDiv =
+        messagesList[messagesList.length - 1];
+
+    const cardBody =
+        messageDiv.querySelector(".card-body");
+
+    const cardFooter =
+        messageDiv.querySelector(".card-footer");
+
+
+    if (!cardBody || !cardFooter) {
+
+        console.error(
+            "❌ 找不到確認畫面"
+        );
+
+        return;
+
+    }
+
+
+    // ==========================================
+    // 重新產生最終確認內容
+    // ==========================================
+
+    let message = `
+
+        <div class="purchase-final-confirm">
+
+            <div class="purchase-confirm-title">
+                📋 採購單確認
+            </div>
+
+    `;
+
+
+    purchaseDraft.forEach((group) => {
+
+        message += `
+
+            <div class="purchase-confirm-vendor">
+
+                <div class="purchase-confirm-vendor-name">
+                    🏢 ${group.vendorName}
+                </div>
+
+                <div class="purchase-confirm-info">
+                    📍 交貨地址：
+                    <strong>
+                        ${group.deliveryAddress || "未填寫"}
+                    </strong>
+                </div>
+
+                <div class="purchase-confirm-info">
+                    📅 要求到貨日：
+                    <strong>
+                        ${group.requestDate || "未填寫"}
+                    </strong>
+                </div>
+
+                <div class="purchase-confirm-info">
+                    📝 備註：
+                    <strong>
+                        ${group.remark || "無"}
+                    </strong>
+                </div>
+
+                <div class="purchase-confirm-items">
+        `;
+
+
+        group.items.forEach((item) => {
+
+            message += `
+
+                <div class="purchase-confirm-item">
+
+                    <div>
+                        📦 ${item.productName}
+                    </div>
+
+                    <div>
+                        數量：
+                        <strong>
+                            ${item.minQty}
+                        </strong>
+                    </div>
+
+                    <div>
+                        單價：
+                        <strong>
+                            $${item.price || 0}
+                        </strong>
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+
+        message += `
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    message += `
+        </div>
+    `;
+
+
+    // ==========================================
+    // 直接更新原本畫面
+    // ==========================================
+
+    cardBody.innerHTML = message;
+
+
+    cardFooter.innerHTML = `
+
+        <button
+            class="action-btn primary"
+            onclick="confirmCreatePurchaseOrder()">
+
+            <span class="btn-icon">✅</span>
+            <span>確認建立採購單</span>
+
+        </button>
+
+
+        <button
+            class="action-btn"
+            onclick="editCurrentPurchaseConfirm()">
+
+            <span class="btn-icon">✏️</span>
+            <span>返回修改</span>
+
+        </button>
+
+    `;
+
+
+    console.log(
+        "✅ 已回到最終確認畫面"
+    );
+
+}
 // ==========================================
 // 顯示「完成編輯」按鈕
 //    全部採購單共用一個
@@ -2044,18 +2321,16 @@ function showPurchaseFinalConfirm() {
     );
 }
 // ==========================================
-// 將目前「採購單最終確認」切換成編輯模式
+// 將「採購單最終確認」直接切換成編輯模式
 // 不新增 AI 訊息
 // ==========================================
-function editCurrentPurchaseConfirm(index) {
+function editCurrentPurchaseConfirm() {
 
-    console.log("✏️ 進入採購單編輯模式");
-    console.log("編輯第", index + 1, "張採購單");
-
+    console.log("✏️ 直接編輯最終確認畫面");
     console.log("目前採購資料：", purchaseDraft);
 
     // ==========================================
-    // 找到最後一張「採購單最終確認」訊息
+    // 找到目前最後一張採購單最終確認訊息
     // ==========================================
 
     const messagesList = document.querySelectorAll(
@@ -2064,11 +2339,9 @@ function editCurrentPurchaseConfirm(index) {
 
     if (!messagesList.length) {
 
-        console.error(
-            "❌ 找不到採購單最終確認訊息"
-        );
-
+        console.error("❌ 找不到採購單最終確認訊息");
         return;
+
     }
 
     const messageDiv =
@@ -2082,58 +2355,34 @@ function editCurrentPurchaseConfirm(index) {
 
     if (!cardBody || !cardFooter) {
 
-        console.error(
-            "❌ 找不到採購單確認內容區域"
-        );
-
+        console.error("❌ 找不到確認內容區域");
         return;
+
     }
 
     // ==========================================
-    // 取得指定採購單
+    // 直接編輯全部採購單
     // ==========================================
 
-    const group = purchaseDraft[index];
-
-    if (!group) {
-
-        console.error(
-            "❌ 找不到第",
-            index + 1,
-            "張採購單"
-        );
-
-        return;
-    }
-
-    console.log(
-        "✏️ 編輯資料：",
-        group
-    );
-
-    // ==========================================
-    // 直接切換成編輯畫面
-    // ==========================================
-
-    cardBody.innerHTML = `
-
+    let editHTML = `
         <div class="purchase-final-confirm">
 
             <div class="purchase-confirm-title">
                 ✏️ 編輯採購單
             </div>
+    `;
 
-            <div class="purchase-edit-info">
 
-                <div class="purchase-edit-field">
+    purchaseDraft.forEach((group, index) => {
 
-                    <label>🏢 供應商</label>
+        editHTML += `
 
-                    <strong>
-                        ${group.vendorName}
-                    </strong>
+            <div class="purchase-confirm-vendor">
 
+                <div class="purchase-confirm-vendor-name">
+                    🏢 ${group.vendorName}
                 </div>
+
 
                 <div class="purchase-edit-field">
 
@@ -2149,6 +2398,7 @@ function editCurrentPurchaseConfirm(index) {
 
                 </div>
 
+
                 <div class="purchase-edit-field">
 
                     <label>📅 要求到貨日</label>
@@ -2162,6 +2412,7 @@ function editCurrentPurchaseConfirm(index) {
 
                 </div>
 
+
                 <div class="purchase-edit-field">
 
                     <label>📝 備註</label>
@@ -2174,62 +2425,92 @@ function editCurrentPurchaseConfirm(index) {
 
                 </div>
 
-            </div>
 
-            <div class="purchase-items">
+                <div class="purchase-items">
 
-                ${group.items.map((item, itemIndex) => `
+        `;
 
-                    <div class="purchase-item">
 
-                        <span class="material-symbols-outlined">
-                            inventory_2
-                        </span>
+        // ==========================================
+        // 商品
+        // ==========================================
 
-                        <span class="product-name">
-                            ${item.productName}
-                        </span>
+        group.items.forEach((item, itemIndex) => {
 
+            editHTML += `
+
+                <div class="purchase-item">
+
+                    <span class="material-symbols-outlined">
+                        inventory_2
+                    </span>
+
+                    <span class="product-name">
+                        ${item.productName}
+                    </span>
+
+                </div>
+
+
+                <div class="purchase-qty-editor">
+
+                    <div class="purchase-qty-label">
+                        採購數量
                     </div>
 
-                    <div class="purchase-qty-editor">
+                    <input
+                        type="number"
+                        min="0"
+                        class="purchase-qty-input"
+                        id="purchase-qty-${index}-${itemIndex}"
+                        value="${item.minQty || 0}"
+                    >
 
-                        <div class="purchase-qty-label">
-                            採購數量
-                        </div>
+                </div>
 
-                        <input
-                            type="number"
-                            min="0"
-                            class="purchase-qty-input"
-                            id="purchase-qty-${index}-${itemIndex}"
-                            value="${item.minQty || 0}"
-                        >
+            `;
 
-                    </div>
+        });
 
-                `).join("")}
+
+        editHTML += `
+
+                </div>
 
             </div>
 
+        `;
+
+    });
+
+
+    editHTML += `
         </div>
-
     `;
 
+
     // ==========================================
-    // 修改按鈕
+    // 直接替換原本確認內容
+    // ==========================================
+
+    cardBody.innerHTML = editHTML;
+
+
+    // ==========================================
+    // 直接替換原本按鈕
     // ==========================================
 
     cardFooter.innerHTML = `
 
         <button
             class="action-btn primary"
-            onclick="savePurchaseDraft(${index})">
+            onclick="saveAllPurchaseDraft()">
 
             <span class="btn-icon">💾</span>
             <span>儲存修改</span>
 
         </button>
+
 
         <button
             class="action-btn"
@@ -2241,6 +2522,9 @@ function editCurrentPurchaseConfirm(index) {
         </button>
 
     `;
+
+
+    console.log("✅ 已直接進入最終確認編輯模式");
 
 }
 // ==========================================

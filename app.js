@@ -1569,19 +1569,42 @@ group.items.forEach((item, itemIndex) => {
 
 // ==========================================
 // 顯示「完成編輯」按鈕
+//    全部採購單共用一個
 // ==========================================
 
-addAIMessage(
-    "如果已完成所有採購單的修改，請點擊下方按鈕。",
-    [
-        {
-            text: "✅ 完成編輯",
-            action: "finish_edit_purchase"
-        }
-    ]
-);
+function showFinishEditButton() {
 
-} // ← savePurchaseDraft() 到這裡才結束
+    // 已經存在就不要重複新增
+    if (document.getElementById("finish-edit-purchase-message")) {
+        return;
+    }
+
+    addAIMessage(
+        "如果已完成所有採購單的修改，請點擊下方按鈕。",
+        [
+            {
+                text: "✅ 完成編輯",
+                action: "finish_edit_purchase"
+            }
+        ],
+        [],
+        false,
+        false,
+        "finish-edit-purchase-message"
+    );
+
+    // 給剛剛產生的訊息一個固定 ID
+    const messagesList = messages.querySelectorAll(
+        ".finish-edit-purchase-message"
+    );
+
+    const lastMessage =
+        messagesList[messagesList.length - 1];
+
+    if (lastMessage) {
+        lastMessage.id = "finish-edit-purchase-message";
+    }
+}
 // ==========================================
 // 顯示指定採購單
 // ==========================================
@@ -2403,35 +2426,21 @@ async function createPurchaseOrder() {
                 // 儲存建立結果
                 // --------------------------------------
 
-                if (result.createdPOs) {
+              if (result.createdPOs) {
+        conversation.createdPOs.push(
+            ...result.createdPOs
+        );
+    }
 
-                    conversation.createdPOs.push(
-                        ...result.createdPOs
-                    );
+    console.log(
+        "📋 已建立採購單：",
+        conversation.createdPOs
+    );
 
-                }
-
-            }
-            else {
-
-                console.error(
-                    "❌ 第",
-                    index + 1,
-                    "張採購單建立失敗：",
-                    result.error
-                );
-
-                addAIMessage(
-                    `❌ 第 ${index + 1} 張採購單建立失敗\n\n` +
-                    `${result.error || "未知錯誤"}`
-                );
-
-                // 有一張失敗就停止
-                return;
-
-            }
-
-        }
+    addAIMessage(
+        `✅ ${group.vendorName} 的採購單建立完成\n\n` +
+        `🆔 ${group.poNo || "已建立"}`
+    );
 
         // ==========================================
         // 全部建立完成

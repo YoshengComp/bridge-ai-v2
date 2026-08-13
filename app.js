@@ -2690,8 +2690,13 @@ async function confirmCreatePurchaseOrder() {
 // 開始建立採購單
 // ==========================================
 
-async function createPurchaseOrder() {
+ await createPurchaseOrder();
+}
+// ==========================================
+// 建立採購單
+// ==========================================
 
+async function createPurchaseOrder() {
     // ==========================================
     // 初始化已建立採購單
     // ==========================================

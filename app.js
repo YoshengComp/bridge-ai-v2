@@ -2460,7 +2460,7 @@ async function createPurchaseOrder() {
         // ==========================================
 
         showCreatedPOs();
-
+    }
     }
     catch(error) {
 

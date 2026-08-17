@@ -595,7 +595,98 @@ if (action.startsWith("edit_po_")) {
     );
 
     break;
+case "view_purchase_order":
 
+    console.log("📂 查看採購單");
+
+    console.log(
+        "📋 目前已建立採購單：",
+        conversation.createdPOs
+    );
+
+    try {
+
+        const res = await fetch(API_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                queryType: "view_purchase_order",
+
+                createdPOs: conversation.createdPOs
+
+            })
+
+        });
+
+        const result = await res.json();
+
+        console.log(
+            "view_purchase_order result：",
+            result
+        );
+
+        if (result.success) {
+
+            console.log(
+                "✅ 採購單資料取得成功：",
+                result.createdPOs
+            );
+
+            // 先暫時顯示資料
+            let message =
+                "📂 已建立採購單\n\n";
+
+            result.createdPOs.forEach(
+                (po, index) => {
+
+                    message +=
+                        `━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+                    message +=
+                        `📄 PO ${index + 1}\n`;
+
+                    message +=
+                        `🏢 ${po.vendorName}\n`;
+
+                    message +=
+                        `🆔 ${po.poNo}\n\n`;
+
+                }
+            );
+
+            addAIMessage(message);
+
+        }
+        else {
+
+            addAIMessage(
+                "❌ 無法取得採購單資料\n\n" +
+                (result.error || "")
+            );
+
+        }
+
+    }
+    catch (error) {
+
+        console.error(
+            "❌ 查看採購單錯誤：",
+            error
+        );
+
+        addAIMessage(
+            "❌ 無法連線 ERP"
+        );
+
+    }
+
+    break;
          case "open_form_direct":
 
     if (!url) {

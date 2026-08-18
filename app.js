@@ -631,34 +631,46 @@ case "view_purchase_order":
             result
         );
 
-        if (result.success) {
+      if (result.success) {
 
-            console.log(
-                "✅ 採購單資料取得成功：",
-                result.createdPOs
-            );
+    console.log(
+        "✅ 採購單資料取得成功：",
+        result.purchaseOrders
+    );
 
-            // 先暫時顯示資料
-            let message =
-                "📂 已建立採購單\n\n";
+    let message =
+        "📂 採購單詳細資料\n\n";
 
-            result.createdPOs.forEach(
-                (po, index) => {
+    result.purchaseOrders.forEach(
+        (po, index) => {
 
-                    message +=
-                        `━━━━━━━━━━━━━━━━━━━━\n\n`;
+            message +=
+                `━━━━━━━━━━━━━━━━━━━━\n\n`;
 
-                    message +=
-                        `📄 PO ${index + 1}\n`;
+            message +=
+                `📄 PO ${index + 1}\n`;
 
-                    message +=
-                        `🏢 ${po.vendorName}\n`;
+            message +=
+                `🏢 ${po.vendorName || ""}\n`;
 
-                    message +=
-                        `🆔 ${po.poNo}\n\n`;
+            message +=
+                `🆔 ${po.poNo || ""}\n`;
 
-                }
-            );
+            message +=
+                `🔢 Ragic ID：${po.ragicId}\n\n`;
+
+            message +=
+                `📋 Ragic 資料：\n`;
+
+            message +=
+                `${JSON.stringify(
+                    po.ragicData,
+                    null,
+                    2
+                )}\n\n`;
+
+        }
+    );
 
             addAIMessage(message);
 

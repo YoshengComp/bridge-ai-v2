@@ -757,7 +757,16 @@ case "view_purchase_order":
     }
 
     break;
-            
+    case "finish_purchase":
+
+    console.log("✅ 採購流程完成");
+
+    addAIMessage(
+        "✅ 採購流程已完成\n\n" +
+        `本次共建立 ${conversation.createdPOs?.length || 0} 張採購單。`
+    );
+
+    break;        
 case "agent":
 
     let message = "🤖 好的，我將協助您建立採購單。\n\n";
@@ -3066,24 +3075,19 @@ function showCreatedPOs() {
         message += `🆔 ${po.poNo}\n\n`;
 
     });
-
-    addAIMessage(
-        message,
-        [
-            {
-                text: "📂 查看採購單",
-                action: "view_purchase_order"
-            },
-            {
-                text: "🖨️ 列印採購單",
-                action: "print_purchase_order"
-            },
-            {
-                text: "✅ 完成",
-                action: "finish_purchase"
-            }
-        ]
-    );
+addAIMessage(
+    message,
+    [
+        {
+            text: "📂 查看採購單",
+            action: "view_purchase_order"
+        },
+        {
+            text: "✅ 完成",
+            action: "finish_purchase"
+        }
+    ]
+);
 
 }
 

@@ -604,7 +604,27 @@ case "view_purchase_order":
         conversation.createdPOs
     );
 
+    // ==========================================
+    // 檢查是否有已建立採購單
+    // ==========================================
+
+    if (
+        !conversation.createdPOs ||
+        conversation.createdPOs.length === 0
+    ) {
+
+        addAIMessage(
+            "❌ 目前沒有可查看的採購單"
+        );
+
+        break;
+    }
+
     try {
+
+        // ==========================================
+        // 呼叫 Worker
+        // ==========================================
 
         const res = await fetch(API_URL, {
 
@@ -618,7 +638,8 @@ case "view_purchase_order":
 
                 queryType: "view_purchase_order",
 
-                createdPOs: conversation.createdPOs
+                createdPOs:
+                    conversation.createdPOs
 
             })
 
@@ -632,249 +653,74 @@ case "view_purchase_order":
         );
 
         // ==========================================
-        // 查詢失敗
+        // Worker 查詢失敗
         // ==========================================
 
         if (!result.success) {
 
             addAIMessage(
-                "❌ 無法取得採購單資料\n\n" +
+                "❌ 無法取得採購單\n\n" +
                 (result.error || "")
             );
 
             break;
         }
 
-        console.log(
-            "✅ 採購單資料取得成功：",
-            result.purchaseOrders
-        );
-
-
         // ==========================================
-        // 建立採購單詳細畫面
+        // 顯示可查看的採購單
         // ==========================================
 
         let message = `
-
             <div class="purchase-final-confirm">
 
                 <div class="purchase-confirm-title">
-                    📂 採購單詳細資料
+                    📂 查看採購單
                 </div>
-
         `;
-
 
         result.purchaseOrders.forEach(
             (po, index) => {
-
-                /*
-                 * Worker 回傳：
-                 *
-                 * po.ragicData
-                 *
-                 * 結構：
-                 *
-                 * {
-                 *     "60": {
-                 *         "1002024": "...",
-                 *         ...
-                 *         "_subtable_1002049": {...}
-                 *     }
-                 * }
-                 */
-
-
-                // ==========================================
-                // 取得 Ragic 主表資料
-                // ==========================================
-
-                const ragicData =
-                    po.ragicData || {};
-
-                const rootId =
-                    Object.keys(ragicData)[0];
-
-                const mainData =
-                    ragicData[rootId] || {};
-
-
-                // ==========================================
-                // 取得採購明細
-                // ==========================================
-
-                const subtable =
-                    mainData["_subtable_1002049"] || {};
-
-                const items =
-                    Object.values(subtable);
-
-
-                // ==========================================
-                // 採購單卡片
-                // ==========================================
 
                 message += `
 
                     <div class="purchase-confirm-vendor">
 
                         <div class="purchase-confirm-vendor-name">
-
-                            📄 PO ${po.poNo || mainData["1002025"] || ""}
-
+                            🏢 ${po.vendorName}
                         </div>
 
-
                         <div class="purchase-confirm-info">
-
-                            🏢 供應商：
+                            📄 採購單號：
                             <strong>
-                                ${po.vendorName || mainData["1002026"] || ""}
+                                ${po.poNo}
                             </strong>
-
                         </div>
 
-
                         <div class="purchase-confirm-info">
-
-                            📍 交貨地址：
+                            🔢 Ragic ID：
                             <strong>
-                                ${mainData["1002037"] || "未填寫"}
+                                ${po.ragicId}
                             </strong>
-
                         </div>
 
+                        <div class="purchase-confirm-items">
 
-                        <div class="purchase-confirm-info">
+                            <button
+                                class="action-btn primary"
+                                onclick="window.open('${po.ragicUrl}', '_blank')"
+                            >
 
-                            📅 要求到貨日：
-                            <strong>
-                                ${mainData["1002031"] || "未填寫"}
-                            </strong>
+                                <span class="btn-icon">
+                                    📂
+                                </span>
 
-                        </div>
+                                <span>
+                                    開啟此採購單
+                                </span>
 
-
-                        <div class="purchase-confirm-info">
-
-                            👤 採購人員：
-                            <strong>
-                                ${mainData["1002028"] || "未填寫"}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="purchase-confirm-info">
-
-                            📌 狀態：
-                            <strong>
-                                ${mainData["1002029"] || "未填寫"}
-                            </strong>
+                            </button>
 
                         </div>
-
-
-                        <div class="purchase-confirm-info">
-
-                            📝 備註：
-                            <strong>
-                                ${mainData["1002047"] || "無"}
-                            </strong>
-
-                        </div>
-
-
-                        <div class="purchase-confirm-title">
-
-                            📦 採購明細
-
-                        </div>
-
-                `;
-
-
-                // ==========================================
-                // 商品明細
-                // ==========================================
-
-                if (items.length > 0) {
-
-                    items.forEach(
-                        item => {
-
-                            message += `
-
-                                <div class="purchase-confirm-item">
-
-                                    <div>
-
-                                        📦
-                                        ${item["1002039"] || "未命名商品"}
-
-                                    </div>
-
-                                    <div>
-
-                                        商品編號：
-                                        <strong>
-                                            ${item["1002038"] || "-"}
-                                        </strong>
-
-                                    </div>
-
-                                    <div>
-
-                                        數量：
-                                        <strong>
-                                            ${item["1002041"] || 0}
-                                        </strong>
-
-                                    </div>
-
-                                    <div>
-
-                                        單價：
-                                        <strong>
-                                            $${item["1002040"] || 0}
-                                        </strong>
-
-                                    </div>
-
-                                    <div>
-
-                                        小計：
-                                        <strong>
-                                            $${item["1002042"] || 0}
-                                        </strong>
-
-                                    </div>
-
-                                </div>
-
-                            `;
-
-                        }
-                    );
-
-                }
-                else {
-
-                    message += `
-
-                        <div class="purchase-confirm-info">
-
-                            ⚠️ 此採購單沒有採購明細
-
-                        </div>
-
-                    `;
-
-                }
-
-
-                message += `
 
                     </div>
 
@@ -883,32 +729,18 @@ case "view_purchase_order":
             }
         );
 
-
         message += `
-
             </div>
-
         `;
-
-
-        // ==========================================
-        // 顯示採購單
-        // ==========================================
 
         addAIMessage(
             message,
-            [
-                {
-                    text: "↩️ 返回",
-                    action: "back_to_created_pos"
-                }
-            ],
+            [],
             [],
             false,
             true,
             "purchase-view-message"
         );
-
 
     }
     catch (error) {

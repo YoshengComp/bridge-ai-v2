@@ -361,7 +361,7 @@ if (question === "如何建立採購單？") {
 
     buttons.push({
         text: "🛒 建立採購單",
-        action: "open_form"
+       action: "create_purchase_order_menu"
     });
 
 }
@@ -604,6 +604,83 @@ if (action.startsWith("edit_po_")) {
             );
 
             break;
+case "create_purchase_order_menu":
+
+    console.log("🛒 一般採購單流程：取得全部商品");
+
+    try {
+
+        const res = await fetch(API_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                queryType: "all_products"
+
+            })
+
+        });
+
+        const result = await res.json();
+
+        console.log(
+            "📦 全部商品 result：",
+            result
+        );
+
+        if (!result.success) {
+
+            addAIMessage(
+                "❌ 無法取得商品資料\n\n" +
+                (result.error || "")
+            );
+
+            break;
+        }
+
+        // 儲存全部商品
+        allProductsData = result.data || [];
+
+        console.log(
+            "📦 全部商品數量：",
+            allProductsData.length
+        );
+
+        addAIMessage(
+            "您希望使用哪種方式建立採購單？",
+            [
+                {
+                    text: "🤖 AI 協助建立採購單",
+                    action: "agent_all_products"
+                },
+                {
+                    text: "📝 自行建立採購單",
+                    action: "open_form_direct",
+                    url: url
+                }
+            ]
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "❌ 取得全部商品錯誤：",
+            error
+        );
+
+        addAIMessage(
+            "❌ 無法取得商品資料"
+        );
+
+    }
+
+    break;
 
         case "open_form":
             addAIMessage(
@@ -793,7 +870,28 @@ case "view_purchase_order":
         `本次共建立 ${conversation.createdPOs?.length || 0} 張採購單。`
     );
 
-    break;        
+    break;       
+            case "agent_all_products":
+
+    console.log("🤖 一般採購單：使用全部商品");
+
+    console.log(
+        "📦 可採購商品：",
+        allProductsData
+    );
+
+    addAIMessage(
+        "🤖 好的，我將協助您建立採購單。\n\n" +
+        "請選擇要加入採購的商品。",
+        [
+            {
+                text: "📋 挑選採購商品",
+                action: "procurement_select_all"
+            }
+        ]
+    );
+
+    break;
 case "agent":
 
     let message = "🤖 好的，我將協助您建立採購單。\n\n";
@@ -825,11 +923,30 @@ case "agent":
     );
 
     break;
+            case "procurement_select_all":
+
+    showAllProductSelect();
+
+    break;
      case "procurement_select":
 
     showProductSelect();
 
     break;       
+            case "product_select_all_next":
+
+    // 儲存本次勾選的全部商品
+    conversation.selectedProducts =
+        allProductsData.filter(item => item.selected);
+
+    console.log(
+        "📦 已選商品（全部商品）：",
+        conversation.selectedProducts
+    );
+
+    handleAction("procurement_all");
+
+    break;
            case "product_select_next":
 
     // 儲存本次勾選的商品
@@ -1207,7 +1324,74 @@ function showProductSelect(){
     );
 
 }
+// ==========================================
+// 全部商品挑選
+// ==========================================
 
+function showAllProductSelect(){
+
+    const oldSelect = document.querySelector(".product-select-message");
+
+    if(oldSelect){
+        oldSelect.remove();
+    }
+
+    let message = "📋 請選擇要加入採購的商品\n\n";
+
+    // 第一次預設全部勾選
+    allProductsData.forEach(item => {
+
+        if(item.selected === undefined){
+            item.selected = false;
+        }
+
+    });
+
+    const selectedCount =
+        allProductsData.filter(item => item.selected).length;
+
+    allProductsData.forEach((item, index) => {
+
+        message += `
+        <div class="product-item"
+             onclick="toggleAllProduct(${index})">
+
+            <span class="material-symbols-outlined product-check">
+                ${item.selected
+                    ? "check_circle"
+                    : "radio_button_unchecked"}
+            </span>
+
+            <span class="product-name">
+                ${item["商品"]}
+            </span>
+
+        </div>
+        `;
+
+    });
+
+    message += `
+        <div class="selected-count">
+            已選擇 <strong>${selectedCount}</strong> / ${allProductsData.length} 項商品
+        </div>
+    `;
+
+    addAIMessage(
+        message,
+        [
+            {
+                text:"➡️ 下一步",
+                action:"product_select_all_next"
+            }
+        ],
+        [],
+        false,
+        true,
+        "product-select-message"
+    );
+
+}
 // ==========================================
 // 切換商品勾選
 // ==========================================
@@ -1218,6 +1402,18 @@ function toggleProduct(index){
         !lastResultData[index].selected;
 
     showProductSelect();
+
+}
+// ==========================================
+// 切換全部商品勾選
+// ==========================================
+
+function toggleAllProduct(index){
+
+    allProductsData[index].selected =
+        !allProductsData[index].selected;
+
+    showAllProductSelect();
 
 }
 // ==========================================

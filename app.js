@@ -1365,7 +1365,10 @@ function showAllProductSelect(){
             <span class="product-name">
                 ${item["商品"]}
             </span>
-
+            <div class="product-stock">
+            庫存：${item["庫存"]}
+           　安全庫存：${item["安全庫存"]}
+        </div>
         </div>
         `;
 

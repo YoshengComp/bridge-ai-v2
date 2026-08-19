@@ -36,7 +36,8 @@ const API_URL = "https://bridge-ai-api.yosheng96750043.workers.dev/";
 
 // 最近一次 ERP 查詢結果
 let lastResultData = [];
-
+// 所有可採購商品
+let allProductsData = [];
 // 採購草稿 Workspace
 // 一間供應商 = 一張採購單
 let purchaseDraft = [];
@@ -307,7 +308,16 @@ try {
 
     lastResultData = result.data || [];
 
+if (result.queryType === "all_products") {
 
+    allProductsData = result.data || [];
+
+    console.log(
+        "📦 全部商品：",
+        allProductsData
+    );
+
+}
 
     const icon = result.icon || "";
 

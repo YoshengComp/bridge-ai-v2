@@ -339,9 +339,26 @@ ${answer}`;
 
 
 
-      addAIMessage(
+// ==========================================
+// FAQ 下一步按鈕（暫時前端測試）
+// 未來 AI 上線後會改成由 AI 回傳 buttons
+// ==========================================
+
+let buttons = result.buttons || [];
+
+// 「如何建立採購單？」增加下一步操作
+if (question === "如何建立採購單？") {
+
+    buttons.push({
+        text: "🛒 建立採購單",
+        action: "open_form"
+    });
+
+}
+
+addAIMessage(
     message,
-    result.buttons,
+    buttons,
     result.data
 );
 
